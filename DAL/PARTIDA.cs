@@ -59,12 +59,26 @@ namespace DAL
                 p.ID = reader.GetInt32(0);
                 p.IdJugador1 = reader.GetInt32(1);
                 p.IdJugador2 = reader.GetInt32(2);
-                p.IdGanador = reader.IsDBNull(3) ? 0 : reader.GetInt32(3);
+                if (reader.IsDBNull(3))
+                {
+                    p.IdGanador = 0;
+                }
+                else
+                {
+                    p.IdGanador = reader.GetInt32(3);
+                }
                 p.PuntajeJugador1 = reader.GetInt32(4);
                 p.PuntajeJugador2 = reader.GetInt32(5);
                 p.FechaInicio = reader.GetDateTime(6);
                 p.FechaFin = reader.GetDateTime(7);
-                p.RutaXml = reader.IsDBNull(8) ? "" : reader.GetString(8);
+                if (reader.IsDBNull(8))
+                {
+                    p.RutaXml = "";
+                }
+                else
+                {
+                    p.RutaXml = reader.GetString(8);
+                }
                 partidas.Add(p);
             }
 

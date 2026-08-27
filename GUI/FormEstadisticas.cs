@@ -29,7 +29,15 @@ namespace GUI
 
         private void cmbJugador_SelectedIndexChanged(object sender, EventArgs e)
         {
-            USUARIO usuario = cmbJugador.SelectedIndex == 0 ? jugador1 : jugador2;
+            USUARIO usuario;
+            if (cmbJugador.SelectedIndex == 0)
+            {
+                usuario = jugador1;
+            }
+            else
+            {
+                usuario = jugador2;
+            }
             CargarEstadisticas(usuario);
         }
 
@@ -50,9 +58,22 @@ namespace GUI
             foreach (PARTIDA p in partidas)
             {
                 bool esJugador1 = p.IdJugador1 == usuario.ID;
-                int idRival = esJugador1 ? p.IdJugador2 : p.IdJugador1;
-                int puntajePropio = esJugador1 ? p.PuntajeJugador1 : p.PuntajeJugador2;
-                int puntajeRival = esJugador1 ? p.PuntajeJugador2 : p.PuntajeJugador1;
+
+                int idRival;
+                int puntajePropio;
+                int puntajeRival;
+                if (esJugador1)
+                {
+                    idRival = p.IdJugador2;
+                    puntajePropio = p.PuntajeJugador1;
+                    puntajeRival = p.PuntajeJugador2;
+                }
+                else
+                {
+                    idRival = p.IdJugador1;
+                    puntajePropio = p.PuntajeJugador2;
+                    puntajeRival = p.PuntajeJugador1;
+                }
 
                 string resultado;
                 if (p.IdGanador == 0)
@@ -77,7 +98,14 @@ namespace GUI
 
                 FILAHISTORIAL fila = new FILAHISTORIAL();
                 fila.Fecha = p.FechaInicio.ToString("dd/MM/yyyy HH:mm");
-                fila.Rival = rival != null ? rival.Nombre : "-";
+                if (rival != null)
+                {
+                    fila.Rival = rival.Nombre;
+                }
+                else
+                {
+                    fila.Rival = "-";
+                }
                 fila.PuntajePropio = puntajePropio;
                 fila.PuntajeRival = puntajeRival;
                 fila.Resultado = resultado;
@@ -88,7 +116,15 @@ namespace GUI
             dgvHistorial.DataSource = filas;
 
             int totalPartidas = partidas.Count;
-            double promedio = totalPartidas > 0 ? (ganadas * 100.0 / totalPartidas) : 0;
+            double promedio;
+            if (totalPartidas > 0)
+            {
+                promedio = ganadas * 100.0 / totalPartidas;
+            }
+            else
+            {
+                promedio = 0;
+            }
 
             lblGanadas.Text = "Ganadas: " + ganadas;
             lblPerdidas.Text = "Perdidas: " + perdidas;

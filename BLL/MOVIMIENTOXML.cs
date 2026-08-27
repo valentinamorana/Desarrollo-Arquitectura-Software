@@ -31,10 +31,20 @@ namespace BLL
             XmlDocument doc = new XmlDocument();
             doc.Load(ruta);
 
+            string dadosTexto = "";
+            for (int i = 0; i < dados.Length; i++)
+            {
+                if (i > 0)
+                {
+                    dadosTexto = dadosTexto + ",";
+                }
+                dadosTexto = dadosTexto + dados[i];
+            }
+
             XmlElement movimiento = doc.CreateElement("Movimiento");
             movimiento.SetAttribute("turno", turno.ToString());
             movimiento.SetAttribute("jugador", jugador);
-            movimiento.SetAttribute("dados", string.Join(",", dados));
+            movimiento.SetAttribute("dados", dadosTexto);
             movimiento.SetAttribute("categoria", categoria);
             movimiento.SetAttribute("puntaje", puntaje.ToString());
             movimiento.SetAttribute("fecha", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));

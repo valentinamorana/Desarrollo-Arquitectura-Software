@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace BLL
 {
@@ -34,21 +33,55 @@ namespace BLL
 
         public static int CalcularPuntaje(string categoria, int[] dados)
         {
-            switch (categoria)
+            if (categoria == "Unos")
             {
-                case "Unos": return SumaValor(dados, 1);
-                case "Doses": return SumaValor(dados, 2);
-                case "Treses": return SumaValor(dados, 3);
-                case "Cuatros": return SumaValor(dados, 4);
-                case "Cincos": return SumaValor(dados, 5);
-                case "Seises": return SumaValor(dados, 6);
-                case "Escalera": return Escalera(dados);
-                case "Full": return Full(dados);
-                case "Poker": return Poker(dados);
-                case "Generala": return GeneralaCompleta(dados);
-                case GENERALA_DOBLE: return GeneralaCompleta(dados) > 0 ? 100 : 0;
-                default: return 0;
+                return SumaValor(dados, 1);
             }
+            if (categoria == "Doses")
+            {
+                return SumaValor(dados, 2);
+            }
+            if (categoria == "Treses")
+            {
+                return SumaValor(dados, 3);
+            }
+            if (categoria == "Cuatros")
+            {
+                return SumaValor(dados, 4);
+            }
+            if (categoria == "Cincos")
+            {
+                return SumaValor(dados, 5);
+            }
+            if (categoria == "Seises")
+            {
+                return SumaValor(dados, 6);
+            }
+            if (categoria == "Escalera")
+            {
+                return Escalera(dados);
+            }
+            if (categoria == "Full")
+            {
+                return Full(dados);
+            }
+            if (categoria == "Poker")
+            {
+                return Poker(dados);
+            }
+            if (categoria == "Generala")
+            {
+                return GeneralaCompleta(dados);
+            }
+            if (categoria == GENERALA_DOBLE)
+            {
+                if (GeneralaCompleta(dados) > 0)
+                {
+                    return 100;
+                }
+                return 0;
+            }
+            return 0;
         }
 
         private static int SumaValor(int[] dados, int valor)
@@ -58,22 +91,20 @@ namespace BLL
             {
                 if (d == valor)
                 {
-                    total += valor;
+                    total = total + valor;
                 }
             }
             return total;
         }
 
-        private static Dictionary<int, int> ContarRepeticiones(int[] dados)
+        // Cuenta cuántas veces salió cada valor de dado.
+        // conteo[1] = cantidad de unos, conteo[2] = cantidad de doses, etc. (la posición 0 no se usa).
+        private static int[] ContarRepeticiones(int[] dados)
         {
-            Dictionary<int, int> conteo = new Dictionary<int, int>();
+            int[] conteo = new int[7];
             foreach (int d in dados)
             {
-                if (!conteo.ContainsKey(d))
-                {
-                    conteo[d] = 0;
-                }
-                conteo[d]++;
+                conteo[d] = conteo[d] + 1;
             }
             return conteo;
         }
@@ -103,14 +134,14 @@ namespace BLL
 
         private static int Full(int[] dados)
         {
-            Dictionary<int, int> conteo = ContarRepeticiones(dados);
+            int[] conteo = ContarRepeticiones(dados);
 
             bool tieneTres = false;
             bool tieneDos = false;
-            foreach (int cantidad in conteo.Values)
+            for (int valor = 1; valor <= 6; valor++)
             {
-                if (cantidad == 3) tieneTres = true;
-                if (cantidad == 2) tieneDos = true;
+                if (conteo[valor] == 3) tieneTres = true;
+                if (conteo[valor] == 2) tieneDos = true;
             }
 
             if (tieneTres && tieneDos)
@@ -122,11 +153,11 @@ namespace BLL
 
         private static int Poker(int[] dados)
         {
-            Dictionary<int, int> conteo = ContarRepeticiones(dados);
+            int[] conteo = ContarRepeticiones(dados);
 
-            foreach (int cantidad in conteo.Values)
+            for (int valor = 1; valor <= 6; valor++)
             {
-                if (cantidad >= 4)
+                if (conteo[valor] >= 4)
                 {
                     return 40;
                 }
@@ -136,11 +167,11 @@ namespace BLL
 
         private static int GeneralaCompleta(int[] dados)
         {
-            Dictionary<int, int> conteo = ContarRepeticiones(dados);
+            int[] conteo = ContarRepeticiones(dados);
 
-            foreach (int cantidad in conteo.Values)
+            for (int valor = 1; valor <= 6; valor++)
             {
-                if (cantidad == 5)
+                if (conteo[valor] == 5)
                 {
                     return 50;
                 }

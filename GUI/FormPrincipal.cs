@@ -101,7 +101,15 @@ namespace GUI
             chkGuardar4.Checked = false;
             chkGuardar5.Checked = false;
 
-            string nombreActual = jugadorActual == 1 ? jugador1.Nombre : jugador2.Nombre;
+            string nombreActual;
+            if (jugadorActual == 1)
+            {
+                nombreActual = jugador1.Nombre;
+            }
+            else
+            {
+                nombreActual = jugador2.Nombre;
+            }
             lblTurno.Text = "Turno de: " + nombreActual;
             lblTirosRestantes.Text = "Tiros restantes: " + tirosRestantes;
 
@@ -146,14 +154,36 @@ namespace GUI
         {
             cmbCategoria.Items.Clear();
 
-            FILAPUNTAJE filaGenerala = tabla.Find(f => f.Categoria == "Generala");
-            bool generalaYaAnotada = jugadorActual == 1
-                ? filaGenerala.PuntajeJugador1 != SIN_ANOTAR
-                : filaGenerala.PuntajeJugador2 != SIN_ANOTAR;
+            FILAPUNTAJE filaGenerala = null;
+            foreach (FILAPUNTAJE f in tabla)
+            {
+                if (f.Categoria == "Generala")
+                {
+                    filaGenerala = f;
+                }
+            }
+
+            bool generalaYaAnotada;
+            if (jugadorActual == 1)
+            {
+                generalaYaAnotada = filaGenerala.PuntajeJugador1 != SIN_ANOTAR;
+            }
+            else
+            {
+                generalaYaAnotada = filaGenerala.PuntajeJugador2 != SIN_ANOTAR;
+            }
 
             foreach (FILAPUNTAJE fila in tabla)
             {
-                bool sinAnotar = jugadorActual == 1 ? fila.PuntajeJugador1 == SIN_ANOTAR : fila.PuntajeJugador2 == SIN_ANOTAR;
+                bool sinAnotar;
+                if (jugadorActual == 1)
+                {
+                    sinAnotar = fila.PuntajeJugador1 == SIN_ANOTAR;
+                }
+                else
+                {
+                    sinAnotar = fila.PuntajeJugador2 == SIN_ANOTAR;
+                }
                 if (!sinAnotar)
                 {
                     continue;
@@ -184,7 +214,15 @@ namespace GUI
 
             string categoria = cmbCategoria.SelectedItem.ToString();
             int puntaje = BLL.GENERALA.CalcularPuntaje(categoria, dados);
-            string nombreActual = jugadorActual == 1 ? jugador1.Nombre : jugador2.Nombre;
+            string nombreActual;
+            if (jugadorActual == 1)
+            {
+                nombreActual = jugador1.Nombre;
+            }
+            else
+            {
+                nombreActual = jugador2.Nombre;
+            }
 
             turnoContador++;
             BLL.MOVIMIENTOXML.RegistrarMovimiento(partidaActual.RutaXml, turnoContador, nombreActual, dados, categoria, puntaje);
@@ -207,7 +245,14 @@ namespace GUI
             RefrescarGrilla();
             ActualizarTotales();
 
-            jugadorActual = jugadorActual == 1 ? 2 : 1;
+            if (jugadorActual == 1)
+            {
+                jugadorActual = 2;
+            }
+            else
+            {
+                jugadorActual = 1;
+            }
 
             if (JuegoTerminado())
             {
@@ -268,8 +313,18 @@ namespace GUI
             partidaActual.PuntajeJugador2 = total2;
             partidaActual.IdGanador = idGanador;
 
+            string descripcionBitacora;
+            if (abandonada)
+            {
+                descripcionBitacora = "Partida abandonada";
+            }
+            else
+            {
+                descripcionBitacora = "Fin de partida";
+            }
+
             BLL.PARTIDA partidaBLL = new BLL.PARTIDA();
-            partidaBLL.Finalizar(partidaActual, abandonada ? "Partida abandonada" : "Fin de partida");
+            partidaBLL.Finalizar(partidaActual, descripcionBitacora);
 
             MessageBox.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -290,7 +345,7 @@ namespace GUI
 
             if (confirmar == DialogResult.Yes)
             {
-                FinalizarPartida(abandonada: true);
+                FinalizarPartida(true);
             }
         }
 
@@ -341,8 +396,18 @@ namespace GUI
                 total1 += SumarSiAnotado(fila.PuntajeJugador1);
                 total2 += SumarSiAnotado(fila.PuntajeJugador2);
             }
+            string nombreJugador2;
+            if (jugador2 != null)
+            {
+                nombreJugador2 = jugador2.Nombre;
+            }
+            else
+            {
+                nombreJugador2 = "Jugador 2";
+            }
+
             lblTotalJugador1.Text = "Total " + jugador1.Nombre + ": " + total1;
-            lblTotalJugador2.Text = "Total " + (jugador2 != null ? jugador2.Nombre : "Jugador 2") + ": " + total2;
+            lblTotalJugador2.Text = "Total " + nombreJugador2 + ": " + total2;
         }
 
         private void HabilitarJuego()
