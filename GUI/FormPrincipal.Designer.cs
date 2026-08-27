@@ -163,9 +163,9 @@ namespace GUI
             this.btnAbandonar.BackColor = System.Drawing.Color.Crimson;
             this.btnAbandonar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAbandonar.ForeColor = System.Drawing.Color.White;
-            this.btnAbandonar.Location = new System.Drawing.Point(760, 14);
+            this.btnAbandonar.Location = new System.Drawing.Point(770, 14);
             this.btnAbandonar.Name = "btnAbandonar";
-            this.btnAbandonar.Size = new System.Drawing.Size(185, 32);
+            this.btnAbandonar.Size = new System.Drawing.Size(175, 32);
             this.btnAbandonar.TabIndex = 4;
             this.btnAbandonar.Text = "Abandonar Partida";
             this.btnAbandonar.UseVisualStyleBackColor = false;
@@ -178,9 +178,9 @@ namespace GUI
             this.btnComenzarPartida.Enabled = false;
             this.btnComenzarPartida.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnComenzarPartida.ForeColor = System.Drawing.Color.White;
-            this.btnComenzarPartida.Location = new System.Drawing.Point(760, 14);
+            this.btnComenzarPartida.Location = new System.Drawing.Point(770, 14);
             this.btnComenzarPartida.Name = "btnComenzarPartida";
-            this.btnComenzarPartida.Size = new System.Drawing.Size(185, 32);
+            this.btnComenzarPartida.Size = new System.Drawing.Size(175, 32);
             this.btnComenzarPartida.TabIndex = 3;
             this.btnComenzarPartida.Text = "Comenzar Partida";
             this.btnComenzarPartida.UseVisualStyleBackColor = false;
@@ -195,7 +195,7 @@ namespace GUI
             this.btnLoginJugador2.ForeColor = System.Drawing.Color.DeepPink;
             this.btnLoginJugador2.Location = new System.Drawing.Point(590, 14);
             this.btnLoginJugador2.Name = "btnLoginJugador2";
-            this.btnLoginJugador2.Size = new System.Drawing.Size(160, 32);
+            this.btnLoginJugador2.Size = new System.Drawing.Size(170, 32);
             this.btnLoginJugador2.TabIndex = 2;
             this.btnLoginJugador2.Text = "Ingresar Jugador 2";
             this.btnLoginJugador2.UseVisualStyleBackColor = false;
@@ -483,8 +483,7 @@ namespace GUI
             //
             // FormPrincipal
             //
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.LavenderBlush;
             this.ClientSize = new System.Drawing.Size(1000, 650);
             this.Controls.Add(this.pnlPuntajes);
