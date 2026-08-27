@@ -6,7 +6,13 @@ namespace GUI
 {
     public partial class FormRegistro : Form
     {
-        public string NombreRegistrado { get; private set; }
+        private string nombreRegistrado;
+
+        public string NombreRegistrado
+        {
+            get { return nombreRegistrado; }
+            private set { nombreRegistrado = value; }
+        }
 
         public FormRegistro()
         {

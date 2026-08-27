@@ -55,7 +55,7 @@ namespace GUI
                 int puntajeRival = esJugador1 ? p.PuntajeJugador2 : p.PuntajeJugador1;
 
                 string resultado;
-                if (p.IdGanador == null)
+                if (p.IdGanador == 0)
                 {
                     resultado = "Empate";
                     empatadas++;
@@ -71,10 +71,7 @@ namespace GUI
                     perdidas++;
                 }
 
-                if (p.FechaFin.HasValue)
-                {
-                    tiempoTotal += p.FechaFin.Value - p.FechaInicio;
-                }
+                tiempoTotal += p.FechaFin - p.FechaInicio;
 
                 USUARIO rival = usuarioBLL.BuscarPorId(idRival);
 

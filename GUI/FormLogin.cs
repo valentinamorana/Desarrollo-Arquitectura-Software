@@ -6,7 +6,13 @@ namespace GUI
 {
     public partial class FormLogin : Form
     {
-        public USUARIO UsuarioLogueado { get; private set; }
+        private USUARIO usuarioLogueado;
+
+        public USUARIO UsuarioLogueado
+        {
+            get { return usuarioLogueado; }
+            private set { usuarioLogueado = value; }
+        }
 
         public FormLogin()
         {

@@ -479,6 +479,7 @@ namespace GUI
             this.dgvPuntajes.RowHeadersVisible = false;
             this.dgvPuntajes.Size = new System.Drawing.Size(560, 225);
             this.dgvPuntajes.TabIndex = 0;
+            this.dgvPuntajes.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPuntajes_CellFormatting);
             //
             // FormPrincipal
             //

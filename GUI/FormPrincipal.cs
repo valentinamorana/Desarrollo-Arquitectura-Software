@@ -7,6 +7,8 @@ namespace GUI
 {
     public partial class FormPrincipal : Form
     {
+        private const int SIN_ANOTAR = -1;
+
         private USUARIO jugador1;
         private USUARIO jugador2;
 
@@ -146,12 +148,12 @@ namespace GUI
 
             FILAPUNTAJE filaGenerala = tabla.Find(f => f.Categoria == "Generala");
             bool generalaYaAnotada = jugadorActual == 1
-                ? filaGenerala.PuntajeJugador1 != null
-                : filaGenerala.PuntajeJugador2 != null;
+                ? filaGenerala.PuntajeJugador1 != SIN_ANOTAR
+                : filaGenerala.PuntajeJugador2 != SIN_ANOTAR;
 
             foreach (FILAPUNTAJE fila in tabla)
             {
-                bool sinAnotar = jugadorActual == 1 ? fila.PuntajeJugador1 == null : fila.PuntajeJugador2 == null;
+                bool sinAnotar = jugadorActual == 1 ? fila.PuntajeJugador1 == SIN_ANOTAR : fila.PuntajeJugador2 == SIN_ANOTAR;
                 if (!sinAnotar)
                 {
                     continue;
@@ -221,7 +223,7 @@ namespace GUI
         {
             foreach (FILAPUNTAJE fila in tabla)
             {
-                if (fila.PuntajeJugador1 == null || fila.PuntajeJugador2 == null)
+                if (fila.PuntajeJugador1 == SIN_ANOTAR || fila.PuntajeJugador2 == SIN_ANOTAR)
                 {
                     return false;
                 }
@@ -235,11 +237,11 @@ namespace GUI
             int total2 = 0;
             foreach (FILAPUNTAJE fila in tabla)
             {
-                total1 += fila.PuntajeJugador1 ?? 0;
-                total2 += fila.PuntajeJugador2 ?? 0;
+                total1 += SumarSiAnotado(fila.PuntajeJugador1);
+                total2 += SumarSiAnotado(fila.PuntajeJugador2);
             }
 
-            int? idGanador;
+            int idGanador;
             string mensaje;
             if (total1 > total2)
             {
@@ -253,7 +255,7 @@ namespace GUI
             }
             else
             {
-                idGanador = null;
+                idGanador = 0;
                 mensaje = "La partida terminó empatada!";
             }
 
@@ -298,6 +300,15 @@ namespace GUI
             dgvPuntajes.DataSource = tabla;
         }
 
+        private void dgvPuntajes_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value != null && e.Value.ToString() == SIN_ANOTAR.ToString())
+            {
+                e.Value = "";
+                e.FormattingApplied = true;
+            }
+        }
+
         private void CargarTablaVacia()
         {
             tabla = new List<FILAPUNTAJE>();
@@ -305,9 +316,20 @@ namespace GUI
             {
                 FILAPUNTAJE fila = new FILAPUNTAJE();
                 fila.Categoria = categoria;
+                fila.PuntajeJugador1 = SIN_ANOTAR;
+                fila.PuntajeJugador2 = SIN_ANOTAR;
                 tabla.Add(fila);
             }
             RefrescarGrilla();
+        }
+
+        private int SumarSiAnotado(int puntaje)
+        {
+            if (puntaje == SIN_ANOTAR)
+            {
+                return 0;
+            }
+            return puntaje;
         }
 
         private void ActualizarTotales()
@@ -316,8 +338,8 @@ namespace GUI
             int total2 = 0;
             foreach (FILAPUNTAJE fila in tabla)
             {
-                total1 += fila.PuntajeJugador1 ?? 0;
-                total2 += fila.PuntajeJugador2 ?? 0;
+                total1 += SumarSiAnotado(fila.PuntajeJugador1);
+                total2 += SumarSiAnotado(fila.PuntajeJugador2);
             }
             lblTotalJugador1.Text = "Total " + jugador1.Nombre + ": " + total1;
             lblTotalJugador2.Text = "Total " + (jugador2 != null ? jugador2.Nombre : "Jugador 2") + ": " + total2;

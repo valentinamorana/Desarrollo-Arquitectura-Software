@@ -29,9 +29,9 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@puntajeJugador1", partida.PuntajeJugador1));
             parametros.Add(acceso.CrearParametro("@puntajeJugador2", partida.PuntajeJugador2));
 
-            if (partida.IdGanador.HasValue)
+            if (partida.IdGanador > 0)
             {
-                parametros.Add(acceso.CrearParametro("@idGanador", partida.IdGanador.Value));
+                parametros.Add(acceso.CrearParametro("@idGanador", partida.IdGanador));
             }
             else
             {
@@ -59,11 +59,11 @@ namespace DAL
                 p.ID = reader.GetInt32(0);
                 p.IdJugador1 = reader.GetInt32(1);
                 p.IdJugador2 = reader.GetInt32(2);
-                p.IdGanador = reader.IsDBNull(3) ? (int?)null : reader.GetInt32(3);
+                p.IdGanador = reader.IsDBNull(3) ? 0 : reader.GetInt32(3);
                 p.PuntajeJugador1 = reader.GetInt32(4);
                 p.PuntajeJugador2 = reader.GetInt32(5);
                 p.FechaInicio = reader.GetDateTime(6);
-                p.FechaFin = reader.IsDBNull(7) ? (DateTime?)null : reader.GetDateTime(7);
+                p.FechaFin = reader.GetDateTime(7);
                 p.RutaXml = reader.IsDBNull(8) ? "" : reader.GetString(8);
                 partidas.Add(p);
             }

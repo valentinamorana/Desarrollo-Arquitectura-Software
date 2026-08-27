@@ -2,10 +2,44 @@ namespace BE
 {
     public class FILAHISTORIAL
     {
-        public string Fecha { get; set; }
-        public string Rival { get; set; }
-        public int PuntajePropio { get; set; }
-        public int PuntajeRival { get; set; }
-        public string Resultado { get; set; }
+        private string fecha;
+
+        public string Fecha
+        {
+            get { return fecha; }
+            set { fecha = value; }
+        }
+
+        private string rival;
+
+        public string Rival
+        {
+            get { return rival; }
+            set { rival = value; }
+        }
+
+        private int puntajePropio;
+
+        public int PuntajePropio
+        {
+            get { return puntajePropio; }
+            set { puntajePropio = value; }
+        }
+
+        private int puntajeRival;
+
+        public int PuntajeRival
+        {
+            get { return puntajeRival; }
+            set { puntajeRival = value; }
+        }
+
+        private string resultado;
+
+        public string Resultado
+        {
+            get { return resultado; }
+            set { resultado = value; }
+        }
     }
 }
