@@ -1,0 +1,181 @@
+namespace GUI
+{
+    partial class FormLogin
+    {
+        /// <summary>
+        /// Variable del diseñador necesaria.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Limpiar los recursos que se estén usando.
+        /// </summary>
+        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Código generado por el Diseñador de Windows Forms
+
+        /// <summary>
+        /// Método necesario para admitir el Diseñador. No se puede modificar
+        /// el contenido de este método con el editor de código.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.pnlTitulo = new System.Windows.Forms.Panel();
+            this.lblTitulo = new System.Windows.Forms.Label();
+            this.lblUsuario = new System.Windows.Forms.Label();
+            this.txtUsuario = new System.Windows.Forms.TextBox();
+            this.lblContraseña = new System.Windows.Forms.Label();
+            this.txtContraseña = new System.Windows.Forms.TextBox();
+            this.lblMensaje = new System.Windows.Forms.Label();
+            this.btnIngresar = new System.Windows.Forms.Button();
+            this.btnRegistrarme = new System.Windows.Forms.Button();
+            this.pnlTitulo.SuspendLayout();
+            this.SuspendLayout();
+            //
+            // pnlTitulo
+            //
+            this.pnlTitulo.BackColor = System.Drawing.Color.HotPink;
+            this.pnlTitulo.Controls.Add(this.lblTitulo);
+            this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
+            this.pnlTitulo.Name = "pnlTitulo";
+            this.pnlTitulo.Size = new System.Drawing.Size(420, 90);
+            this.pnlTitulo.TabIndex = 0;
+            //
+            // lblTitulo
+            //
+            this.lblTitulo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.ForeColor = System.Drawing.Color.White;
+            this.lblTitulo.Location = new System.Drawing.Point(0, 0);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(420, 90);
+            this.lblTitulo.TabIndex = 0;
+            this.lblTitulo.Text = "GENERALA";
+            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //
+            // lblUsuario
+            //
+            this.lblUsuario.AutoSize = true;
+            this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblUsuario.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblUsuario.Location = new System.Drawing.Point(40, 120);
+            this.lblUsuario.Name = "lblUsuario";
+            this.lblUsuario.Size = new System.Drawing.Size(70, 20);
+            this.lblUsuario.TabIndex = 1;
+            this.lblUsuario.Text = "Usuario";
+            //
+            // txtUsuario
+            //
+            this.txtUsuario.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.txtUsuario.Location = new System.Drawing.Point(150, 117);
+            this.txtUsuario.Name = "txtUsuario";
+            this.txtUsuario.Size = new System.Drawing.Size(220, 27);
+            this.txtUsuario.TabIndex = 2;
+            //
+            // lblContraseña
+            //
+            this.lblContraseña.AutoSize = true;
+            this.lblContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblContraseña.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblContraseña.Location = new System.Drawing.Point(40, 160);
+            this.lblContraseña.Name = "lblContraseña";
+            this.lblContraseña.Size = new System.Drawing.Size(103, 20);
+            this.lblContraseña.TabIndex = 3;
+            this.lblContraseña.Text = "Contraseña";
+            //
+            // txtContraseña
+            //
+            this.txtContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.txtContraseña.Location = new System.Drawing.Point(150, 157);
+            this.txtContraseña.Name = "txtContraseña";
+            this.txtContraseña.PasswordChar = '●';
+            this.txtContraseña.Size = new System.Drawing.Size(220, 27);
+            this.txtContraseña.TabIndex = 4;
+            //
+            // lblMensaje
+            //
+            this.lblMensaje.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.lblMensaje.ForeColor = System.Drawing.Color.Crimson;
+            this.lblMensaje.Location = new System.Drawing.Point(40, 195);
+            this.lblMensaje.Name = "lblMensaje";
+            this.lblMensaje.Size = new System.Drawing.Size(330, 35);
+            this.lblMensaje.TabIndex = 5;
+            this.lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //
+            // btnIngresar
+            //
+            this.btnIngresar.BackColor = System.Drawing.Color.DeepPink;
+            this.btnIngresar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnIngresar.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnIngresar.ForeColor = System.Drawing.Color.White;
+            this.btnIngresar.Location = new System.Drawing.Point(60, 240);
+            this.btnIngresar.Name = "btnIngresar";
+            this.btnIngresar.Size = new System.Drawing.Size(140, 45);
+            this.btnIngresar.TabIndex = 6;
+            this.btnIngresar.Text = "Ingresar";
+            this.btnIngresar.UseVisualStyleBackColor = false;
+            this.btnIngresar.Click += new System.EventHandler(this.btnIngresar_Click);
+            //
+            // btnRegistrarme
+            //
+            this.btnRegistrarme.BackColor = System.Drawing.Color.White;
+            this.btnRegistrarme.FlatAppearance.BorderColor = System.Drawing.Color.DeepPink;
+            this.btnRegistrarme.FlatAppearance.BorderSize = 2;
+            this.btnRegistrarme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRegistrarme.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnRegistrarme.ForeColor = System.Drawing.Color.DeepPink;
+            this.btnRegistrarme.Location = new System.Drawing.Point(220, 240);
+            this.btnRegistrarme.Name = "btnRegistrarme";
+            this.btnRegistrarme.Size = new System.Drawing.Size(140, 45);
+            this.btnRegistrarme.TabIndex = 7;
+            this.btnRegistrarme.Text = "Registrarme";
+            this.btnRegistrarme.UseVisualStyleBackColor = false;
+            this.btnRegistrarme.Click += new System.EventHandler(this.btnRegistrarme_Click);
+            //
+            // FormLogin
+            //
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.MistyRose;
+            this.ClientSize = new System.Drawing.Size(420, 320);
+            this.Controls.Add(this.btnRegistrarme);
+            this.Controls.Add(this.btnIngresar);
+            this.Controls.Add(this.lblMensaje);
+            this.Controls.Add(this.txtContraseña);
+            this.Controls.Add(this.lblContraseña);
+            this.Controls.Add(this.txtUsuario);
+            this.Controls.Add(this.lblUsuario);
+            this.Controls.Add(this.pnlTitulo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.Name = "FormLogin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Generala - Iniciar Sesión";
+            this.pnlTitulo.ResumeLayout(false);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Panel pnlTitulo;
+        private System.Windows.Forms.Label lblTitulo;
+        private System.Windows.Forms.Label lblUsuario;
+        private System.Windows.Forms.TextBox txtUsuario;
+        private System.Windows.Forms.Label lblContraseña;
+        private System.Windows.Forms.TextBox txtContraseña;
+        private System.Windows.Forms.Label lblMensaje;
+        private System.Windows.Forms.Button btnIngresar;
+        private System.Windows.Forms.Button btnRegistrarme;
+    }
+}

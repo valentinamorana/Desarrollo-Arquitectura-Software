@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  #wrap { display: inline-block; padding: 30px; background: #ffffff; font-family: Arial, sans-serif; }
+  h1 { font-size: 18px; color: #9c1f4d; margin: 0 0 4px; }
+  p.sub { font-size: 12px; color: #666; margin: 0 0 14px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <h1>Generala — DER (notación pata de gallo)</h1>
+  <p class="sub">Base de datos GENERALA — USUARIO, TIPO_LOG, LOG, PARTIDA</p>
+  <pre class="mermaid">
+erDiagram
+    USUARIO ||--o{ LOG : "genera"
+    TIPO_LOG ||--o{ LOG : "clasifica"
+    USUARIO ||--o{ PARTIDA : "jugador_1"
+    USUARIO ||--o{ PARTIDA : "jugador_2"
+    USUARIO |o--o{ PARTIDA : "ganador (opc)"
+
+    USUARIO {
+        int ID PK
+        varchar Nombre
+        varchar Contrasena
+    }
+    TIPO_LOG {
+        int ID_TIPO PK
+        varchar Tipo
+    }
+    LOG {
+        int ID_LOG PK
+        varchar Descripcion
+        int ID_Usuario FK
+        int ID_TIPO FK
+        datetime Fecha
+    }
+    PARTIDA {
+        int ID PK
+        int ID_JUGADOR1 FK
+        int ID_JUGADOR2 FK
+        int ID_GANADOR FK
+        int PUNTAJE_JUGADOR1
+        int PUNTAJE_JUGADOR2
+        datetime FECHA_INICIO
+        datetime FECHA_FIN
+        varchar RUTA_XML
+    }
+  </pre>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", er: { fontSize: 14 } });
+</script>
+</body>
+</html>

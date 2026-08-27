@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  #wrap { display: inline-block; padding: 30px; background: #ffffff; font-family: Arial, sans-serif; }
+  h1 { font-size: 18px; color: #9c1f4d; margin: 0 0 4px; }
+  p.sub { font-size: 12px; color: #666; margin: 0 0 14px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <h1>Generala — Diagrama de clases</h1>
+  <p class="sub">4 proyectos: BE (entidades) &#8592; DAL (acceso a datos) &#8592; BLL (negocio) &#8592; GUI (presentación)</p>
+  <pre class="mermaid">
+classDiagram
+    class BE_USUARIO["USUARIO"] {
+        &lt;&lt;BE&gt;&gt;
+        +int ID
+        +string Nombre
+        +string Contraseña
+    }
+    class BE_PARTIDA["PARTIDA"] {
+        &lt;&lt;BE&gt;&gt;
+        +int ID
+        +int IdJugador1
+        +int IdJugador2
+        +int? IdGanador
+        +int PuntajeJugador1
+        +int PuntajeJugador2
+        +string RutaXml
+    }
+    class BE_FILAPUNTAJE["FILAPUNTAJE"] { &lt;&lt;BE&gt;&gt; }
+    class BE_FILAHISTORIAL["FILAHISTORIAL"] { &lt;&lt;BE&gt;&gt; }
+
+    class DAL_ACCESO["ACCESO"] {
+        &lt;&lt;DAL&gt;&gt;
+        +Abrir() +Cerrar()
+        +Escribir(sql, parametros) int
+        +LeerEscalar(sql, parametros) int
+        +Leer(sql, parametros) SqlDataReader
+    }
+    class DAL_USUARIO["USUARIO"] {
+        &lt;&lt;DAL&gt;&gt;
+        +Insertar(usuario) int
+        +Login(usuario) bool
+        +BuscarPorId(id) USUARIO
+    }
+    class DAL_PARTIDA["PARTIDA"] {
+        &lt;&lt;DAL&gt;&gt;
+        +Insertar(partida) int
+        +Finalizar(partida)
+        +ListarPorUsuario(id) List
+    }
+    class DAL_LOG["LOG"] {
+        &lt;&lt;DAL&gt;&gt;
+        +Insertar(idUsuario, idTipo, descripcion)
+    }
+    class DAL_BACKUPRESTORE["BACKUPRESTORE"] {
+        &lt;&lt;DAL&gt;&gt;
+        +HacerBackup(ruta)$ bool
+        +HacerRestore(ruta)$ bool
+    }
+
+    class BLL_USUARIO["USUARIO"] {
+        &lt;&lt;BLL&gt;&gt;
+        +Login(usuario) bool
+        +Logout(usuario)
+        +Insertar(usuario)
+        +BuscarPorId(id) USUARIO
+    }
+    class BLL_PARTIDA["PARTIDA"] {
+        &lt;&lt;BLL&gt;&gt;
+        +Iniciar(partida)
+        +Finalizar(partida, descripcion)
+        +ListarPorUsuario(id) List
+    }
+    class BLL_BITACORA["BITACORA"] {
+        &lt;&lt;BLL&gt;&gt;
+        +Registrar(idUsuario, idTipo, descripcion)$
+    }
+    class BLL_GENERALA["GENERALA"] {
+        &lt;&lt;BLL&gt;&gt;
+        +Tirar(dados, guardar)$ int[]
+        +CalcularPuntaje(categoria, dados)$ int
+    }
+    class BLL_MOVIMIENTOXML["MOVIMIENTOXML"] {
+        &lt;&lt;BLL&gt;&gt;
+        +GenerarRuta()$ string
+        +RegistrarMovimiento(...)$
+    }
+    class BLL_BACKUPRESTORE["BACKUPRESTORE"] {
+        &lt;&lt;BLL&gt;&gt;
+        +HacerBackup(ruta)$ bool
+        +HacerRestore(ruta)$ bool
+    }
+
+    class GUI_FormLogin["FormLogin"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_FormRegistro["FormRegistro"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_FormPrincipal["FormPrincipal"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_FormEstadisticas["FormEstadisticas"] { &lt;&lt;GUI&gt;&gt; }
+
+    DAL_USUARIO ..&gt; DAL_ACCESO : usa
+    DAL_USUARIO ..&gt; BE_USUARIO : opera sobre
+    DAL_PARTIDA ..&gt; DAL_ACCESO : usa
+    DAL_PARTIDA ..&gt; BE_PARTIDA : opera sobre
+    DAL_LOG ..&gt; DAL_ACCESO : usa
+
+    BLL_USUARIO ..&gt; DAL_USUARIO : usa
+    BLL_USUARIO ..&gt; BLL_BITACORA : usa
+    BLL_PARTIDA ..&gt; DAL_PARTIDA : usa
+    BLL_PARTIDA ..&gt; BLL_BITACORA : usa
+    BLL_PARTIDA ..&gt; BLL_MOVIMIENTOXML : usa
+    BLL_BITACORA ..&gt; DAL_LOG : usa
+    BLL_BACKUPRESTORE ..&gt; DAL_BACKUPRESTORE : usa
+
+    GUI_FormLogin ..&gt; BLL_USUARIO : usa
+    GUI_FormLogin ..&gt; GUI_FormRegistro : abre
+    GUI_FormRegistro ..&gt; BLL_USUARIO : usa
+    GUI_FormPrincipal ..&gt; BLL_USUARIO : usa
+    GUI_FormPrincipal ..&gt; BLL_PARTIDA : usa
+    GUI_FormPrincipal ..&gt; BLL_GENERALA : usa
+    GUI_FormPrincipal ..&gt; BLL_MOVIMIENTOXML : usa
+    GUI_FormPrincipal ..&gt; BLL_BACKUPRESTORE : usa
+    GUI_FormPrincipal ..&gt; GUI_FormLogin : abre
+    GUI_FormPrincipal ..&gt; GUI_FormEstadisticas : abre
+    GUI_FormEstadisticas ..&gt; BLL_PARTIDA : usa
+    GUI_FormEstadisticas ..&gt; BLL_USUARIO : usa
+  </pre>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+</script>
+</body>
+</html>
