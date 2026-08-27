@@ -73,6 +73,11 @@ GO
 INSERT INTO [dbo].[TIPO_LOG] (ID_TIPO, Tipo) VALUES (4, 'FIN_PARTIDA')
 GO
 
+INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (1, 'valentina', '1234')
+GO
+INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (2, 'invitado', '1234')
+GO
+
 -- =========================================================
 -- STORED PROCEDURES
 -- =========================================================
