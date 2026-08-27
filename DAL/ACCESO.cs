@@ -12,7 +12,7 @@ namespace DAL
         public void Abrir()
         {
             conexion = new SqlConnection();
-            conexion.ConnectionString = "Data Source=.; Initial Catalog=GENERALA; Integrated Security=SSPI;";
+            conexion.ConnectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=GENERALA; Integrated Security=SSPI;";
             conexion.Open();
         }
 
@@ -45,7 +45,7 @@ namespace DAL
             {
                 filas = cmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 filas = -1;
             }
@@ -61,7 +61,7 @@ namespace DAL
             {
                 res = int.Parse(cmd.ExecuteScalar().ToString());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 res = -1;
             }

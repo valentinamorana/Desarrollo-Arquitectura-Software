@@ -8,7 +8,7 @@ namespace DAL
     {
         // El backup y el restore se hacen contra la base "master", porque no se puede
         // restaurar una base de datos mientras hay una conexión abierta contra ella misma.
-        private const string CONEXION_MASTER = "Data Source=.; Initial Catalog=master; Integrated Security=SSPI;";
+        private const string CONEXION_MASTER = @"Data Source=.\SQLEXPRESS; Initial Catalog=master; Integrated Security=SSPI;";
 
         public static bool HacerBackup(string ruta)
         {
@@ -23,7 +23,7 @@ namespace DAL
                 cmd.CommandText = "BACKUP DATABASE GENERALA TO DISK = '" + ruta + "'";
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ok = false;
             }
@@ -54,7 +54,7 @@ namespace DAL
                 cmd.CommandText = "ALTER DATABASE GENERALA SET MULTI_USER";
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ok = false;
             }

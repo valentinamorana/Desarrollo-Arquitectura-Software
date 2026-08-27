@@ -39,7 +39,9 @@ Fecha: 27/08/2026
 
 ## 2. Compilación
 
-`TP_Generala.sln` compila los 4 proyectos (BE, DAL, BLL, GUI) sin errores con MSBuild (.NET Framework 4.7.2). Únicas advertencias: 4 warnings `CS0168` (variable `ex` no usada en bloques `catch` de `ACCESO`/`BACKUPRESTORE`), no bloqueantes — es el mismo patrón de manejo de errores que ya usaban los ejemplos de cátedra.
+`TP_Generala.sln` compila los 4 proyectos (BE, DAL, BLL, GUI) sin errores ni warnings con MSBuild (.NET Framework 4.7.2).
+
+**Corrección aplicada tras comparar con un proyecto de referencia de un compañero (Batalla Naval, misma cátedra):** la cadena de conexión apuntaba a `Data Source=.` (instancia default de SQL Server). La instancia real de la usuaria es SQL Server Express con nombre (`SQLEXPRESS`), así que se corrigió a `Data Source=.\SQLEXPRESS` en `DAL/ACCESO.cs` y `DAL/BACKUPRESTORE.cs`. De paso se limpiaron los 4 warnings `CS0168` cambiando `catch (Exception ex)` por `catch (Exception)` donde la excepción no se usaba.
 
 ## 3. Revisión de código (bugs / riesgos)
 
