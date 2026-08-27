@@ -24,8 +24,16 @@ BEGIN
 		[ID] [int] NOT NULL,
 		[Nombre] [varchar](50) NOT NULL,
 		[Contraseña] [varchar](50) NOT NULL,
-	 CONSTRAINT [PK_USUARIO] PRIMARY KEY CLUSTERED ([ID] ASC)
+	 CONSTRAINT [PK_USUARIO] PRIMARY KEY CLUSTERED ([ID] ASC),
+	 CONSTRAINT [UQ_USUARIO_NOMBRE] UNIQUE ([Nombre])
 	)
+END
+GO
+
+-- Si la tabla ya existía de una corrida anterior del script (sin este constraint), lo agrega ahora.
+IF NOT EXISTS (SELECT * FROM sys.key_constraints WHERE name = 'UQ_USUARIO_NOMBRE')
+BEGIN
+	ALTER TABLE [dbo].[USUARIO] ADD CONSTRAINT [UQ_USUARIO_NOMBRE] UNIQUE ([Nombre])
 END
 GO
 

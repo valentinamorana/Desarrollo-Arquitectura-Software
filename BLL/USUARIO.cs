@@ -19,9 +19,15 @@ namespace BLL
             BITACORA.Registrar(usuario.ID, BITACORA.CIERRE_SESION, "Cierre de sesión de " + usuario.Nombre);
         }
 
-        public void Insertar(BE.USUARIO usuario)
+        public bool Insertar(BE.USUARIO usuario)
         {
-            usuario.ID = dal.Insertar(usuario);
+            int id = dal.Insertar(usuario);
+            if (id <= 0)
+            {
+                return false;
+            }
+            usuario.ID = id;
+            return true;
         }
 
         public BE.USUARIO BuscarPorId(int id)

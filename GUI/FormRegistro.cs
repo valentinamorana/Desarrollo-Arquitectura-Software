@@ -34,7 +34,11 @@ namespace GUI
             usuario.Contraseña = txtContraseña.Text;
 
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-            usuarioBLL.Insertar(usuario);
+            if (!usuarioBLL.Insertar(usuario))
+            {
+                lblMensaje.Text = "Ese nombre de usuario ya existe";
+                return;
+            }
 
             NombreRegistrado = usuario.Nombre;
             this.DialogResult = DialogResult.OK;
