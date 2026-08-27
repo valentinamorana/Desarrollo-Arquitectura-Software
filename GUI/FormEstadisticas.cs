@@ -115,6 +115,12 @@ namespace GUI
             dgvHistorial.DataSource = null;
             dgvHistorial.DataSource = filas;
 
+            dgvHistorial.Columns["Fecha"].HeaderText = "Fecha";
+            dgvHistorial.Columns["Rival"].HeaderText = "Rival";
+            dgvHistorial.Columns["PuntajePropio"].HeaderText = "Mi Puntaje";
+            dgvHistorial.Columns["PuntajeRival"].HeaderText = "Puntaje Rival";
+            dgvHistorial.Columns["Resultado"].HeaderText = "Resultado";
+
             int totalPartidas = partidas.Count;
             double promedio;
             if (totalPartidas > 0)

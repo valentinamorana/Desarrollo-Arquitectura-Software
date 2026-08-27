@@ -42,7 +42,7 @@ namespace GUI
             //
             // pnlTitulo
             //
-            this.pnlTitulo.BackColor = System.Drawing.Color.HotPink;
+            this.pnlTitulo.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.pnlTitulo.Controls.Add(this.lblTitulo);
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
@@ -66,7 +66,7 @@ namespace GUI
             //
             this.lblUsuario.AutoSize = true;
             this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblUsuario.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblUsuario.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblUsuario.Location = new System.Drawing.Point(40, 120);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(70, 20);
@@ -85,7 +85,7 @@ namespace GUI
             //
             this.lblContraseña.AutoSize = true;
             this.lblContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblContraseña.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblContraseña.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblContraseña.Location = new System.Drawing.Point(40, 160);
             this.lblContraseña.Name = "lblContraseña";
             this.lblContraseña.Size = new System.Drawing.Size(103, 20);
@@ -113,7 +113,7 @@ namespace GUI
             //
             // btnIngresar
             //
-            this.btnIngresar.BackColor = System.Drawing.Color.DeepPink;
+            this.btnIngresar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnIngresar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnIngresar.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnIngresar.ForeColor = System.Drawing.Color.White;
@@ -127,12 +127,12 @@ namespace GUI
             //
             // btnRegistrarme
             //
-            this.btnRegistrarme.BackColor = System.Drawing.Color.White;
-            this.btnRegistrarme.FlatAppearance.BorderColor = System.Drawing.Color.DeepPink;
+            this.btnRegistrarme.BackColor = System.Drawing.Color.FromArgb(253, 235, 242);
+            this.btnRegistrarme.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnRegistrarme.FlatAppearance.BorderSize = 2;
             this.btnRegistrarme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegistrarme.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnRegistrarme.ForeColor = System.Drawing.Color.DeepPink;
+            this.btnRegistrarme.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnRegistrarme.Location = new System.Drawing.Point(220, 240);
             this.btnRegistrarme.Name = "btnRegistrarme";
             this.btnRegistrarme.Size = new System.Drawing.Size(140, 45);
@@ -144,7 +144,7 @@ namespace GUI
             // FormLogin
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.MistyRose;
+            this.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.ClientSize = new System.Drawing.Size(420, 320);
             this.Controls.Add(this.btnRegistrarme);
             this.Controls.Add(this.btnIngresar);

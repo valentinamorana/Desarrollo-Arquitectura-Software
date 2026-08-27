@@ -69,7 +69,7 @@ namespace GUI
             //
             // pnlEncabezado
             //
-            this.pnlEncabezado.BackColor = System.Drawing.Color.HotPink;
+            this.pnlEncabezado.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.pnlEncabezado.Controls.Add(this.btnCerrarSesion);
             this.pnlEncabezado.Controls.Add(this.btnRestore);
             this.pnlEncabezado.Controls.Add(this.btnBackup);
@@ -83,9 +83,10 @@ namespace GUI
             //
             // btnCerrarSesion
             //
-            this.btnCerrarSesion.BackColor = System.Drawing.Color.DeepPink;
+            this.btnCerrarSesion.BackColor = System.Drawing.Color.White;
+            this.btnCerrarSesion.FlatAppearance.BorderSize = 0;
             this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
+            this.btnCerrarSesion.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnCerrarSesion.Location = new System.Drawing.Point(890, 15);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(95, 40);
@@ -96,9 +97,10 @@ namespace GUI
             //
             // btnRestore
             //
-            this.btnRestore.BackColor = System.Drawing.Color.DeepPink;
+            this.btnRestore.BackColor = System.Drawing.Color.White;
+            this.btnRestore.FlatAppearance.BorderSize = 0;
             this.btnRestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRestore.ForeColor = System.Drawing.Color.White;
+            this.btnRestore.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnRestore.Location = new System.Drawing.Point(790, 15);
             this.btnRestore.Name = "btnRestore";
             this.btnRestore.Size = new System.Drawing.Size(90, 40);
@@ -109,9 +111,10 @@ namespace GUI
             //
             // btnBackup
             //
-            this.btnBackup.BackColor = System.Drawing.Color.DeepPink;
+            this.btnBackup.BackColor = System.Drawing.Color.White;
+            this.btnBackup.FlatAppearance.BorderSize = 0;
             this.btnBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBackup.ForeColor = System.Drawing.Color.White;
+            this.btnBackup.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnBackup.Location = new System.Drawing.Point(690, 15);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(90, 40);
@@ -122,9 +125,10 @@ namespace GUI
             //
             // btnEstadisticas
             //
-            this.btnEstadisticas.BackColor = System.Drawing.Color.DeepPink;
+            this.btnEstadisticas.BackColor = System.Drawing.Color.White;
+            this.btnEstadisticas.FlatAppearance.BorderSize = 0;
             this.btnEstadisticas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEstadisticas.ForeColor = System.Drawing.Color.White;
+            this.btnEstadisticas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnEstadisticas.Location = new System.Drawing.Point(560, 15);
             this.btnEstadisticas.Name = "btnEstadisticas";
             this.btnEstadisticas.Size = new System.Drawing.Size(120, 40);
@@ -174,7 +178,7 @@ namespace GUI
             //
             // btnComenzarPartida
             //
-            this.btnComenzarPartida.BackColor = System.Drawing.Color.DeepPink;
+            this.btnComenzarPartida.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnComenzarPartida.Enabled = false;
             this.btnComenzarPartida.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnComenzarPartida.ForeColor = System.Drawing.Color.White;
@@ -188,11 +192,11 @@ namespace GUI
             //
             // btnLoginJugador2
             //
-            this.btnLoginJugador2.BackColor = System.Drawing.Color.White;
-            this.btnLoginJugador2.FlatAppearance.BorderColor = System.Drawing.Color.DeepPink;
+            this.btnLoginJugador2.BackColor = System.Drawing.Color.FromArgb(253, 235, 242);
+            this.btnLoginJugador2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnLoginJugador2.FlatAppearance.BorderSize = 2;
             this.btnLoginJugador2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLoginJugador2.ForeColor = System.Drawing.Color.DeepPink;
+            this.btnLoginJugador2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnLoginJugador2.Location = new System.Drawing.Point(590, 14);
             this.btnLoginJugador2.Name = "btnLoginJugador2";
             this.btnLoginJugador2.Size = new System.Drawing.Size(170, 32);
@@ -205,7 +209,7 @@ namespace GUI
             //
             this.lblJugador2.AutoSize = true;
             this.lblJugador2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblJugador2.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblJugador2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblJugador2.Location = new System.Drawing.Point(310, 18);
             this.lblJugador2.Name = "lblJugador2";
             this.lblJugador2.Size = new System.Drawing.Size(240, 20);
@@ -216,7 +220,7 @@ namespace GUI
             //
             this.lblJugador1.AutoSize = true;
             this.lblJugador1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblJugador1.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblJugador1.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblJugador1.Location = new System.Drawing.Point(15, 18);
             this.lblJugador1.Name = "lblJugador1";
             this.lblJugador1.Size = new System.Drawing.Size(120, 20);
@@ -249,12 +253,12 @@ namespace GUI
             //
             // btnAnotar
             //
-            this.btnAnotar.BackColor = System.Drawing.Color.White;
+            this.btnAnotar.BackColor = System.Drawing.Color.FromArgb(253, 235, 242);
             this.btnAnotar.Enabled = false;
-            this.btnAnotar.FlatAppearance.BorderColor = System.Drawing.Color.DeepPink;
+            this.btnAnotar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnAnotar.FlatAppearance.BorderSize = 2;
             this.btnAnotar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAnotar.ForeColor = System.Drawing.Color.DeepPink;
+            this.btnAnotar.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnAnotar.Location = new System.Drawing.Point(705, 138);
             this.btnAnotar.Name = "btnAnotar";
             this.btnAnotar.Size = new System.Drawing.Size(130, 32);
@@ -275,7 +279,7 @@ namespace GUI
             //
             // btnTirarDados
             //
-            this.btnTirarDados.BackColor = System.Drawing.Color.DeepPink;
+            this.btnTirarDados.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnTirarDados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTirarDados.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnTirarDados.ForeColor = System.Drawing.Color.White;
@@ -344,10 +348,10 @@ namespace GUI
             //
             // lblDado5
             //
-            this.lblDado5.BackColor = System.Drawing.Color.MistyRose;
+            this.lblDado5.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.lblDado5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDado5.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado5.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblDado5.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblDado5.Location = new System.Drawing.Point(375, 55);
             this.lblDado5.Name = "lblDado5";
             this.lblDado5.Size = new System.Drawing.Size(80, 80);
@@ -357,10 +361,10 @@ namespace GUI
             //
             // lblDado4
             //
-            this.lblDado4.BackColor = System.Drawing.Color.MistyRose;
+            this.lblDado4.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.lblDado4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDado4.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado4.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblDado4.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblDado4.Location = new System.Drawing.Point(285, 55);
             this.lblDado4.Name = "lblDado4";
             this.lblDado4.Size = new System.Drawing.Size(80, 80);
@@ -370,10 +374,10 @@ namespace GUI
             //
             // lblDado3
             //
-            this.lblDado3.BackColor = System.Drawing.Color.MistyRose;
+            this.lblDado3.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.lblDado3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDado3.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado3.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblDado3.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblDado3.Location = new System.Drawing.Point(195, 55);
             this.lblDado3.Name = "lblDado3";
             this.lblDado3.Size = new System.Drawing.Size(80, 80);
@@ -383,10 +387,10 @@ namespace GUI
             //
             // lblDado2
             //
-            this.lblDado2.BackColor = System.Drawing.Color.MistyRose;
+            this.lblDado2.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.lblDado2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDado2.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado2.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblDado2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblDado2.Location = new System.Drawing.Point(105, 55);
             this.lblDado2.Name = "lblDado2";
             this.lblDado2.Size = new System.Drawing.Size(80, 80);
@@ -396,10 +400,10 @@ namespace GUI
             //
             // lblDado1
             //
-            this.lblDado1.BackColor = System.Drawing.Color.MistyRose;
+            this.lblDado1.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.lblDado1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDado1.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado1.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblDado1.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblDado1.Location = new System.Drawing.Point(15, 55);
             this.lblDado1.Name = "lblDado1";
             this.lblDado1.Size = new System.Drawing.Size(80, 80);
@@ -445,7 +449,7 @@ namespace GUI
             //
             this.lblTotalJugador2.AutoSize = true;
             this.lblTotalJugador2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTotalJugador2.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblTotalJugador2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblTotalJugador2.Location = new System.Drawing.Point(600, 60);
             this.lblTotalJugador2.Name = "lblTotalJugador2";
             this.lblTotalJugador2.Size = new System.Drawing.Size(160, 25);
@@ -456,7 +460,7 @@ namespace GUI
             //
             this.lblTotalJugador1.AutoSize = true;
             this.lblTotalJugador1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTotalJugador1.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblTotalJugador1.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblTotalJugador1.Location = new System.Drawing.Point(600, 20);
             this.lblTotalJugador1.Name = "lblTotalJugador1";
             this.lblTotalJugador1.Size = new System.Drawing.Size(160, 25);
@@ -465,18 +469,22 @@ namespace GUI
             //
             // dgvPuntajes
             //
+            this.dgvPuntajes.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(252, 240, 245);
             this.dgvPuntajes.BackgroundColor = System.Drawing.Color.White;
             this.dgvPuntajes.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.MistyRose;
-            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.DeepPink;
-            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.dgvPuntajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPuntajes.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(248, 214, 227);
+            this.dgvPuntajes.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(90, 10, 45);
             this.dgvPuntajes.EnableHeadersVisualStyles = false;
-            this.dgvPuntajes.GridColor = System.Drawing.Color.MistyRose;
+            this.dgvPuntajes.GridColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.dgvPuntajes.Location = new System.Drawing.Point(15, 15);
             this.dgvPuntajes.Name = "dgvPuntajes";
             this.dgvPuntajes.ReadOnly = true;
             this.dgvPuntajes.RowHeadersVisible = false;
+            this.dgvPuntajes.RowTemplate.Height = 26;
             this.dgvPuntajes.Size = new System.Drawing.Size(560, 225);
             this.dgvPuntajes.TabIndex = 0;
             this.dgvPuntajes.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPuntajes_CellFormatting);
@@ -484,7 +492,7 @@ namespace GUI
             // FormPrincipal
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.LavenderBlush;
+            this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
             this.ClientSize = new System.Drawing.Size(1000, 650);
             this.Controls.Add(this.pnlPuntajes);
             this.Controls.Add(this.pnlJuego);

@@ -44,7 +44,7 @@ namespace GUI
             //
             // pnlTitulo
             //
-            this.pnlTitulo.BackColor = System.Drawing.Color.HotPink;
+            this.pnlTitulo.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.pnlTitulo.Controls.Add(this.lblTitulo);
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
@@ -68,7 +68,7 @@ namespace GUI
             //
             this.lblNombre.AutoSize = true;
             this.lblNombre.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblNombre.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblNombre.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblNombre.Location = new System.Drawing.Point(30, 90);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(94, 19);
@@ -87,7 +87,7 @@ namespace GUI
             //
             this.lblContraseña.AutoSize = true;
             this.lblContraseña.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblContraseña.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblContraseña.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblContraseña.Location = new System.Drawing.Point(30, 130);
             this.lblContraseña.Name = "lblContraseña";
             this.lblContraseña.Size = new System.Drawing.Size(97, 19);
@@ -107,7 +107,7 @@ namespace GUI
             //
             this.lblConfirmar.AutoSize = true;
             this.lblConfirmar.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblConfirmar.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblConfirmar.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblConfirmar.Location = new System.Drawing.Point(30, 170);
             this.lblConfirmar.Name = "lblConfirmar";
             this.lblConfirmar.Size = new System.Drawing.Size(97, 19);
@@ -135,7 +135,7 @@ namespace GUI
             //
             // btnGuardar
             //
-            this.btnGuardar.BackColor = System.Drawing.Color.DeepPink;
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnGuardar.ForeColor = System.Drawing.Color.White;
@@ -149,12 +149,12 @@ namespace GUI
             //
             // btnCancelar
             //
-            this.btnCancelar.BackColor = System.Drawing.Color.White;
-            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.DeepPink;
+            this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(253, 235, 242);
+            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnCancelar.FlatAppearance.BorderSize = 2;
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.ForeColor = System.Drawing.Color.DeepPink;
+            this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnCancelar.Location = new System.Drawing.Point(220, 245);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(140, 42);
@@ -166,7 +166,7 @@ namespace GUI
             // FormRegistro
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.MistyRose;
+            this.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.ClientSize = new System.Drawing.Size(420, 310);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);

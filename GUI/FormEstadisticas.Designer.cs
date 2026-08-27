@@ -45,7 +45,7 @@ namespace GUI
             //
             // pnlTitulo
             //
-            this.pnlTitulo.BackColor = System.Drawing.Color.HotPink;
+            this.pnlTitulo.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.pnlTitulo.Controls.Add(this.lblTitulo);
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
@@ -69,7 +69,7 @@ namespace GUI
             //
             this.lblJugador.AutoSize = true;
             this.lblJugador.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblJugador.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblJugador.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblJugador.Location = new System.Drawing.Point(20, 78);
             this.lblJugador.Name = "lblJugador";
             this.lblJugador.Size = new System.Drawing.Size(70, 19);
@@ -91,7 +91,7 @@ namespace GUI
             //
             this.lblGanadas.AutoSize = true;
             this.lblGanadas.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblGanadas.ForeColor = System.Drawing.Color.MediumVioletRed;
+            this.lblGanadas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblGanadas.Location = new System.Drawing.Point(20, 120);
             this.lblGanadas.Name = "lblGanadas";
             this.lblGanadas.Size = new System.Drawing.Size(90, 19);
@@ -102,7 +102,7 @@ namespace GUI
             //
             this.lblPerdidas.AutoSize = true;
             this.lblPerdidas.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPerdidas.ForeColor = System.Drawing.Color.MediumVioletRed;
+            this.lblPerdidas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblPerdidas.Location = new System.Drawing.Point(190, 120);
             this.lblPerdidas.Name = "lblPerdidas";
             this.lblPerdidas.Size = new System.Drawing.Size(87, 19);
@@ -113,7 +113,7 @@ namespace GUI
             //
             this.lblEmpatadas.AutoSize = true;
             this.lblEmpatadas.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblEmpatadas.ForeColor = System.Drawing.Color.MediumVioletRed;
+            this.lblEmpatadas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblEmpatadas.Location = new System.Drawing.Point(360, 120);
             this.lblEmpatadas.Name = "lblEmpatadas";
             this.lblEmpatadas.Size = new System.Drawing.Size(103, 19);
@@ -124,7 +124,7 @@ namespace GUI
             //
             this.lblPromedio.AutoSize = true;
             this.lblPromedio.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblPromedio.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblPromedio.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblPromedio.Location = new System.Drawing.Point(20, 155);
             this.lblPromedio.Name = "lblPromedio";
             this.lblPromedio.Size = new System.Drawing.Size(230, 19);
@@ -135,7 +135,7 @@ namespace GUI
             //
             this.lblTiempoTotal.AutoSize = true;
             this.lblTiempoTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTiempoTotal.ForeColor = System.Drawing.Color.DeepPink;
+            this.lblTiempoTotal.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblTiempoTotal.Location = new System.Drawing.Point(360, 155);
             this.lblTiempoTotal.Name = "lblTiempoTotal";
             this.lblTiempoTotal.Size = new System.Drawing.Size(210, 19);
@@ -144,16 +144,26 @@ namespace GUI
             //
             // dgvHistorial
             //
+            this.dgvHistorial.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(252, 240, 245);
+            this.dgvHistorial.BackgroundColor = System.Drawing.Color.White;
+            this.dgvHistorial.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvHistorial.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.dgvHistorial.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvHistorial.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.dgvHistorial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvHistorial.EnableHeadersVisualStyles = false;
+            this.dgvHistorial.GridColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.dgvHistorial.Location = new System.Drawing.Point(20, 195);
             this.dgvHistorial.Name = "dgvHistorial";
             this.dgvHistorial.ReadOnly = true;
+            this.dgvHistorial.RowHeadersVisible = false;
+            this.dgvHistorial.RowTemplate.Height = 26;
             this.dgvHistorial.Size = new System.Drawing.Size(650, 300);
             this.dgvHistorial.TabIndex = 8;
             //
             // btnCerrar
             //
-            this.btnCerrar.BackColor = System.Drawing.Color.DeepPink;
+            this.btnCerrar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrar.ForeColor = System.Drawing.Color.White;
             this.btnCerrar.Location = new System.Drawing.Point(560, 505);
@@ -167,7 +177,7 @@ namespace GUI
             // FormEstadisticas
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.LavenderBlush;
+            this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
             this.ClientSize = new System.Drawing.Size(700, 560);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.dgvHistorial);

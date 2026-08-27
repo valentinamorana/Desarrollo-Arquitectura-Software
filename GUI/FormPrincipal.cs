@@ -353,6 +353,20 @@ namespace GUI
         {
             dgvPuntajes.DataSource = null;
             dgvPuntajes.DataSource = tabla;
+
+            string nombreColumna2;
+            if (jugador2 != null)
+            {
+                nombreColumna2 = jugador2.Nombre;
+            }
+            else
+            {
+                nombreColumna2 = "Jugador 2";
+            }
+
+            dgvPuntajes.Columns["Categoria"].HeaderText = "Categoría";
+            dgvPuntajes.Columns["PuntajeJugador1"].HeaderText = jugador1.Nombre;
+            dgvPuntajes.Columns["PuntajeJugador2"].HeaderText = nombreColumna2;
         }
 
         private void dgvPuntajes_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
