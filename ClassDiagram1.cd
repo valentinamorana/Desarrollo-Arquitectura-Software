@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <!-- BE -->
+  <Class Name="BE.USUARIO" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BE\USUARIO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BE.PARTIDA" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BE\PARTIDA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BE.FILAPUNTAJE" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BE\FILAPUNTAJE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BE.FILAHISTORIAL" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BE\FILAHISTORIAL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+
+  <!-- DAL -->
+  <Class Name="DAL.ACCESO" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DAL\ACCESO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DAL.USUARIO" Collapsed="true">
+    <Position X="2.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DAL\USUARIO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DAL.PARTIDA" Collapsed="true">
+    <Position X="4.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DAL\PARTIDA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DAL.LOG" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DAL\LOG.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DAL.BACKUPRESTORE" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DAL\BACKUPRESTORE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+
+  <!-- BLL -->
+  <Class Name="BLL.USUARIO" Collapsed="true">
+    <Position X="0.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLL\USUARIO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.PARTIDA" Collapsed="true">
+    <Position X="2.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLL\PARTIDA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.BITACORA" Collapsed="true">
+    <Position X="4.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLL\BITACORA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.GENERALA" Collapsed="true">
+    <Position X="6.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLL\GENERALA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.MOVIMIENTOXML" Collapsed="true">
+    <Position X="8.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLL\MOVIMIENTOXML.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.BACKUPRESTORE" Collapsed="true">
+    <Position X="10.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLL\BACKUPRESTORE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+
+  <!-- GUI -->
+  <Class Name="GUI.FormLogin" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FormLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.FormRegistro" Collapsed="true">
+    <Position X="2.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FormRegistro.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.FormPrincipal" Collapsed="true">
+    <Position X="4.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FormPrincipal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.FormEstadisticas" Collapsed="true">
+    <Position X="6.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FormEstadisticas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.FormReglas" Collapsed="true">
+    <Position X="8.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FormReglas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.Program" Collapsed="true">
+    <Position X="10.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
