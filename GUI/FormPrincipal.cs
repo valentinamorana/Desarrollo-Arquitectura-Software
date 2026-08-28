@@ -213,13 +213,20 @@ namespace GUI
             }
 
             string categoria = cmbCategoria.SelectedItem.ToString();
-            int puntaje = BLL.GENERALA.CalcularPuntaje(categoria, dados);
+            bool servido = tirosRestantes == 2;
+            int puntaje = BLL.GENERALA.CalcularPuntaje(categoria, dados, servido);
 
             if (puntaje == 0)
             {
                 MessageBox.Show(
                     "Los dados no alcanzan para puntuar en \"" + categoria + "\". Se anota 0 y la categoría queda tachada.",
                     "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (servido && BLL.GENERALA.EsCombinacion(categoria))
+            {
+                MessageBox.Show(
+                    "¡Tirada servida! Lograste \"" + categoria + "\" en el primer tiro: puntaje doble (" + puntaje + ").",
+                    "Servido", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             string nombreActual;
@@ -519,6 +526,12 @@ namespace GUI
         {
             FormEstadisticas formEstadisticas = new FormEstadisticas(jugador1, jugador2);
             formEstadisticas.ShowDialog();
+        }
+
+        private void btnReglas_Click(object sender, EventArgs e)
+        {
+            FormReglas formReglas = new FormReglas();
+            formReglas.ShowDialog();
         }
     }
 }

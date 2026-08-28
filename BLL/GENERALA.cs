@@ -31,7 +31,9 @@ namespace BLL
             return resultado;
         }
 
-        public static int CalcularPuntaje(string categoria, int[] dados)
+        // "Servido": la combinación salió en la primera tirada, sin repetir dados.
+        // En ese caso Escalera/Full/Poker/Generala valen el doble.
+        public static int CalcularPuntaje(string categoria, int[] dados, bool servido = false)
         {
             if (categoria == "Unos")
             {
@@ -59,19 +61,19 @@ namespace BLL
             }
             if (categoria == "Escalera")
             {
-                return Escalera(dados);
+                return AplicarServido(Escalera(dados), servido);
             }
             if (categoria == "Full")
             {
-                return Full(dados);
+                return AplicarServido(Full(dados), servido);
             }
             if (categoria == "Poker")
             {
-                return Poker(dados);
+                return AplicarServido(Poker(dados), servido);
             }
             if (categoria == "Generala")
             {
-                return GeneralaCompleta(dados);
+                return AplicarServido(GeneralaCompleta(dados), servido);
             }
             if (categoria == GENERALA_DOBLE)
             {
@@ -82,6 +84,25 @@ namespace BLL
                 return 0;
             }
             return 0;
+        }
+
+        private static int AplicarServido(int puntaje, bool servido)
+        {
+            if (servido && puntaje > 0)
+            {
+                return puntaje * 2;
+            }
+            return puntaje;
+        }
+
+        // Categorías a las que les aplica el bonus de "servido" (las combinaciones, no los números sueltos).
+        public static bool EsCombinacion(string categoria)
+        {
+            if (categoria == "Escalera" || categoria == "Full" || categoria == "Poker" || categoria == "Generala")
+            {
+                return true;
+            }
+            return false;
         }
 
         private static int SumaValor(int[] dados, int valor)

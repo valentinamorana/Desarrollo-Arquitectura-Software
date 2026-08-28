@@ -33,6 +33,7 @@ namespace GUI
             this.btnRestore = new System.Windows.Forms.Button();
             this.btnBackup = new System.Windows.Forms.Button();
             this.btnEstadisticas = new System.Windows.Forms.Button();
+            this.btnReglas = new System.Windows.Forms.Button();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.pnlJugadores = new System.Windows.Forms.Panel();
             this.btnAbandonar = new System.Windows.Forms.Button();
@@ -74,6 +75,7 @@ namespace GUI
             this.pnlEncabezado.Controls.Add(this.btnRestore);
             this.pnlEncabezado.Controls.Add(this.btnBackup);
             this.pnlEncabezado.Controls.Add(this.btnEstadisticas);
+            this.pnlEncabezado.Controls.Add(this.btnReglas);
             this.pnlEncabezado.Controls.Add(this.lblTitulo);
             this.pnlEncabezado.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlEncabezado.Location = new System.Drawing.Point(0, 0);
@@ -136,6 +138,20 @@ namespace GUI
             this.btnEstadisticas.Text = "Estadísticas";
             this.btnEstadisticas.UseVisualStyleBackColor = false;
             this.btnEstadisticas.Click += new System.EventHandler(this.btnEstadisticas_Click);
+            //
+            // btnReglas
+            //
+            this.btnReglas.BackColor = System.Drawing.Color.White;
+            this.btnReglas.FlatAppearance.BorderSize = 0;
+            this.btnReglas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReglas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnReglas.Location = new System.Drawing.Point(440, 15);
+            this.btnReglas.Name = "btnReglas";
+            this.btnReglas.Size = new System.Drawing.Size(100, 40);
+            this.btnReglas.TabIndex = 5;
+            this.btnReglas.Text = "Reglas";
+            this.btnReglas.UseVisualStyleBackColor = false;
+            this.btnReglas.Click += new System.EventHandler(this.btnReglas_Click);
             //
             // lblTitulo
             //
@@ -522,6 +538,7 @@ namespace GUI
         private System.Windows.Forms.Panel pnlEncabezado;
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Button btnEstadisticas;
+        private System.Windows.Forms.Button btnReglas;
         private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.Button btnRestore;
         private System.Windows.Forms.Button btnCerrarSesion;

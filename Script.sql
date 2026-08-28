@@ -124,8 +124,13 @@ GO
 IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'valentina')
 	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (1, 'valentina', '1234')
 GO
-IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'invitado')
-	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (2, 'invitado', '1234')
+-- Si ya habías corrido una versión anterior de este script, "invitado" pasa a llamarse "jugador2".
+IF EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'invitado') AND NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'jugador2')
+	UPDATE [dbo].[USUARIO] SET Nombre = 'jugador2' WHERE Nombre = 'invitado'
+GO
+
+IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'jugador2')
+	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (2, 'jugador2', '1234')
 GO
 IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'jugador3')
 	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (3, 'jugador3', '1234')
