@@ -1,0 +1,11 @@
+Usuarios de prueba (cargados por Script.sql)
+==============================================
+
+Usuario     Contraseña
+---------   ----------
+valentina   1234
+jugador2    1234
+jugador3    1234
+
+Estos usuarios ya vienen cargados al correr Script.sql contra la base GENERALA.
+Para crear un usuario nuevo, usar el boton "Registrarme" desde la pantalla de login de la aplicacion.
