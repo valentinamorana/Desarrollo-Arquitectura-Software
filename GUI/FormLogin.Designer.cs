@@ -47,17 +47,17 @@ namespace GUI
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
             this.pnlTitulo.Name = "pnlTitulo";
-            this.pnlTitulo.Size = new System.Drawing.Size(420, 90);
+            this.pnlTitulo.Size = new System.Drawing.Size(520, 110);
             this.pnlTitulo.TabIndex = 0;
             //
             // lblTitulo
             //
             this.lblTitulo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(0, 0);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(420, 90);
+            this.lblTitulo.Size = new System.Drawing.Size(520, 110);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "GENERALA";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -65,49 +65,49 @@ namespace GUI
             // lblUsuario
             //
             this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblUsuario.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.lblUsuario.Location = new System.Drawing.Point(40, 120);
+            this.lblUsuario.Location = new System.Drawing.Point(50, 152);
             this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(70, 20);
+            this.lblUsuario.Size = new System.Drawing.Size(76, 21);
             this.lblUsuario.TabIndex = 1;
             this.lblUsuario.Text = "Usuario";
             //
             // txtUsuario
             //
-            this.txtUsuario.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtUsuario.Location = new System.Drawing.Point(150, 117);
+            this.txtUsuario.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtUsuario.Location = new System.Drawing.Point(210, 147);
             this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(220, 27);
+            this.txtUsuario.Size = new System.Drawing.Size(260, 32);
             this.txtUsuario.TabIndex = 2;
             //
             // lblContraseña
             //
             this.lblContraseña.AutoSize = true;
-            this.lblContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblContraseña.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblContraseña.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.lblContraseña.Location = new System.Drawing.Point(40, 160);
+            this.lblContraseña.Location = new System.Drawing.Point(50, 210);
             this.lblContraseña.Name = "lblContraseña";
-            this.lblContraseña.Size = new System.Drawing.Size(103, 20);
+            this.lblContraseña.Size = new System.Drawing.Size(112, 21);
             this.lblContraseña.TabIndex = 3;
             this.lblContraseña.Text = "Contraseña";
             //
             // txtContraseña
             //
-            this.txtContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtContraseña.Location = new System.Drawing.Point(150, 157);
+            this.txtContraseña.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtContraseña.Location = new System.Drawing.Point(210, 205);
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.PasswordChar = '●';
-            this.txtContraseña.Size = new System.Drawing.Size(220, 27);
+            this.txtContraseña.Size = new System.Drawing.Size(260, 32);
             this.txtContraseña.TabIndex = 4;
             //
             // lblMensaje
             //
-            this.lblMensaje.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.lblMensaje.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
             this.lblMensaje.ForeColor = System.Drawing.Color.Crimson;
-            this.lblMensaje.Location = new System.Drawing.Point(40, 195);
+            this.lblMensaje.Location = new System.Drawing.Point(50, 255);
             this.lblMensaje.Name = "lblMensaje";
-            this.lblMensaje.Size = new System.Drawing.Size(330, 35);
+            this.lblMensaje.Size = new System.Drawing.Size(420, 45);
             this.lblMensaje.TabIndex = 5;
             this.lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             //
@@ -115,11 +115,11 @@ namespace GUI
             //
             this.btnIngresar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnIngresar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnIngresar.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnIngresar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnIngresar.ForeColor = System.Drawing.Color.White;
-            this.btnIngresar.Location = new System.Drawing.Point(60, 240);
+            this.btnIngresar.Location = new System.Drawing.Point(85, 315);
             this.btnIngresar.Name = "btnIngresar";
-            this.btnIngresar.Size = new System.Drawing.Size(140, 45);
+            this.btnIngresar.Size = new System.Drawing.Size(165, 54);
             this.btnIngresar.TabIndex = 6;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = false;
@@ -131,11 +131,11 @@ namespace GUI
             this.btnRegistrarme.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnRegistrarme.FlatAppearance.BorderSize = 2;
             this.btnRegistrarme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRegistrarme.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnRegistrarme.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnRegistrarme.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.btnRegistrarme.Location = new System.Drawing.Point(220, 240);
+            this.btnRegistrarme.Location = new System.Drawing.Point(270, 315);
             this.btnRegistrarme.Name = "btnRegistrarme";
-            this.btnRegistrarme.Size = new System.Drawing.Size(140, 45);
+            this.btnRegistrarme.Size = new System.Drawing.Size(165, 54);
             this.btnRegistrarme.TabIndex = 7;
             this.btnRegistrarme.Text = "Registrarme";
             this.btnRegistrarme.UseVisualStyleBackColor = false;
@@ -144,8 +144,8 @@ namespace GUI
             // FormLogin
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
-            this.ClientSize = new System.Drawing.Size(420, 320);
+            this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
+            this.ClientSize = new System.Drawing.Size(520, 420);
             this.Controls.Add(this.btnRegistrarme);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.lblMensaje);
