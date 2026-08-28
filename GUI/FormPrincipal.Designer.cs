@@ -458,7 +458,7 @@ namespace GUI
             this.pnlPuntajes.Controls.Add(this.dgvPuntajes);
             this.pnlPuntajes.Location = new System.Drawing.Point(20, 360);
             this.pnlPuntajes.Name = "pnlPuntajes";
-            this.pnlPuntajes.Size = new System.Drawing.Size(960, 255);
+            this.pnlPuntajes.Size = new System.Drawing.Size(960, 355);
             this.pnlPuntajes.TabIndex = 3;
             //
             // lblTotalJugador2
@@ -501,7 +501,7 @@ namespace GUI
             this.dgvPuntajes.ReadOnly = true;
             this.dgvPuntajes.RowHeadersVisible = false;
             this.dgvPuntajes.RowTemplate.Height = 26;
-            this.dgvPuntajes.Size = new System.Drawing.Size(560, 225);
+            this.dgvPuntajes.Size = new System.Drawing.Size(560, 325);
             this.dgvPuntajes.TabIndex = 0;
             this.dgvPuntajes.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPuntajes_CellFormatting);
             //
@@ -509,7 +509,7 @@ namespace GUI
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
-            this.ClientSize = new System.Drawing.Size(1000, 650);
+            this.ClientSize = new System.Drawing.Size(1000, 750);
             this.Controls.Add(this.pnlPuntajes);
             this.Controls.Add(this.pnlJuego);
             this.Controls.Add(this.pnlJugadores);

@@ -65,6 +65,7 @@ namespace GUI
             this.txtReglas.Location = new System.Drawing.Point(20, 90);
             this.txtReglas.Multiline = true;
             this.txtReglas.Name = "txtReglas";
+            this.txtReglas.TabStop = false;
             this.txtReglas.ReadOnly = true;
             this.txtReglas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtReglas.Size = new System.Drawing.Size(520, 400);

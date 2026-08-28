@@ -52,6 +52,7 @@ namespace GUI
                 jugador2 = formLogin.UsuarioLogueado;
                 lblJugador2.Text = "Jugador 2: " + jugador2.Nombre;
                 btnComenzarPartida.Enabled = true;
+                btnLoginJugador2.Enabled = false;
             }
         }
 
