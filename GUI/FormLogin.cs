@@ -17,6 +17,8 @@ namespace GUI
         public FormLogin()
         {
             InitializeComponent();
+            this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
+            picLogo.Image = System.Drawing.Image.FromFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala_logo.png"));
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)

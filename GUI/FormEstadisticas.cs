@@ -13,6 +13,7 @@ namespace GUI
         public FormEstadisticas(USUARIO jugador1, USUARIO jugador2)
         {
             InitializeComponent();
+            this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
             this.jugador1 = jugador1;
             this.jugador2 = jugador2;
         }

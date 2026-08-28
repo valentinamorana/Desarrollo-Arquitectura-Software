@@ -24,6 +24,7 @@ namespace GUI
         public FormPrincipal(USUARIO jugadorLogueado)
         {
             InitializeComponent();
+            this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
             jugador1 = jugadorLogueado;
         }
 

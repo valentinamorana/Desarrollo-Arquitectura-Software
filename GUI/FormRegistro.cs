@@ -17,6 +17,7 @@ namespace GUI
         public FormRegistro()
         {
             InitializeComponent();
+            this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
