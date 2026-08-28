@@ -127,6 +127,9 @@ GO
 IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'invitado')
 	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (2, 'invitado', '1234')
 GO
+IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'jugador3')
+	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (3, 'jugador3', '1234')
+GO
 
 -- =========================================================
 -- STORED PROCEDURES

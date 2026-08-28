@@ -214,6 +214,14 @@ namespace GUI
 
             string categoria = cmbCategoria.SelectedItem.ToString();
             int puntaje = BLL.GENERALA.CalcularPuntaje(categoria, dados);
+
+            if (puntaje == 0)
+            {
+                MessageBox.Show(
+                    "Los dados no alcanzan para puntuar en \"" + categoria + "\". Se anota 0 y la categoría queda tachada.",
+                    "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
             string nombreActual;
             if (jugadorActual == 1)
             {
