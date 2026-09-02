@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1">
+  <xmi:Documentation exporter="TP_Generala" exporterVersion="1.0" exporterID="TP_Generala_DER"/>
+  <uml:Model xmi:type="uml:Model" xmi:id="model_generala_db" name="GENERALA_DB">
+
+    <!-- Tipos de columna, locales al modelo -->
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_tipos_db" name="Tipos">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="dt_int" name="int"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="dt_varchar" name="varchar"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="dt_datetime" name="datetime"/>
+    </packagedElement>
+
+    <!-- Tablas de la base GENERALA, modeladas como clases <<Table>> -->
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_tablas" name="GENERALA">
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_USUARIO" name="USUARIO">
+        <ownedAttribute xmi:id="col_USUARIO_ID" name="ID" type="dt_int" isID="true"/>
+        <ownedAttribute xmi:id="col_USUARIO_Nombre" name="Nombre" type="dt_varchar"/>
+        <ownedAttribute xmi:id="col_USUARIO_Contrasena" name="Contraseña" type="dt_varchar"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_TIPO_LOG" name="TIPO_LOG">
+        <ownedAttribute xmi:id="col_TIPOLOG_ID" name="ID_TIPO" type="dt_int" isID="true"/>
+        <ownedAttribute xmi:id="col_TIPOLOG_Tipo" name="Tipo" type="dt_varchar"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_LOG" name="LOG">
+        <ownedAttribute xmi:id="col_LOG_ID" name="ID_LOG" type="dt_int" isID="true"/>
+        <ownedAttribute xmi:id="col_LOG_Descripcion" name="Descripcion" type="dt_varchar"/>
+        <ownedAttribute xmi:id="col_LOG_IdUsuario" name="ID_Usuario" type="dt_int"/>
+        <ownedAttribute xmi:id="col_LOG_IdTipo" name="ID_TIPO" type="dt_int"/>
+        <ownedAttribute xmi:id="col_LOG_Fecha" name="Fecha" type="dt_datetime"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_PARTIDA" name="PARTIDA">
+        <ownedAttribute xmi:id="col_PARTIDA_ID" name="ID" type="dt_int" isID="true"/>
+        <ownedAttribute xmi:id="col_PARTIDA_Jugador1" name="ID_JUGADOR1" type="dt_int"/>
+        <ownedAttribute xmi:id="col_PARTIDA_Jugador2" name="ID_JUGADOR2" type="dt_int"/>
+        <ownedAttribute xmi:id="col_PARTIDA_Ganador" name="ID_GANADOR" type="dt_int"/>
+        <ownedAttribute xmi:id="col_PARTIDA_Puntaje1" name="PUNTAJE_JUGADOR1" type="dt_int"/>
+        <ownedAttribute xmi:id="col_PARTIDA_Puntaje2" name="PUNTAJE_JUGADOR2" type="dt_int"/>
+        <ownedAttribute xmi:id="col_PARTIDA_FechaInicio" name="FECHA_INICIO" type="dt_datetime"/>
+        <ownedAttribute xmi:id="col_PARTIDA_FechaFin" name="FECHA_FIN" type="dt_datetime"/>
+        <ownedAttribute xmi:id="col_PARTIDA_RutaXml" name="RUTA_XML" type="dt_varchar"/>
+      </packagedElement>
+
+    </packagedElement>
+
+    <!-- Relaciones (FK), en notación UML equivalente a la pata de gallo del DER -->
+
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_usuario_log" name="genera">
+      <ownedEnd xmi:id="end_usuario_log_1" name="usuario" type="c_USUARIO" association="assoc_usuario_log">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_ul_1a" value="1"/>
+        <upperValue xmi:type="uml:LiteralInteger" xmi:id="lv_ul_1b" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="end_usuario_log_2" name="log" type="c_LOG" association="assoc_usuario_log">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_ul_2a" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="lv_ul_2b" value="*"/>
+      </ownedEnd>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_tipolog_log" name="clasifica">
+      <ownedEnd xmi:id="end_tl_log_1" name="tipoLog" type="c_TIPO_LOG" association="assoc_tipolog_log">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_tl_1a" value="1"/>
+        <upperValue xmi:type="uml:LiteralInteger" xmi:id="lv_tl_1b" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="end_tl_log_2" name="log" type="c_LOG" association="assoc_tipolog_log">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_tl_2a" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="lv_tl_2b" value="*"/>
+      </ownedEnd>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_usuario_partida_j1" name="jugador_1">
+      <ownedEnd xmi:id="end_uj1_1" name="usuario" type="c_USUARIO" association="assoc_usuario_partida_j1">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_uj1_1a" value="1"/>
+        <upperValue xmi:type="uml:LiteralInteger" xmi:id="lv_uj1_1b" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="end_uj1_2" name="partidaComoJugador1" type="c_PARTIDA" association="assoc_usuario_partida_j1">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_uj1_2a" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="lv_uj1_2b" value="*"/>
+      </ownedEnd>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_usuario_partida_j2" name="jugador_2">
+      <ownedEnd xmi:id="end_uj2_1" name="usuario" type="c_USUARIO" association="assoc_usuario_partida_j2">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_uj2_1a" value="1"/>
+        <upperValue xmi:type="uml:LiteralInteger" xmi:id="lv_uj2_1b" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="end_uj2_2" name="partidaComoJugador2" type="c_PARTIDA" association="assoc_usuario_partida_j2">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_uj2_2a" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="lv_uj2_2b" value="*"/>
+      </ownedEnd>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_usuario_partida_ganador" name="ganador (opcional)">
+      <ownedEnd xmi:id="end_ug_1" name="usuarioGanador" type="c_USUARIO" association="assoc_usuario_partida_ganador">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_ug_1a" value="0"/>
+        <upperValue xmi:type="uml:LiteralInteger" xmi:id="lv_ug_1b" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="end_ug_2" name="partidaGanada" type="c_PARTIDA" association="assoc_usuario_partida_ganador">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="lv_ug_2a" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="lv_ug_2b" value="*"/>
+      </ownedEnd>
+    </packagedElement>
+
+  </uml:Model>
+</xmi:XMI>
