@@ -83,7 +83,8 @@ classDiagram
     class BLL_GENERALA["GENERALA"] {
         &lt;&lt;BLL&gt;&gt;
         +Tirar(dados, guardar)$ int[]
-        +CalcularPuntaje(categoria, dados)$ int
+        +CalcularPuntaje(categoria, dados, servido)$ int
+        +EsCombinacion(categoria)$ bool
     }
     class BLL_MOVIMIENTOXML["MOVIMIENTOXML"] {
         &lt;&lt;BLL&gt;&gt;
@@ -100,6 +101,11 @@ classDiagram
     class GUI_FormRegistro["FormRegistro"] { &lt;&lt;GUI&gt;&gt; }
     class GUI_FormPrincipal["FormPrincipal"] { &lt;&lt;GUI&gt;&gt; }
     class GUI_FormEstadisticas["FormEstadisticas"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_FormReglas["FormReglas"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_Program["Program"] {
+        &lt;&lt;GUI&gt;&gt;
+        +Main()$
+    }
 
     DAL_USUARIO ..&gt; DAL_ACCESO : usa
     DAL_USUARIO ..&gt; BE_USUARIO : opera sobre
@@ -125,8 +131,11 @@ classDiagram
     GUI_FormPrincipal ..&gt; BLL_BACKUPRESTORE : usa
     GUI_FormPrincipal ..&gt; GUI_FormLogin : abre
     GUI_FormPrincipal ..&gt; GUI_FormEstadisticas : abre
+    GUI_FormPrincipal ..&gt; GUI_FormReglas : abre
     GUI_FormEstadisticas ..&gt; BLL_PARTIDA : usa
     GUI_FormEstadisticas ..&gt; BLL_USUARIO : usa
+    GUI_Program ..&gt; GUI_FormLogin : abre
+    GUI_Program ..&gt; GUI_FormPrincipal : usa
   </pre>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>

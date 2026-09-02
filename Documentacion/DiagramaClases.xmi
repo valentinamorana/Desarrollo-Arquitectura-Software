@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1">
+  <xmi:Documentation exporter="TP_Generala" exporterVersion="1.0" exporterID="TP_Generala_DiagramaClases"/>
+  <uml:Model xmi:type="uml:Model" xmi:id="model_generala" name="Generala">
+
+    <!-- ============ Tipos primitivos locales (self-contained, sin dependencias externas) ============ -->
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_tipos" name="Tipos">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="t_int" name="int"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="t_string" name="string"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="t_bool" name="bool"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="t_datetime" name="DateTime"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="t_intarray" name="int[]"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="t_list" name="List"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="t_sqldatareader" name="SqlDataReader"/>
+    </packagedElement>
+
+    <!-- ============ BE (entidades) ============ -->
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_BE" name="BE">
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BE_USUARIO" name="USUARIO">
+        <ownedAttribute xmi:id="a_BE_USUARIO_ID" name="ID" visibility="public" type="t_int" isID="true"/>
+        <ownedAttribute xmi:id="a_BE_USUARIO_Nombre" name="Nombre" visibility="public" type="t_string"/>
+        <ownedAttribute xmi:id="a_BE_USUARIO_Contrasena" name="Contraseña" visibility="public" type="t_string"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BE_PARTIDA" name="PARTIDA">
+        <ownedAttribute xmi:id="a_BE_PARTIDA_ID" name="ID" visibility="public" type="t_int" isID="true"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_IdJugador1" name="IdJugador1" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_IdJugador2" name="IdJugador2" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_IdGanador" name="IdGanador" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_PuntajeJugador1" name="PuntajeJugador1" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_PuntajeJugador2" name="PuntajeJugador2" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_FechaInicio" name="FechaInicio" visibility="public" type="t_datetime"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_FechaFin" name="FechaFin" visibility="public" type="t_datetime"/>
+        <ownedAttribute xmi:id="a_BE_PARTIDA_RutaXml" name="RutaXml" visibility="public" type="t_string"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BE_FILAPUNTAJE" name="FILAPUNTAJE">
+        <ownedAttribute xmi:id="a_BE_FP_Categoria" name="Categoria" visibility="public" type="t_string"/>
+        <ownedAttribute xmi:id="a_BE_FP_PuntajeJugador1" name="PuntajeJugador1" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_FP_PuntajeJugador2" name="PuntajeJugador2" visibility="public" type="t_int"/>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BE_FILAHISTORIAL" name="FILAHISTORIAL">
+        <ownedAttribute xmi:id="a_BE_FH_Fecha" name="Fecha" visibility="public" type="t_string"/>
+        <ownedAttribute xmi:id="a_BE_FH_Rival" name="Rival" visibility="public" type="t_string"/>
+        <ownedAttribute xmi:id="a_BE_FH_PuntajePropio" name="PuntajePropio" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_FH_PuntajeRival" name="PuntajeRival" visibility="public" type="t_int"/>
+        <ownedAttribute xmi:id="a_BE_FH_Resultado" name="Resultado" visibility="public" type="t_string"/>
+      </packagedElement>
+
+    </packagedElement>
+
+    <!-- ============ DAL (acceso a datos) ============ -->
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_DAL" name="DAL">
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_DAL_ACCESO" name="ACCESO">
+        <ownedOperation xmi:id="op_DAL_ACCESO_Abrir" name="Abrir" visibility="public"/>
+        <ownedOperation xmi:id="op_DAL_ACCESO_Cerrar" name="Cerrar" visibility="public"/>
+        <ownedOperation xmi:id="op_DAL_ACCESO_Escribir" name="Escribir" visibility="public">
+          <ownedParameter xmi:id="p_DAL_ACCESO_Escribir_sql" name="sql" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_DAL_ACCESO_Escribir_parametros" name="parametros" direction="in"/>
+          <ownedParameter xmi:id="p_DAL_ACCESO_Escribir_ret" direction="return" type="t_int"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_DAL_ACCESO_LeerEscalar" name="LeerEscalar" visibility="public">
+          <ownedParameter xmi:id="p_DAL_ACCESO_LeerEscalar_sql" name="sql" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_DAL_ACCESO_LeerEscalar_parametros" name="parametros" direction="in"/>
+          <ownedParameter xmi:id="p_DAL_ACCESO_LeerEscalar_ret" direction="return" type="t_int"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_DAL_ACCESO_Leer" name="Leer" visibility="public">
+          <ownedParameter xmi:id="p_DAL_ACCESO_Leer_sql" name="sql" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_DAL_ACCESO_Leer_parametros" name="parametros" direction="in"/>
+          <ownedParameter xmi:id="p_DAL_ACCESO_Leer_ret" direction="return" type="t_sqldatareader"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_DAL_USUARIO" name="USUARIO">
+        <ownedOperation xmi:id="op_DAL_USUARIO_Insertar" name="Insertar" visibility="public">
+          <ownedParameter xmi:id="p_DAL_USUARIO_Insertar_usuario" name="usuario" direction="in" type="c_BE_USUARIO"/>
+          <ownedParameter xmi:id="p_DAL_USUARIO_Insertar_ret" direction="return" type="t_int"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_DAL_USUARIO_Login" name="Login" visibility="public">
+          <ownedParameter xmi:id="p_DAL_USUARIO_Login_usuario" name="usuario" direction="in" type="c_BE_USUARIO"/>
+          <ownedParameter xmi:id="p_DAL_USUARIO_Login_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_DAL_USUARIO_BuscarPorId" name="BuscarPorId" visibility="public">
+          <ownedParameter xmi:id="p_DAL_USUARIO_BuscarPorId_id" name="id" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_DAL_USUARIO_BuscarPorId_ret" direction="return" type="c_BE_USUARIO"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_DAL_PARTIDA" name="PARTIDA">
+        <ownedOperation xmi:id="op_DAL_PARTIDA_Insertar" name="Insertar" visibility="public">
+          <ownedParameter xmi:id="p_DAL_PARTIDA_Insertar_partida" name="partida" direction="in" type="c_BE_PARTIDA"/>
+          <ownedParameter xmi:id="p_DAL_PARTIDA_Insertar_ret" direction="return" type="t_int"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_DAL_PARTIDA_Finalizar" name="Finalizar" visibility="public">
+          <ownedParameter xmi:id="p_DAL_PARTIDA_Finalizar_partida" name="partida" direction="in" type="c_BE_PARTIDA"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_DAL_PARTIDA_ListarPorUsuario" name="ListarPorUsuario" visibility="public">
+          <ownedParameter xmi:id="p_DAL_PARTIDA_ListarPorUsuario_id" name="idUsuario" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_DAL_PARTIDA_ListarPorUsuario_ret" direction="return" type="t_list"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_DAL_LOG" name="LOG">
+        <ownedOperation xmi:id="op_DAL_LOG_Insertar" name="Insertar" visibility="public">
+          <ownedParameter xmi:id="p_DAL_LOG_Insertar_idUsuario" name="idUsuario" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_DAL_LOG_Insertar_idTipo" name="idTipo" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_DAL_LOG_Insertar_descripcion" name="descripcion" direction="in" type="t_string"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_DAL_BACKUPRESTORE" name="BACKUPRESTORE">
+        <ownedOperation xmi:id="op_DAL_BR_HacerBackup" name="HacerBackup" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_DAL_BR_HacerBackup_ruta" name="ruta" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_DAL_BR_HacerBackup_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_DAL_BR_HacerRestore" name="HacerRestore" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_DAL_BR_HacerRestore_ruta" name="ruta" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_DAL_BR_HacerRestore_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+      </packagedElement>
+
+    </packagedElement>
+
+    <!-- ============ BLL (negocio) ============ -->
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_BLL" name="BLL">
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BLL_USUARIO" name="USUARIO">
+        <ownedOperation xmi:id="op_BLL_USUARIO_Login" name="Login" visibility="public">
+          <ownedParameter xmi:id="p_BLL_USUARIO_Login_usuario" name="usuario" direction="in" type="c_BE_USUARIO"/>
+          <ownedParameter xmi:id="p_BLL_USUARIO_Login_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_USUARIO_Logout" name="Logout" visibility="public">
+          <ownedParameter xmi:id="p_BLL_USUARIO_Logout_usuario" name="usuario" direction="in" type="c_BE_USUARIO"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_USUARIO_Insertar" name="Insertar" visibility="public">
+          <ownedParameter xmi:id="p_BLL_USUARIO_Insertar_usuario" name="usuario" direction="in" type="c_BE_USUARIO"/>
+          <ownedParameter xmi:id="p_BLL_USUARIO_Insertar_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_USUARIO_BuscarPorId" name="BuscarPorId" visibility="public">
+          <ownedParameter xmi:id="p_BLL_USUARIO_BuscarPorId_id" name="id" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_BLL_USUARIO_BuscarPorId_ret" direction="return" type="c_BE_USUARIO"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BLL_PARTIDA" name="PARTIDA">
+        <ownedOperation xmi:id="op_BLL_PARTIDA_Iniciar" name="Iniciar" visibility="public">
+          <ownedParameter xmi:id="p_BLL_PARTIDA_Iniciar_partida" name="partida" direction="in" type="c_BE_PARTIDA"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_PARTIDA_Finalizar" name="Finalizar" visibility="public">
+          <ownedParameter xmi:id="p_BLL_PARTIDA_Finalizar_partida" name="partida" direction="in" type="c_BE_PARTIDA"/>
+          <ownedParameter xmi:id="p_BLL_PARTIDA_Finalizar_descripcion" name="descripcion" direction="in" type="t_string"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_PARTIDA_ListarPorUsuario" name="ListarPorUsuario" visibility="public">
+          <ownedParameter xmi:id="p_BLL_PARTIDA_ListarPorUsuario_id" name="idUsuario" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_BLL_PARTIDA_ListarPorUsuario_ret" direction="return" type="t_list"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BLL_BITACORA" name="BITACORA">
+        <ownedOperation xmi:id="op_BLL_BITACORA_Registrar" name="Registrar" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_BITACORA_idUsuario" name="idUsuario" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_BLL_BITACORA_idTipo" name="idTipo" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_BLL_BITACORA_descripcion" name="descripcion" direction="in" type="t_string"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BLL_GENERALA" name="GENERALA">
+        <ownedOperation xmi:id="op_BLL_GENERALA_Tirar" name="Tirar" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_GENERALA_Tirar_dados" name="dadosActuales" direction="in" type="t_intarray"/>
+          <ownedParameter xmi:id="p_BLL_GENERALA_Tirar_guardar" name="guardar" direction="in"/>
+          <ownedParameter xmi:id="p_BLL_GENERALA_Tirar_ret" direction="return" type="t_intarray"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_GENERALA_CalcularPuntaje" name="CalcularPuntaje" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_GENERALA_CP_categoria" name="categoria" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_BLL_GENERALA_CP_dados" name="dados" direction="in" type="t_intarray"/>
+          <ownedParameter xmi:id="p_BLL_GENERALA_CP_servido" name="servido" direction="in" type="t_bool"/>
+          <ownedParameter xmi:id="p_BLL_GENERALA_CP_ret" direction="return" type="t_int"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_GENERALA_EsCombinacion" name="EsCombinacion" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_GENERALA_EC_categoria" name="categoria" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_BLL_GENERALA_EC_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BLL_MOVIMIENTOXML" name="MOVIMIENTOXML">
+        <ownedOperation xmi:id="op_BLL_MXML_GenerarRuta" name="GenerarRuta" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_MXML_GenerarRuta_ret" direction="return" type="t_string"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_MXML_CrearArchivo" name="CrearArchivo" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_MXML_CrearArchivo_ruta" name="ruta" direction="in" type="t_string"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_MXML_RegistrarMovimiento" name="RegistrarMovimiento" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_MXML_RM_ruta" name="ruta" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_BLL_MXML_RM_turno" name="turno" direction="in" type="t_int"/>
+          <ownedParameter xmi:id="p_BLL_MXML_RM_jugador" name="jugador" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_BLL_MXML_RM_dados" name="dados" direction="in" type="t_intarray"/>
+          <ownedParameter xmi:id="p_BLL_MXML_RM_categoria" name="categoria" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_BLL_MXML_RM_puntaje" name="puntaje" direction="in" type="t_int"/>
+        </ownedOperation>
+      </packagedElement>
+
+      <packagedElement xmi:type="uml:Class" xmi:id="c_BLL_BACKUPRESTORE" name="BACKUPRESTORE">
+        <ownedOperation xmi:id="op_BLL_BR_HacerBackup" name="HacerBackup" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_BR_HacerBackup_ruta" name="ruta" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_BLL_BR_HacerBackup_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="op_BLL_BR_HacerRestore" name="HacerRestore" visibility="public" isStatic="true">
+          <ownedParameter xmi:id="p_BLL_BR_HacerRestore_ruta" name="ruta" direction="in" type="t_string"/>
+          <ownedParameter xmi:id="p_BLL_BR_HacerRestore_ret" direction="return" type="t_bool"/>
+        </ownedOperation>
+      </packagedElement>
+
+    </packagedElement>
+
+    <!-- ============ GUI (presentación, WinForms) ============ -->
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_GUI" name="GUI">
+      <packagedElement xmi:type="uml:Class" xmi:id="c_GUI_FormLogin" name="FormLogin"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="c_GUI_FormRegistro" name="FormRegistro"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="c_GUI_FormPrincipal" name="FormPrincipal"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="c_GUI_FormEstadisticas" name="FormEstadisticas"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="c_GUI_FormReglas" name="FormReglas"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="c_GUI_Program" name="Program">
+        <ownedOperation xmi:id="op_GUI_Program_Main" name="Main" visibility="public" isStatic="true"/>
+      </packagedElement>
+    </packagedElement>
+
+    <!-- ============ Dependencias entre clases (flechas "usa" / "abre" / "opera sobre") ============ -->
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_01" name="usa" client="c_DAL_USUARIO" supplier="c_DAL_ACCESO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_02" name="opera sobre" client="c_DAL_USUARIO" supplier="c_BE_USUARIO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_03" name="usa" client="c_DAL_PARTIDA" supplier="c_DAL_ACCESO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_04" name="opera sobre" client="c_DAL_PARTIDA" supplier="c_BE_PARTIDA"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_05" name="usa" client="c_DAL_LOG" supplier="c_DAL_ACCESO"/>
+
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_06" name="usa" client="c_BLL_USUARIO" supplier="c_DAL_USUARIO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_07" name="usa" client="c_BLL_USUARIO" supplier="c_BLL_BITACORA"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_08" name="usa" client="c_BLL_PARTIDA" supplier="c_DAL_PARTIDA"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_09" name="usa" client="c_BLL_PARTIDA" supplier="c_BLL_BITACORA"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_10" name="usa" client="c_BLL_PARTIDA" supplier="c_BLL_MOVIMIENTOXML"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_11" name="usa" client="c_BLL_BITACORA" supplier="c_DAL_LOG"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_12" name="usa" client="c_BLL_BACKUPRESTORE" supplier="c_DAL_BACKUPRESTORE"/>
+
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_13" name="usa" client="c_GUI_FormLogin" supplier="c_BLL_USUARIO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_14" name="abre" client="c_GUI_FormLogin" supplier="c_GUI_FormRegistro"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_15" name="usa" client="c_GUI_FormRegistro" supplier="c_BLL_USUARIO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_16" name="usa" client="c_GUI_FormPrincipal" supplier="c_BLL_USUARIO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_17" name="usa" client="c_GUI_FormPrincipal" supplier="c_BLL_PARTIDA"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_18" name="usa" client="c_GUI_FormPrincipal" supplier="c_BLL_GENERALA"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_19" name="usa" client="c_GUI_FormPrincipal" supplier="c_BLL_MOVIMIENTOXML"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_20" name="usa" client="c_GUI_FormPrincipal" supplier="c_BLL_BACKUPRESTORE"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_21" name="abre" client="c_GUI_FormPrincipal" supplier="c_GUI_FormLogin"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_22" name="abre" client="c_GUI_FormPrincipal" supplier="c_GUI_FormEstadisticas"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_23" name="abre" client="c_GUI_FormPrincipal" supplier="c_GUI_FormReglas"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_24" name="usa" client="c_GUI_FormEstadisticas" supplier="c_BLL_PARTIDA"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_25" name="usa" client="c_GUI_FormEstadisticas" supplier="c_BLL_USUARIO"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_26" name="abre" client="c_GUI_Program" supplier="c_GUI_FormLogin"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_27" name="usa" client="c_GUI_Program" supplier="c_GUI_FormPrincipal"/>
+
+  </uml:Model>
+</xmi:XMI>
