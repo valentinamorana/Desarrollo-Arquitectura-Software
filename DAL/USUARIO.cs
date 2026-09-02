@@ -13,8 +13,15 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@pass", usuario.Contraseña));
 
             acceso.Abrir();
-            int id = acceso.LeerEscalar("USUARIO_INSERTAR", parametros);
-            acceso.Cerrar();
+            int id;
+            try
+            {
+                id = acceso.LeerEscalar("USUARIO_INSERTAR", parametros);
+            }
+            finally
+            {
+                acceso.Cerrar();
+            }
 
             return id;
         }
@@ -27,18 +34,23 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@pass", usuario.Contraseña));
 
             acceso.Abrir();
-            SqlDataReader reader = acceso.Leer("USUARIO_LOGIN", parametros);
-
             bool ok = false;
-            if (reader.Read())
+            try
             {
-                ok = true;
-                usuario.ID = reader.GetInt32(0);
-                usuario.Nombre = reader.GetString(1);
-                usuario.Contraseña = reader.GetString(2);
+                SqlDataReader reader = acceso.Leer("USUARIO_LOGIN", parametros);
+                if (reader.Read())
+                {
+                    ok = true;
+                    usuario.ID = reader.GetInt32(0);
+                    usuario.Nombre = reader.GetString(1);
+                    usuario.Contraseña = reader.GetString(2);
+                }
+                reader.Close();
             }
-            reader.Close();
-            acceso.Cerrar();
+            finally
+            {
+                acceso.Cerrar();
+            }
 
             return ok;
         }
@@ -50,18 +62,23 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@id", id));
 
             acceso.Abrir();
-            SqlDataReader reader = acceso.Leer("USUARIO_BUSCAR_POR_ID", parametros);
-
             BE.USUARIO usuario = null;
-            if (reader.Read())
+            try
             {
-                usuario = new BE.USUARIO();
-                usuario.ID = reader.GetInt32(0);
-                usuario.Nombre = reader.GetString(1);
-                usuario.Contraseña = reader.GetString(2);
+                SqlDataReader reader = acceso.Leer("USUARIO_BUSCAR_POR_ID", parametros);
+                if (reader.Read())
+                {
+                    usuario = new BE.USUARIO();
+                    usuario.ID = reader.GetInt32(0);
+                    usuario.Nombre = reader.GetString(1);
+                    usuario.Contraseña = reader.GetString(2);
+                }
+                reader.Close();
             }
-            reader.Close();
-            acceso.Cerrar();
+            finally
+            {
+                acceso.Cerrar();
+            }
 
             return usuario;
         }
