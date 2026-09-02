@@ -15,8 +15,15 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@rutaXml", partida.RutaXml));
 
             acceso.Abrir();
-            int id = acceso.LeerEscalar("PARTIDA_INSERTAR", parametros);
-            acceso.Cerrar();
+            int id;
+            try
+            {
+                id = acceso.LeerEscalar("PARTIDA_INSERTAR", parametros);
+            }
+            finally
+            {
+                acceso.Cerrar();
+            }
 
             return id;
         }
@@ -39,8 +46,14 @@ namespace DAL
             }
 
             acceso.Abrir();
-            acceso.Escribir("PARTIDA_FINALIZAR", parametros);
-            acceso.Cerrar();
+            try
+            {
+                acceso.Escribir("PARTIDA_FINALIZAR", parametros);
+            }
+            finally
+            {
+                acceso.Cerrar();
+            }
         }
 
         public List<BE.PARTIDA> ListarPorUsuario(int idUsuario)
@@ -50,40 +63,44 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@idUsuario", idUsuario));
 
             acceso.Abrir();
-            SqlDataReader reader = acceso.Leer("PARTIDA_LISTAR_POR_USUARIO", parametros);
-
             List<BE.PARTIDA> partidas = new List<BE.PARTIDA>();
-            while (reader.Read())
+            try
             {
-                BE.PARTIDA p = new BE.PARTIDA();
-                p.ID = reader.GetInt32(0);
-                p.IdJugador1 = reader.GetInt32(1);
-                p.IdJugador2 = reader.GetInt32(2);
-                if (reader.IsDBNull(3))
+                SqlDataReader reader = acceso.Leer("PARTIDA_LISTAR_POR_USUARIO", parametros);
+                while (reader.Read())
                 {
-                    p.IdGanador = 0;
+                    BE.PARTIDA p = new BE.PARTIDA();
+                    p.ID = reader.GetInt32(0);
+                    p.IdJugador1 = reader.GetInt32(1);
+                    p.IdJugador2 = reader.GetInt32(2);
+                    if (reader.IsDBNull(3))
+                    {
+                        p.IdGanador = 0;
+                    }
+                    else
+                    {
+                        p.IdGanador = reader.GetInt32(3);
+                    }
+                    p.PuntajeJugador1 = reader.GetInt32(4);
+                    p.PuntajeJugador2 = reader.GetInt32(5);
+                    p.FechaInicio = reader.GetDateTime(6);
+                    p.FechaFin = reader.GetDateTime(7);
+                    if (reader.IsDBNull(8))
+                    {
+                        p.RutaXml = "";
+                    }
+                    else
+                    {
+                        p.RutaXml = reader.GetString(8);
+                    }
+                    partidas.Add(p);
                 }
-                else
-                {
-                    p.IdGanador = reader.GetInt32(3);
-                }
-                p.PuntajeJugador1 = reader.GetInt32(4);
-                p.PuntajeJugador2 = reader.GetInt32(5);
-                p.FechaInicio = reader.GetDateTime(6);
-                p.FechaFin = reader.GetDateTime(7);
-                if (reader.IsDBNull(8))
-                {
-                    p.RutaXml = "";
-                }
-                else
-                {
-                    p.RutaXml = reader.GetString(8);
-                }
-                partidas.Add(p);
+                reader.Close();
             }
-
-            reader.Close();
-            acceso.Cerrar();
+            finally
+            {
+                acceso.Cerrar();
+            }
             return partidas;
         }
     }

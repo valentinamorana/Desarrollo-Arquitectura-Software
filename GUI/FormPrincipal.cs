@@ -103,6 +103,11 @@ namespace GUI
             chkGuardar4.Checked = false;
             chkGuardar5.Checked = false;
 
+            // Todavía no se tiró ningún dado este turno: no hay nada que "guardar".
+            // Si se dejaran habilitados, tildar un casillero acá haría que ese dado
+            // se quede en 0 en la primera tirada en vez de tirarse.
+            DeshabilitarCheckboxesGuardar();
+
             string nombreActual;
             if (jugadorActual == 1)
             {
@@ -149,6 +154,11 @@ namespace GUI
             if (tirosRestantes == 0)
             {
                 btnTirarDados.Enabled = false;
+                DeshabilitarCheckboxesGuardar();
+            }
+            else
+            {
+                HabilitarCheckboxesGuardar();
             }
         }
 
@@ -444,25 +454,36 @@ namespace GUI
         private void HabilitarJuego()
         {
             btnTirarDados.Enabled = true;
-            chkGuardar1.Enabled = true;
-            chkGuardar2.Enabled = true;
-            chkGuardar3.Enabled = true;
-            chkGuardar4.Enabled = true;
-            chkGuardar5.Enabled = true;
             cmbCategoria.Enabled = true;
             btnAnotar.Enabled = false;
+            // Los checkboxes "Guardar" los habilita/deshabilita cada turno IniciarTurno()
+            // y btnTirarDados_Click(), según si ya hay dados tirados para conservar.
         }
 
         private void DeshabilitarJuego()
         {
             btnTirarDados.Enabled = false;
+            cmbCategoria.Enabled = false;
+            btnAnotar.Enabled = false;
+            DeshabilitarCheckboxesGuardar();
+        }
+
+        private void HabilitarCheckboxesGuardar()
+        {
+            chkGuardar1.Enabled = true;
+            chkGuardar2.Enabled = true;
+            chkGuardar3.Enabled = true;
+            chkGuardar4.Enabled = true;
+            chkGuardar5.Enabled = true;
+        }
+
+        private void DeshabilitarCheckboxesGuardar()
+        {
             chkGuardar1.Enabled = false;
             chkGuardar2.Enabled = false;
             chkGuardar3.Enabled = false;
             chkGuardar4.Enabled = false;
             chkGuardar5.Enabled = false;
-            cmbCategoria.Enabled = false;
-            btnAnotar.Enabled = false;
         }
 
         // -------------------- Menú superior --------------------

@@ -47,9 +47,25 @@ Fecha: 27/08/2026
 
 No se encontraron errores de lógica en la revisión manual de `BLL.GENERALA` (escalera, full, póker, generala), el flujo de turnos de `FormPrincipal`, ni en el cálculo de estadísticas de `FormEstadisticas`.
 
-**Riesgo aceptado y documentado:** `DAL.BACKUPRESTORE` arma el `BACKUP DATABASE` / `RESTORE DATABASE` concatenando la ruta de archivo directamente en el texto SQL (no usa `SqlParameter`, porque `BACKUP`/`RESTORE` no lo permiten como sentencia parametrizable simple). La ruta viene de un `SaveFileDialog`/`OpenFileDialog` nativo de Windows elegido por el propio usuario logueado, no de un campo de texto libre — el riesgo de inyección es mínimo y es una limitación conocida de T-SQL, no un descuido.
-
 **Cobertura de pruebas:** no hay tests automatizados (no se pidieron en la consigna). La verificación fue manual: compilación limpia + revisión de código línea por línea de las clases de negocio y de la UI.
+
+**Riesgo aceptado y documentado:** las contraseñas (`USUARIO.Contraseña`) se guardan y comparan en texto plano. No hashea ninguno de los 2 TP de referencia de la cátedra consultados (Batalla Naval) y la consigna no lo exige, así que se mantiene así a propósito para no apartarse del estilo esperado.
+
+### 3.1 Correcciones aplicadas (02/09/2026)
+
+Tras una segunda revisión se encontraron y corrigieron los siguientes problemas:
+
+| # | Problema | Corrección | Dónde |
+|---|---|---|---|
+| 1 | Si `RESTORE DATABASE` fallaba (`.bak` inválido/corrupto), la base quedaba trabada en `SINGLE_USER` para siempre — la app dejaba de poder conectarse hasta arreglarlo a mano desde SSMS. | El `ALTER DATABASE ... SET MULTI_USER` se ejecuta ahora en un `finally`, así se revierte pase lo que pase con el `RESTORE`. | `DAL/BACKUPRESTORE.cs` |
+| 2 | `BACKUP`/`RESTORE DATABASE` concatenan la ruta de archivo en el texto SQL sin escapar. Como el nombre de archivo del `SaveFileDialog`/`OpenFileDialog` es texto editable, un `'` en el nombre rompe el string literal (inyección real, no solo teórica — se corrige la evaluación de riesgo de la versión anterior de esta auditoría). | Se agregó `EscaparRuta()`, que duplica las comillas simples (`'` → `''`) antes de concatenar, el escape estándar de T-SQL. | `DAL/BACKUPRESTORE.cs` |
+| 3 | `ACCESO.Leer()` no atrapaba excepciones (a diferencia de `Escribir`/`LeerEscalar`). Un error de conexión durante un login o una consulta tiraba una excepción sin manejar que cerraba toda la aplicación de golpe. | Se agregó un manejador global (`Application.ThreadException`) que muestra un `MessageBox` con el error en vez de crashear. | `GUI/Program.cs` |
+| 4 | Ningún método del DAL cerraba la conexión en un `finally`: si algo fallaba entre `Abrir()` y `Cerrar()`, la conexión quedaba abierta. | Se envolvió el cuerpo de cada método de `USUARIO`, `PARTIDA` y `LOG` en `try/finally` para garantizar `acceso.Cerrar()` siempre. | `DAL/USUARIO.cs`, `DAL/PARTIDA.cs`, `DAL/LOG.cs` |
+| 5 | Los checkboxes "Guardar" quedaban habilitados desde que arrancaba la partida y nunca se deshabilitaban entre tiradas. Si un jugador tildaba uno antes de tirar por primera vez en el turno, ese dado quedaba en 0 (valor inválido) en vez de tirarse. | Los checkboxes ahora se deshabilitan al empezar cada turno y solo se habilitan después de la primera tirada (mientras queden tiradas), con dos helpers nuevos `HabilitarCheckboxesGuardar()`/`DeshabilitarCheckboxesGuardar()`. | `GUI/FormPrincipal.cs` |
+
+Se evaluó también hashear las contraseñas, pero se descartó para no apartarse del estilo/nivel de complejidad de los TP de referencia de la cátedra (ver riesgo aceptado arriba).
+
+Se recompiló la solución completa (`MSBuild TP_Generala.sln`) después de cada cambio: sigue compilando sin errores ni warnings de código.
 
 ## 4. Estructura final del repositorio
 

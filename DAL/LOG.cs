@@ -14,8 +14,14 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@idTipo", idTipo));
 
             acceso.Abrir();
-            acceso.Escribir("LOG_INSERTAR", parametros);
-            acceso.Cerrar();
+            try
+            {
+                acceso.Escribir("LOG_INSERTAR", parametros);
+            }
+            finally
+            {
+                acceso.Cerrar();
+            }
         }
     }
 }
