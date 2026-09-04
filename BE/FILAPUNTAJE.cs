@@ -2,6 +2,9 @@ namespace BE
 {
     public class FILAPUNTAJE
     {
+        // -1 = todavía no se anotó
+        public const int SIN_ANOTAR = -1;
+
         private string categoria;
 
         public string Categoria
@@ -10,7 +13,6 @@ namespace BE
             set { categoria = value; }
         }
 
-        // -1 = todavía no se anotó
         private int puntajeJugador1;
 
         public int PuntajeJugador1

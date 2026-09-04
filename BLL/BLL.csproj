@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="USUARIO.cs" />
     <Compile Include="PARTIDA.cs" />
+    <Compile Include="delPartidaFinalizada.cs" />
     <Compile Include="BITACORA.cs" />
     <Compile Include="GENERALA.cs" />
     <Compile Include="MOVIMIENTOXML.cs" />
