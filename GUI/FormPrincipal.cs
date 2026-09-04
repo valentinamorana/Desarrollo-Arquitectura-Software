@@ -7,8 +7,6 @@ namespace GUI
 {
     public partial class FormPrincipal : Form
     {
-        private const int SIN_ANOTAR = -1;
-
         private USUARIO jugador1;
         private USUARIO jugador2;
 
@@ -21,6 +19,8 @@ namespace GUI
         private PARTIDA partidaActual;
         private int turnoContador;
 
+        private BLL.PARTIDA partidaBLL = new BLL.PARTIDA();
+
         public FormPrincipal(USUARIO jugadorLogueado)
         {
             InitializeComponent();
@@ -30,10 +30,44 @@ namespace GUI
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
+            partidaBLL.PartidaFinalizada += PartidaBLL_PartidaFinalizada;
+
             lblJugador1.Text = "Jugador 1: " + jugador1.Nombre;
             lblJugador2.Text = "Jugador 2: (sin ingresar)";
             CargarTablaVacia();
             DeshabilitarJuego();
+        }
+
+        private void PartidaBLL_PartidaFinalizada(BE.PARTIDA partida, bool abandonada)
+        {
+            string mensaje;
+            if (partida.IdGanador == jugador1.ID)
+            {
+                mensaje = jugador1.Nombre + " ganó la partida!";
+            }
+            else if (partida.IdGanador == jugador2.ID)
+            {
+                mensaje = jugador2.Nombre + " ganó la partida!";
+            }
+            else
+            {
+                mensaje = "La partida terminó empatada!";
+            }
+
+            if (abandonada)
+            {
+                mensaje = "Partida abandonada. " + mensaje;
+            }
+
+            MessageBox.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            DeshabilitarJuego();
+            lblTurno.Text = "Turno de: -";
+            lblTirosRestantes.Text = "Tiros restantes: -";
+            btnComenzarPartida.Visible = true;
+            btnComenzarPartida.Enabled = true;
+            btnLoginJugador2.Enabled = true;
+            btnAbandonar.Visible = false;
         }
 
         // -------------------- Alta de jugador 2 / inicio de partida --------------------
@@ -68,7 +102,6 @@ namespace GUI
             partidaActual.IdJugador1 = jugador1.ID;
             partidaActual.IdJugador2 = jugador2.ID;
 
-            BLL.PARTIDA partidaBLL = new BLL.PARTIDA();
             partidaBLL.Iniciar(partidaActual);
 
             turnoContador = 0;
@@ -178,11 +211,11 @@ namespace GUI
             bool generalaYaAnotada;
             if (jugadorActual == 1)
             {
-                generalaYaAnotada = filaGenerala.PuntajeJugador1 != SIN_ANOTAR;
+                generalaYaAnotada = filaGenerala.PuntajeJugador1 != FILAPUNTAJE.SIN_ANOTAR;
             }
             else
             {
-                generalaYaAnotada = filaGenerala.PuntajeJugador2 != SIN_ANOTAR;
+                generalaYaAnotada = filaGenerala.PuntajeJugador2 != FILAPUNTAJE.SIN_ANOTAR;
             }
 
             foreach (FILAPUNTAJE fila in tabla)
@@ -190,11 +223,11 @@ namespace GUI
                 bool sinAnotar;
                 if (jugadorActual == 1)
                 {
-                    sinAnotar = fila.PuntajeJugador1 == SIN_ANOTAR;
+                    sinAnotar = fila.PuntajeJugador1 == FILAPUNTAJE.SIN_ANOTAR;
                 }
                 else
                 {
-                    sinAnotar = fila.PuntajeJugador2 == SIN_ANOTAR;
+                    sinAnotar = fila.PuntajeJugador2 == FILAPUNTAJE.SIN_ANOTAR;
                 }
                 if (!sinAnotar)
                 {
@@ -281,7 +314,7 @@ namespace GUI
                 jugadorActual = 1;
             }
 
-            if (JuegoTerminado())
+            if (partidaBLL.EstaFinalizada(tabla))
             {
                 FinalizarPartida();
             }
@@ -289,18 +322,6 @@ namespace GUI
             {
                 IniciarTurno();
             }
-        }
-
-        private bool JuegoTerminado()
-        {
-            foreach (FILAPUNTAJE fila in tabla)
-            {
-                if (fila.PuntajeJugador1 == SIN_ANOTAR || fila.PuntajeJugador2 == SIN_ANOTAR)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         private void FinalizarPartida(bool abandonada = false)
@@ -314,54 +335,26 @@ namespace GUI
             }
 
             int idGanador;
-            string mensaje;
             if (total1 > total2)
             {
                 idGanador = jugador1.ID;
-                mensaje = jugador1.Nombre + " ganó la partida!";
             }
             else if (total2 > total1)
             {
                 idGanador = jugador2.ID;
-                mensaje = jugador2.Nombre + " ganó la partida!";
             }
             else
             {
                 idGanador = 0;
-                mensaje = "La partida terminó empatada!";
-            }
-
-            if (abandonada)
-            {
-                mensaje = "Partida abandonada. " + mensaje;
             }
 
             partidaActual.PuntajeJugador1 = total1;
             partidaActual.PuntajeJugador2 = total2;
             partidaActual.IdGanador = idGanador;
 
-            string descripcionBitacora;
-            if (abandonada)
-            {
-                descripcionBitacora = "Partida abandonada";
-            }
-            else
-            {
-                descripcionBitacora = "Fin de partida";
-            }
-
-            BLL.PARTIDA partidaBLL = new BLL.PARTIDA();
-            partidaBLL.Finalizar(partidaActual, descripcionBitacora);
-
-            MessageBox.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            DeshabilitarJuego();
-            lblTurno.Text = "Turno de: -";
-            lblTirosRestantes.Text = "Tiros restantes: -";
-            btnComenzarPartida.Visible = true;
-            btnComenzarPartida.Enabled = true;
-            btnLoginJugador2.Enabled = true;
-            btnAbandonar.Visible = false;
+            // El mensaje y el reseteo de la pantalla los hace PartidaBLL_PartidaFinalizada,
+            // suscripto al evento que dispara BLL.PARTIDA.Finalizar().
+            partidaBLL.Finalizar(partidaActual, abandonada);
         }
 
         private void btnAbandonar_Click(object sender, EventArgs e)
@@ -398,7 +391,7 @@ namespace GUI
 
         private void dgvPuntajes_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.Value != null && e.Value.ToString() == SIN_ANOTAR.ToString())
+            if (e.Value != null && e.Value.ToString() == FILAPUNTAJE.SIN_ANOTAR.ToString())
             {
                 e.Value = "";
                 e.FormattingApplied = true;
@@ -412,8 +405,8 @@ namespace GUI
             {
                 FILAPUNTAJE fila = new FILAPUNTAJE();
                 fila.Categoria = categoria;
-                fila.PuntajeJugador1 = SIN_ANOTAR;
-                fila.PuntajeJugador2 = SIN_ANOTAR;
+                fila.PuntajeJugador1 = FILAPUNTAJE.SIN_ANOTAR;
+                fila.PuntajeJugador2 = FILAPUNTAJE.SIN_ANOTAR;
                 tabla.Add(fila);
             }
             RefrescarGrilla();
@@ -421,7 +414,7 @@ namespace GUI
 
         private int SumarSiAnotado(int puntaje)
         {
-            if (puntaje == SIN_ANOTAR)
+            if (puntaje == FILAPUNTAJE.SIN_ANOTAR)
             {
                 return 0;
             }
