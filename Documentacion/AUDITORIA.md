@@ -63,6 +63,15 @@ Tras una segunda revisión se encontraron y corrigieron los siguientes problemas
 | 4 | Ningún método del DAL cerraba la conexión en un `finally`: si algo fallaba entre `Abrir()` y `Cerrar()`, la conexión quedaba abierta. | Se envolvió el cuerpo de cada método de `USUARIO`, `PARTIDA` y `LOG` en `try/finally` para garantizar `acceso.Cerrar()` siempre. | `DAL/USUARIO.cs`, `DAL/PARTIDA.cs`, `DAL/LOG.cs` |
 | 5 | Los checkboxes "Guardar" quedaban habilitados desde que arrancaba la partida y nunca se deshabilitaban entre tiradas. Si un jugador tildaba uno antes de tirar por primera vez en el turno, ese dado quedaba en 0 (valor inválido) en vez de tirarse. | Los checkboxes ahora se deshabilitan al empezar cada turno y solo se habilitan después de la primera tirada (mientras queden tiradas), con dos helpers nuevos `HabilitarCheckboxesGuardar()`/`DeshabilitarCheckboxesGuardar()`. | `GUI/FormPrincipal.cs` |
 
+### 3.2 Correcciones aplicadas (10/10/2026)
+
+| # | Problema | Corrección | Dónde |
+|---|---|---|---|
+| 6 | Al abandonar, el ganador salía de los puntos parciales: quien abandonaba podía quedar como ganador. | Nuevo `BLL.PARTIDA.Abandonar(partida, tabla, idQuienAbandona)`: guarda los puntajes parciales y le da la partida al rival. Abandona el jugador del turno actual (el mensaje de confirmación lo nombra). | `BLL/PARTIDA.cs`, `GUI/FormPrincipal.cs` |
+| 7 | La Generala Doble valía 100 aunque la Generala estuviera tachada con 0. | `BLL.PARTIDA.Anotar` anota 0 en Generala Doble si la Generala no tiene puntos. La categoría sigue disponible para tachar, así ambos jugadores siempre completan 11 categorías y la partida termina. | `BLL/PARTIDA.cs` |
+| 8 | Si se logueaba un Jugador 2 distinto después de una partida, al anterior no se le registraba el cierre de sesión. | Se llama a `BLL.USUARIO.Logout` del Jugador 2 anterior antes de reemplazarlo. | `GUI/FormPrincipal.cs` |
+| 9 | Reglas de juego en la GUI: armado de la planilla, categorías disponibles, cálculo y escritura del puntaje, totales y ganador. | Se mudaron a `BLL.PARTIDA` (`CrearTablaVacia`, `CategoriasDisponibles`, `Anotar`, `CalcularTotal`, `Finalizar(partida, tabla)`, `Abandonar`). `FormPrincipal` solo muestra datos y reacciona a eventos. El fin de partida se notifica a la GUI con el evento `PartidaFinalizada` (delegado `delPartidaFinalizada`). | `BLL/PARTIDA.cs`, `BLL/delPartidaFinalizada.cs`, `GUI/FormPrincipal.cs` |
+
 Se evaluó también hashear las contraseñas, pero se descartó para no apartarse del estilo/nivel de complejidad de los TP de referencia de la cátedra (ver riesgo aceptado arriba).
 
 Se recompiló la solución completa (`MSBuild TP_Generala.sln`) después de cada cambio: sigue compilando sin errores ni warnings de código.
