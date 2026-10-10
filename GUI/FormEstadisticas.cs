@@ -110,6 +110,7 @@ namespace GUI
                 fila.PuntajePropio = puntajePropio;
                 fila.PuntajeRival = puntajeRival;
                 fila.Resultado = resultado;
+                fila.RutaXml = p.RutaXml;
                 filas.Add(fila);
             }
 
@@ -121,6 +122,7 @@ namespace GUI
             dgvHistorial.Columns["PuntajePropio"].HeaderText = "Mi Puntaje";
             dgvHistorial.Columns["PuntajeRival"].HeaderText = "Puntaje Rival";
             dgvHistorial.Columns["Resultado"].HeaderText = "Resultado";
+            dgvHistorial.Columns["RutaXml"].Visible = false;
 
             int totalPartidas = partidas.Count;
             double promedio;
@@ -138,6 +140,30 @@ namespace GUI
             lblEmpatadas.Text = "Empatadas: " + empatadas;
             lblPromedio.Text = "Promedio de victorias: " + promedio.ToString("0.0") + "%";
             lblTiempoTotal.Text = "Tiempo total jugado: " + (int)tiempoTotal.TotalHours + "h " + tiempoTotal.Minutes + "m";
+        }
+
+        // Consulta posterior del XML de movimientos de la partida elegida en el historial.
+        private void btnVerMovimientos_Click(object sender, EventArgs e)
+        {
+            if (dgvHistorial.CurrentRow == null)
+            {
+                MessageBox.Show("Elegí una partida del historial");
+                return;
+            }
+
+            FILAHISTORIAL fila = (FILAHISTORIAL)dgvHistorial.CurrentRow.DataBoundItem;
+
+            if (!BLL.MOVIMIENTOXML.Existe(fila.RutaXml))
+            {
+                MessageBox.Show(
+                    "No se encontró el archivo XML de esa partida:\n" + fila.RutaXml,
+                    "Movimientos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string titulo = "Partida del " + fila.Fecha + " vs " + fila.Rival;
+            FormMovimientos formMovimientos = new FormMovimientos(fila.RutaXml, titulo);
+            formMovimientos.ShowDialog();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

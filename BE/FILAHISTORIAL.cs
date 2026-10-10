@@ -41,5 +41,14 @@ namespace BE
             get { return resultado; }
             set { resultado = value; }
         }
+
+        // No se muestra en la grilla: se usa para abrir el XML de movimientos de esa partida.
+        private string rutaXml;
+
+        public string RutaXml
+        {
+            get { return rutaXml; }
+            set { rutaXml = value; }
+        }
     }
 }

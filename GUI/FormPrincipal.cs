@@ -18,6 +18,7 @@ namespace GUI
         private List<FILAPUNTAJE> tabla;
         private PARTIDA partidaActual;
         private int turnoContador;
+        private bool partidaEnCurso = false;
 
         private BLL.PARTIDA partidaBLL = new BLL.PARTIDA();
 
@@ -31,6 +32,7 @@ namespace GUI
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
             partidaBLL.PartidaFinalizada += PartidaBLL_PartidaFinalizada;
+            this.FormClosing += FormPrincipal_FormClosing;
 
             lblJugador1.Text = "Jugador 1: " + jugador1.Nombre;
             lblJugador2.Text = "Jugador 2: (sin ingresar)";
@@ -61,6 +63,7 @@ namespace GUI
 
             MessageBox.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            partidaEnCurso = false;
             DeshabilitarJuego();
             lblTurno.Text = "Turno de: -";
             lblTirosRestantes.Text = "Tiros restantes: -";
@@ -111,6 +114,7 @@ namespace GUI
             partidaActual.IdJugador2 = jugador2.ID;
 
             partidaBLL.Iniciar(partidaActual);
+            partidaEnCurso = true;
 
             turnoContador = 0;
             jugadorActual = 1;
@@ -286,30 +290,35 @@ namespace GUI
             }
         }
 
-        private void btnAbandonar_Click(object sender, EventArgs e)
+        // Abandona el jugador al que le toca el turno; el rival gana la partida.
+        private USUARIO JugadorDelTurno()
         {
-            // Abandona el jugador al que le toca el turno; el rival gana la partida.
-            USUARIO abandona;
-            USUARIO rival;
             if (jugadorActual == 1)
             {
-                abandona = jugador1;
-                rival = jugador2;
+                return jugador1;
             }
-            else
-            {
-                abandona = jugador2;
-                rival = jugador1;
-            }
+            return jugador2;
+        }
 
+        private USUARIO RivalDelTurno()
+        {
+            if (jugadorActual == 1)
+            {
+                return jugador2;
+            }
+            return jugador1;
+        }
+
+        private void btnAbandonar_Click(object sender, EventArgs e)
+        {
             DialogResult confirmar = MessageBox.Show(
-                "¿Seguro que " + abandona.Nombre + " quiere abandonar la partida? " +
-                "Se registra con el puntaje actual y la gana " + rival.Nombre + ".",
+                "¿Seguro que " + JugadorDelTurno().Nombre + " quiere abandonar la partida? " +
+                "Se registra con el puntaje actual y la gana " + RivalDelTurno().Nombre + ".",
                 "Abandonar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirmar == DialogResult.Yes)
             {
-                partidaBLL.Abandonar(partidaActual, tabla, abandona.ID);
+                partidaBLL.Abandonar(partidaActual, tabla, JugadorDelTurno().ID);
             }
         }
 
@@ -374,6 +383,11 @@ namespace GUI
             btnAnotar.Enabled = false;
             // Los checkboxes "Guardar" los habilita/deshabilita cada turno IniciarTurno()
             // y btnTirarDados_Click(), según si ya hay dados tirados para conservar.
+
+            // Durante la partida no se puede hacer backup ni restore: un restore a mitad
+            // de partida reemplazaría la base y la partida en curso quedaría inconsistente.
+            btnBackup.Enabled = false;
+            btnRestore.Enabled = false;
         }
 
         private void DeshabilitarJuego()
@@ -382,6 +396,9 @@ namespace GUI
             cmbCategoria.Enabled = false;
             btnAnotar.Enabled = false;
             DeshabilitarCheckboxesGuardar();
+
+            btnBackup.Enabled = true;
+            btnRestore.Enabled = true;
         }
 
         private void HabilitarCheckboxesGuardar()
@@ -404,33 +421,73 @@ namespace GUI
 
         // -------------------- Menú superior --------------------
 
+        // El botón "Salir" solo cierra el form: el logout (y el abandono de una partida
+        // en curso) los hace FormPrincipal_FormClosing, así también se registran si
+        // la ventana se cierra con la X.
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
+            this.Close();
+        }
+
+        private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (partidaEnCurso)
+            {
+                DialogResult confirmar = MessageBox.Show(
+                    "Hay una partida en curso. Si salís, " + JugadorDelTurno().Nombre + " la abandona " +
+                    "y la gana " + RivalDelTurno().Nombre + ". ¿Salir igual?",
+                    "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (confirmar != DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                partidaBLL.Abandonar(partidaActual, tabla, JugadorDelTurno().ID);
+            }
+
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
             usuarioBLL.Logout(jugador1);
             if (jugador2 != null)
             {
                 usuarioBLL.Logout(jugador2);
             }
-            this.Close();
+        }
+
+        // BACKUP/RESTORE los ejecuta el servicio de SQL Server, que no suele tener permiso
+        // sobre carpetas personales (Escritorio, Documentos). Por eso el diálogo arranca
+        // en la carpeta de backups de la instancia, donde siempre puede leer y escribir.
+        private string CarpetaInicialBackups()
+        {
+            string carpeta = BLL.BACKUPRESTORE.CarpetaBackupPorDefecto();
+            if (carpeta != "" && System.IO.Directory.Exists(carpeta))
+            {
+                return carpeta;
+            }
+            return "";
         }
 
         private void btnBackup_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialogo = new SaveFileDialog();
             dialogo.Filter = "Backup de SQL Server (*.bak)|*.bak";
-            dialogo.FileName = "GENERALA.bak";
+            dialogo.FileName = "GENERALA_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".bak";
+            dialogo.InitialDirectory = CarpetaInicialBackups();
 
             if (dialogo.ShowDialog() == DialogResult.OK)
             {
-                bool ok = BLL.BACKUPRESTORE.HacerBackup(dialogo.FileName);
-                if (ok)
+                string error = BLL.BACKUPRESTORE.HacerBackup(dialogo.FileName);
+                if (error == "")
                 {
-                    MessageBox.Show("Backup realizado correctamente");
+                    MessageBox.Show("Backup realizado correctamente en:\n" + dialogo.FileName);
                 }
                 else
                 {
-                    MessageBox.Show("Ocurrió un error al hacer el backup", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        "Ocurrió un error al hacer el backup:\n" + error +
+                        "\n\nSi es un problema de permisos, probá guardarlo en la carpeta de backups de SQL Server.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -439,6 +496,7 @@ namespace GUI
         {
             OpenFileDialog dialogo = new OpenFileDialog();
             dialogo.Filter = "Backup de SQL Server (*.bak)|*.bak";
+            dialogo.InitialDirectory = CarpetaInicialBackups();
 
             if (dialogo.ShowDialog() == DialogResult.OK)
             {
@@ -448,14 +506,16 @@ namespace GUI
 
                 if (confirmar == DialogResult.Yes)
                 {
-                    bool ok = BLL.BACKUPRESTORE.HacerRestore(dialogo.FileName);
-                    if (ok)
+                    string error = BLL.BACKUPRESTORE.HacerRestore(dialogo.FileName);
+                    if (error == "")
                     {
                         MessageBox.Show("Restore realizado correctamente");
                     }
                     else
                     {
-                        MessageBox.Show("Ocurrió un error al restaurar el backup", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(
+                            "Ocurrió un error al restaurar el backup:\n" + error,
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -51,6 +52,32 @@ namespace BLL
 
             doc.DocumentElement.AppendChild(movimiento);
             doc.Save(ruta);
+        }
+
+        public static bool Existe(string ruta)
+        {
+            return ruta != null && ruta != "" && File.Exists(ruta);
+        }
+
+        // Lee el XML de una partida y devuelve sus movimientos, para consultarlos desde la app.
+        public static List<BE.MOVIMIENTO> LeerMovimientos(string ruta)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(ruta);
+
+            List<BE.MOVIMIENTO> movimientos = new List<BE.MOVIMIENTO>();
+            foreach (XmlElement nodo in doc.DocumentElement.GetElementsByTagName("Movimiento"))
+            {
+                BE.MOVIMIENTO m = new BE.MOVIMIENTO();
+                m.Turno = int.Parse(nodo.GetAttribute("turno"));
+                m.Jugador = nodo.GetAttribute("jugador");
+                m.Dados = nodo.GetAttribute("dados");
+                m.Categoria = nodo.GetAttribute("categoria");
+                m.Puntaje = int.Parse(nodo.GetAttribute("puntaje"));
+                m.Fecha = nodo.GetAttribute("fecha");
+                movimientos.Add(m);
+            }
+            return movimientos;
         }
     }
 }

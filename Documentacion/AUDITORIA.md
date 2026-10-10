@@ -72,6 +72,17 @@ Tras una segunda revisión se encontraron y corrigieron los siguientes problemas
 | 8 | Si se logueaba un Jugador 2 distinto después de una partida, al anterior no se le registraba el cierre de sesión. | Se llama a `BLL.USUARIO.Logout` del Jugador 2 anterior antes de reemplazarlo. | `GUI/FormPrincipal.cs` |
 | 9 | Reglas de juego en la GUI: armado de la planilla, categorías disponibles, cálculo y escritura del puntaje, totales y ganador. | Se mudaron a `BLL.PARTIDA` (`CrearTablaVacia`, `CategoriasDisponibles`, `Anotar`, `CalcularTotal`, `Finalizar(partida, tabla)`, `Abandonar`). `FormPrincipal` solo muestra datos y reacciona a eventos. El fin de partida se notifica a la GUI con el evento `PartidaFinalizada` (delegado `delPartidaFinalizada`). | `BLL/PARTIDA.cs`, `BLL/delPartidaFinalizada.cs`, `GUI/FormPrincipal.cs` |
 
+### 3.3 Correcciones aplicadas (10/10/2026, segunda tanda)
+
+| # | Problema | Corrección | Dónde |
+|---|---|---|---|
+| 10 | Cerrar la ventana con la X no registraba el logout: solo lo hacía el botón "Salir". | Nuevo `FormPrincipal_FormClosing`, que hace el logout de los dos jugadores. El botón "Salir" solo llama a `this.Close()`, así ambos caminos pasan por el mismo lugar. | `GUI/FormPrincipal.cs` |
+| 11 | Cerrar la app a mitad de partida la dejaba abierta en la base (`FECHA_FIN = NULL`) y sin `FIN_PARTIDA` en la bitácora. Pasaba en los datos reales: partidas 6 y 7. | En el `FormClosing`, si hay partida en curso se pide confirmación. Si se confirma, la abandona el jugador del turno con `BLL.PARTIDA.Abandonar`; si no, se cancela el cierre. | `GUI/FormPrincipal.cs` |
+| 12 | El XML de movimientos se generaba pero no se podía consultar desde la app ("para su posterior consulta"). | Botón "Ver movimientos" en Estadísticas: lee el XML de la partida elegida (`BLL.MOVIMIENTOXML.LeerMovimientos` → `BE.MOVIMIENTO`) y lo muestra en `FormMovimientos`. Si el archivo no existe, avisa. | `BE/MOVIMIENTO.cs`, `BE/FILAHISTORIAL.cs`, `BLL/MOVIMIENTOXML.cs`, `GUI/FormEstadisticas.*`, `GUI/FormMovimientos.*` |
+| 13 | La cadena de conexión estaba fija en el código (`.\SQLEXPRESS`), en dos lugares. | Ahora está en `GUI/App.config` (`connectionStrings` "GENERALA") y se lee con `ConfigurationManager`. El backup/restore arma la conexión a `master` a partir de la misma cadena. | `GUI/App.config`, `DAL/ACCESO.cs`, `DAL/BACKUPRESTORE.cs` |
+| 14 | El backup en una carpeta personal fallaba y solo mostraba "Ocurrió un error". Se probó: `BACKUP DATABASE` al Escritorio falla (el servicio de SQL Server no tiene permiso) y a la carpeta de backups de la instancia funciona. | Los diálogos de backup/restore arrancan en la carpeta de backups de SQL Server (`SERVERPROPERTY('InstanceDefaultBackupPath')`). Si falla, se muestra el mensaje real de SQL Server. El restore usa `WITH REPLACE`. | `DAL/BACKUPRESTORE.cs`, `BLL/BACKUPRESTORE.cs`, `GUI/FormPrincipal.cs` |
+| 15 | Se podía hacer Backup o Restore con una partida en juego; un restore a mitad de partida deja la partida inconsistente. | `HabilitarJuego()` deshabilita Backup y Restore y `DeshabilitarJuego()` los vuelve a habilitar. "Salir" sigue habilitado porque ahora pasa por el abandono con confirmación. | `GUI/FormPrincipal.cs` |
+
 Se evaluó también hashear las contraseñas, pero se descartó para no apartarse del estilo/nivel de complejidad de los TP de referencia de la cátedra (ver riesgo aceptado arriba).
 
 Se recompiló la solución completa (`MSBuild TP_Generala.sln`) después de cada cambio: sigue compilando sin errores ni warnings de código.
