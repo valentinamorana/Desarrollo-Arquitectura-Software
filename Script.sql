@@ -1,4 +1,4 @@
--- =========================================================
+﻿-- =========================================================
 -- Este script se puede correr las veces que haga falta:
 -- no falla si la base, las tablas o los usuarios de prueba
 -- ya existen (crea/inserta solo lo que falte).
