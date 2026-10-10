@@ -83,6 +83,14 @@ namespace GUI
                     return;
                 }
 
+                // Si entra un Jugador 2 distinto al de la partida anterior, al anterior
+                // se le registra el cierre de sesión en la bitácora.
+                if (jugador2 != null && jugador2.ID != formLogin.UsuarioLogueado.ID)
+                {
+                    BLL.USUARIO usuarioBLL = new BLL.USUARIO();
+                    usuarioBLL.Logout(jugador2);
+                }
+
                 jugador2 = formLogin.UsuarioLogueado;
                 lblJugador2.Text = "Jugador 2: " + jugador2.Nombre;
                 btnComenzarPartida.Enabled = true;
@@ -199,48 +207,9 @@ namespace GUI
         {
             cmbCategoria.Items.Clear();
 
-            FILAPUNTAJE filaGenerala = null;
-            foreach (FILAPUNTAJE f in tabla)
+            foreach (string categoria in partidaBLL.CategoriasDisponibles(tabla, jugadorActual))
             {
-                if (f.Categoria == "Generala")
-                {
-                    filaGenerala = f;
-                }
-            }
-
-            bool generalaYaAnotada;
-            if (jugadorActual == 1)
-            {
-                generalaYaAnotada = filaGenerala.PuntajeJugador1 != FILAPUNTAJE.SIN_ANOTAR;
-            }
-            else
-            {
-                generalaYaAnotada = filaGenerala.PuntajeJugador2 != FILAPUNTAJE.SIN_ANOTAR;
-            }
-
-            foreach (FILAPUNTAJE fila in tabla)
-            {
-                bool sinAnotar;
-                if (jugadorActual == 1)
-                {
-                    sinAnotar = fila.PuntajeJugador1 == FILAPUNTAJE.SIN_ANOTAR;
-                }
-                else
-                {
-                    sinAnotar = fila.PuntajeJugador2 == FILAPUNTAJE.SIN_ANOTAR;
-                }
-                if (!sinAnotar)
-                {
-                    continue;
-                }
-
-                // "Generala Doble" solo se puede anotar después de haber anotado "Generala".
-                if (fila.Categoria == BLL.GENERALA.GENERALA_DOBLE && !generalaYaAnotada)
-                {
-                    continue;
-                }
-
-                cmbCategoria.Items.Add(fila.Categoria);
+                cmbCategoria.Items.Add(categoria);
             }
 
             if (cmbCategoria.Items.Count > 0)
@@ -259,9 +228,15 @@ namespace GUI
 
             string categoria = cmbCategoria.SelectedItem.ToString();
             bool servido = tirosRestantes == 2;
-            int puntaje = BLL.GENERALA.CalcularPuntaje(categoria, dados, servido);
+            int puntaje = partidaBLL.Anotar(tabla, jugadorActual, categoria, dados, servido);
 
-            if (puntaje == 0)
+            if (puntaje == 0 && categoria == BLL.GENERALA.GENERALA_DOBLE && !partidaBLL.GeneralaConPuntos(tabla, jugadorActual))
+            {
+                MessageBox.Show(
+                    "Como tu Generala quedó tachada, la Generala Doble no suma: se anota 0 y queda tachada.",
+                    "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (puntaje == 0)
             {
                 MessageBox.Show(
                     "Los dados no alcanzan para puntuar en \"" + categoria + "\". Se anota 0 y la categoría queda tachada.",
@@ -287,21 +262,6 @@ namespace GUI
             turnoContador++;
             BLL.MOVIMIENTOXML.RegistrarMovimiento(partidaActual.RutaXml, turnoContador, nombreActual, dados, categoria, puntaje);
 
-            foreach (FILAPUNTAJE fila in tabla)
-            {
-                if (fila.Categoria == categoria)
-                {
-                    if (jugadorActual == 1)
-                    {
-                        fila.PuntajeJugador1 = puntaje;
-                    }
-                    else
-                    {
-                        fila.PuntajeJugador2 = puntaje;
-                    }
-                }
-            }
-
             RefrescarGrilla();
             ActualizarTotales();
 
@@ -314,9 +274,11 @@ namespace GUI
                 jugadorActual = 1;
             }
 
+            // El mensaje y el reseteo de la pantalla los hace PartidaBLL_PartidaFinalizada,
+            // suscripto al evento que dispara BLL.PARTIDA al cerrar la partida.
             if (partidaBLL.EstaFinalizada(tabla))
             {
-                FinalizarPartida();
+                partidaBLL.Finalizar(partidaActual, tabla);
             }
             else
             {
@@ -324,48 +286,30 @@ namespace GUI
             }
         }
 
-        private void FinalizarPartida(bool abandonada = false)
+        private void btnAbandonar_Click(object sender, EventArgs e)
         {
-            int total1 = 0;
-            int total2 = 0;
-            foreach (FILAPUNTAJE fila in tabla)
+            // Abandona el jugador al que le toca el turno; el rival gana la partida.
+            USUARIO abandona;
+            USUARIO rival;
+            if (jugadorActual == 1)
             {
-                total1 += SumarSiAnotado(fila.PuntajeJugador1);
-                total2 += SumarSiAnotado(fila.PuntajeJugador2);
-            }
-
-            int idGanador;
-            if (total1 > total2)
-            {
-                idGanador = jugador1.ID;
-            }
-            else if (total2 > total1)
-            {
-                idGanador = jugador2.ID;
+                abandona = jugador1;
+                rival = jugador2;
             }
             else
             {
-                idGanador = 0;
+                abandona = jugador2;
+                rival = jugador1;
             }
 
-            partidaActual.PuntajeJugador1 = total1;
-            partidaActual.PuntajeJugador2 = total2;
-            partidaActual.IdGanador = idGanador;
-
-            // El mensaje y el reseteo de la pantalla los hace PartidaBLL_PartidaFinalizada,
-            // suscripto al evento que dispara BLL.PARTIDA.Finalizar().
-            partidaBLL.Finalizar(partidaActual, abandonada);
-        }
-
-        private void btnAbandonar_Click(object sender, EventArgs e)
-        {
             DialogResult confirmar = MessageBox.Show(
-                "¿Seguro que querés abandonar la partida? Se va a registrar con el puntaje actual.",
+                "¿Seguro que " + abandona.Nombre + " quiere abandonar la partida? " +
+                "Se registra con el puntaje actual y la gana " + rival.Nombre + ".",
                 "Abandonar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirmar == DialogResult.Yes)
             {
-                FinalizarPartida(true);
+                partidaBLL.Abandonar(partidaActual, tabla, abandona.ID);
             }
         }
 
@@ -400,36 +344,15 @@ namespace GUI
 
         private void CargarTablaVacia()
         {
-            tabla = new List<FILAPUNTAJE>();
-            foreach (string categoria in BLL.GENERALA.CATEGORIAS)
-            {
-                FILAPUNTAJE fila = new FILAPUNTAJE();
-                fila.Categoria = categoria;
-                fila.PuntajeJugador1 = FILAPUNTAJE.SIN_ANOTAR;
-                fila.PuntajeJugador2 = FILAPUNTAJE.SIN_ANOTAR;
-                tabla.Add(fila);
-            }
+            tabla = partidaBLL.CrearTablaVacia();
             RefrescarGrilla();
-        }
-
-        private int SumarSiAnotado(int puntaje)
-        {
-            if (puntaje == FILAPUNTAJE.SIN_ANOTAR)
-            {
-                return 0;
-            }
-            return puntaje;
         }
 
         private void ActualizarTotales()
         {
-            int total1 = 0;
-            int total2 = 0;
-            foreach (FILAPUNTAJE fila in tabla)
-            {
-                total1 += SumarSiAnotado(fila.PuntajeJugador1);
-                total2 += SumarSiAnotado(fila.PuntajeJugador2);
-            }
+            int total1 = partidaBLL.CalcularTotal(tabla, 1);
+            int total2 = partidaBLL.CalcularTotal(tabla, 2);
+
             string nombreJugador2;
             if (jugador2 != null)
             {
