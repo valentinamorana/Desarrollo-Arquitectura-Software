@@ -39,6 +39,7 @@ namespace GUI
             this.lblTiempoTotal = new System.Windows.Forms.Label();
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
             this.btnCerrar = new System.Windows.Forms.Button();
+            this.btnVerMovimientos = new System.Windows.Forms.Button();
             this.pnlTitulo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).BeginInit();
             this.SuspendLayout();
@@ -158,6 +159,8 @@ namespace GUI
             this.dgvHistorial.ReadOnly = true;
             this.dgvHistorial.RowHeadersVisible = false;
             this.dgvHistorial.RowTemplate.Height = 26;
+            this.dgvHistorial.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvHistorial.MultiSelect = false;
             this.dgvHistorial.Size = new System.Drawing.Size(650, 300);
             this.dgvHistorial.TabIndex = 8;
             //
@@ -174,11 +177,25 @@ namespace GUI
             this.btnCerrar.UseVisualStyleBackColor = false;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
             //
+            // btnVerMovimientos
+            //
+            this.btnVerMovimientos.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnVerMovimientos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVerMovimientos.ForeColor = System.Drawing.Color.White;
+            this.btnVerMovimientos.Location = new System.Drawing.Point(20, 505);
+            this.btnVerMovimientos.Name = "btnVerMovimientos";
+            this.btnVerMovimientos.Size = new System.Drawing.Size(170, 36);
+            this.btnVerMovimientos.TabIndex = 10;
+            this.btnVerMovimientos.Text = "Ver movimientos";
+            this.btnVerMovimientos.UseVisualStyleBackColor = false;
+            this.btnVerMovimientos.Click += new System.EventHandler(this.btnVerMovimientos_Click);
+            //
             // FormEstadisticas
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
             this.ClientSize = new System.Drawing.Size(700, 560);
+            this.Controls.Add(this.btnVerMovimientos);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.dgvHistorial);
             this.Controls.Add(this.lblTiempoTotal);
@@ -215,5 +232,6 @@ namespace GUI
         private System.Windows.Forms.Label lblTiempoTotal;
         private System.Windows.Forms.DataGridView dgvHistorial;
         private System.Windows.Forms.Button btnCerrar;
+        private System.Windows.Forms.Button btnVerMovimientos;
     }
 }

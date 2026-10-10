@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -9,10 +10,17 @@ namespace DAL
     {
         private SqlConnection conexion;
 
+        // La cadena de conexión se lee del App.config de la GUI (connectionStrings "GENERALA"),
+        // así se puede apuntar a otra instancia de SQL Server sin recompilar.
+        public static string CadenaConexion()
+        {
+            return ConfigurationManager.ConnectionStrings["GENERALA"].ConnectionString;
+        }
+
         public void Abrir()
         {
             conexion = new SqlConnection();
-            conexion.ConnectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=GENERALA; Integrated Security=SSPI;";
+            conexion.ConnectionString = CadenaConexion();
             conexion.Open();
         }
 

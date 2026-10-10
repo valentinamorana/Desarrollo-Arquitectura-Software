@@ -8,7 +8,13 @@ namespace DAL
     {
         // El backup y el restore se hacen contra la base "master", porque no se puede
         // restaurar una base de datos mientras hay una conexión abierta contra ella misma.
-        private const string CONEXION_MASTER = @"Data Source=.\SQLEXPRESS; Initial Catalog=master; Integrated Security=SSPI;";
+        // Se usa la misma cadena del App.config, cambiando solo la base.
+        private static string ConexionMaster()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(ACCESO.CadenaConexion());
+            builder.InitialCatalog = "master";
+            return builder.ConnectionString;
+        }
 
         // BACKUP/RESTORE no se pueden parametrizar con SqlParameter, así que la ruta se
         // concatena a mano. Se escapan las comillas simples para que un nombre de archivo
@@ -18,10 +24,40 @@ namespace DAL
             return ruta.Replace("'", "''");
         }
 
-        public static bool HacerBackup(string ruta)
+        // El BACKUP/RESTORE lo ejecuta el servicio de SQL Server, no el usuario de Windows,
+        // así que en carpetas personales (Escritorio, Documentos) suele no tener permiso.
+        // La carpeta de backups de la instancia siempre es accesible para el servicio.
+        // Devuelve "" si no se pudo averiguar (versiones viejas de SQL Server).
+        public static string CarpetaBackupPorDefecto()
         {
-            bool ok = true;
-            SqlConnection conexion = new SqlConnection(CONEXION_MASTER);
+            string carpeta = "";
+            SqlConnection conexion = new SqlConnection(ConexionMaster());
+            try
+            {
+                conexion.Open();
+                SqlCommand cmd = new SqlCommand("SELECT SERVERPROPERTY('InstanceDefaultBackupPath')", conexion);
+                object resultado = cmd.ExecuteScalar();
+                if (resultado != null && resultado != DBNull.Value)
+                {
+                    carpeta = resultado.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                carpeta = "";
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return carpeta;
+        }
+
+        // Devuelve "" si salió bien, o el mensaje de error de SQL Server si falló.
+        public static string HacerBackup(string ruta)
+        {
+            string error = "";
+            SqlConnection conexion = new SqlConnection(ConexionMaster());
             try
             {
                 conexion.Open();
@@ -31,21 +67,22 @@ namespace DAL
                 cmd.CommandText = "BACKUP DATABASE GENERALA TO DISK = '" + EscaparRuta(ruta) + "'";
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ok = false;
+                error = ex.Message;
             }
             finally
             {
                 conexion.Close();
             }
-            return ok;
+            return error;
         }
 
-        public static bool HacerRestore(string ruta)
+        // Devuelve "" si salió bien, o el mensaje de error de SQL Server si falló.
+        public static string HacerRestore(string ruta)
         {
-            bool ok = true;
-            SqlConnection conexion = new SqlConnection(CONEXION_MASTER);
+            string error = "";
+            SqlConnection conexion = new SqlConnection(ConexionMaster());
             try
             {
                 conexion.Open();
@@ -56,12 +93,12 @@ namespace DAL
                 cmd.CommandText = "ALTER DATABASE GENERALA SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "RESTORE DATABASE GENERALA FROM DISK = '" + EscaparRuta(ruta) + "'";
+                cmd.CommandText = "RESTORE DATABASE GENERALA FROM DISK = '" + EscaparRuta(ruta) + "' WITH REPLACE";
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ok = false;
+                error = ex.Message;
             }
             finally
             {
@@ -70,16 +107,22 @@ namespace DAL
                 // para el resto de la aplicación hasta que alguien la destrabe a mano.
                 try
                 {
-                    SqlCommand cmdMultiUser = new SqlCommand("ALTER DATABASE GENERALA SET MULTI_USER", conexion);
-                    cmdMultiUser.ExecuteNonQuery();
+                    if (conexion.State == ConnectionState.Open)
+                    {
+                        SqlCommand cmdMultiUser = new SqlCommand("ALTER DATABASE GENERALA SET MULTI_USER", conexion);
+                        cmdMultiUser.ExecuteNonQuery();
+                    }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    ok = false;
+                    if (error == "")
+                    {
+                        error = ex.Message;
+                    }
                 }
                 conexion.Close();
             }
-            return ok;
+            return error;
         }
     }
 }
