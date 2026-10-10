@@ -14,11 +14,20 @@ namespace GUI
             private set { usuarioLogueado = value; }
         }
 
+        // Usuario que no puede ingresar en este login (el Jugador 1, cuando se loguea el Jugador 2).
+        // Se rechaza antes de llamar a BLL.USUARIO.Login, así no queda un inicio de sesión en la bitácora.
+        private string usuarioNoPermitido = "";
+
         public FormLogin()
         {
             InitializeComponent();
             this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
             picLogo.Image = System.Drawing.Image.FromFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala_logo.png"));
+        }
+
+        public FormLogin(string usuarioNoPermitido) : this()
+        {
+            this.usuarioNoPermitido = usuarioNoPermitido;
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
@@ -28,6 +37,14 @@ namespace GUI
             if (txtUsuario.Text == "" || txtContraseña.Text == "")
             {
                 lblMensaje.Text = "Completá usuario y contraseña";
+                return;
+            }
+
+            // SQL Server compara los nombres sin distinguir mayúsculas ni espacios al final,
+            // así que acá se compara igual.
+            if (usuarioNoPermitido != "" && string.Equals(txtUsuario.Text.TrimEnd(), usuarioNoPermitido, StringComparison.OrdinalIgnoreCase))
+            {
+                lblMensaje.Text = "Tiene que ser un usuario distinto al Jugador 1";
                 return;
             }
 

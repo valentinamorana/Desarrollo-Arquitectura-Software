@@ -77,9 +77,10 @@ namespace GUI
 
         private void btnLoginJugador2_Click(object sender, EventArgs e)
         {
-            FormLogin formLogin = new FormLogin();
+            FormLogin formLogin = new FormLogin(jugador1.Nombre);
             if (formLogin.ShowDialog() == DialogResult.OK)
             {
+                // Control de respaldo: FormLogin ya rechaza al Jugador 1 antes de loguearlo.
                 if (formLogin.UsuarioLogueado.ID == jugador1.ID)
                 {
                     MessageBox.Show("El Jugador 2 tiene que ser un usuario distinto al Jugador 1");
