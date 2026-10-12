@@ -67,6 +67,7 @@ namespace GUI
             // picLogo
             //
             this.picLogo.BackColor = System.Drawing.Color.Transparent;
+            this.picLogo.Image = global::GUI.Properties.Resources.generala_logo;
             this.picLogo.Location = new System.Drawing.Point(220, 12);
             this.picLogo.Name = "picLogo";
             this.picLogo.Size = new System.Drawing.Size(120, 120);
@@ -167,6 +168,7 @@ namespace GUI
             this.Controls.Add(this.lblUsuario);
             this.Controls.Add(this.pnlTitulo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = global::GUI.Properties.Resources.generala;
             this.MaximizeBox = false;
             this.Name = "FormLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

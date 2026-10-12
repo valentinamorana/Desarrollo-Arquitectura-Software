@@ -21,8 +21,6 @@ namespace GUI
         public FormLogin()
         {
             InitializeComponent();
-            this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
-            picLogo.Image = System.Drawing.Image.FromFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala_logo.png"));
         }
 
         public FormLogin(string usuarioNoPermitido) : this()

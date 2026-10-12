@@ -61,6 +61,8 @@ namespace GUI
             this.lblTotalJugador2 = new System.Windows.Forms.Label();
             this.lblTotalJugador1 = new System.Windows.Forms.Label();
             this.dgvPuntajes = new System.Windows.Forms.DataGridView();
+            this.sfdBackup = new System.Windows.Forms.SaveFileDialog();
+            this.ofdRestore = new System.Windows.Forms.OpenFileDialog();
             this.pnlEncabezado.SuspendLayout();
             this.pnlJugadores.SuspendLayout();
             this.pnlJuego.SuspendLayout();
@@ -505,6 +507,16 @@ namespace GUI
             this.dgvPuntajes.TabIndex = 0;
             this.dgvPuntajes.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPuntajes_CellFormatting);
             //
+            // sfdBackup
+            //
+            this.sfdBackup.Filter = "Backup de SQL Server (*.bak)|*.bak";
+            this.sfdBackup.Title = "Guardar backup";
+            //
+            // ofdRestore
+            //
+            this.ofdRestore.Filter = "Backup de SQL Server (*.bak)|*.bak";
+            this.ofdRestore.Title = "Restaurar backup";
+            //
             // FormPrincipal
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -515,10 +527,12 @@ namespace GUI
             this.Controls.Add(this.pnlJugadores);
             this.Controls.Add(this.pnlEncabezado);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = global::GUI.Properties.Resources.generala;
             this.MaximizeBox = false;
             this.Name = "FormPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Generala";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormPrincipal_FormClosing);
             this.Load += new System.EventHandler(this.FormPrincipal_Load);
             this.pnlEncabezado.ResumeLayout(false);
             this.pnlEncabezado.PerformLayout();
@@ -568,5 +582,7 @@ namespace GUI
         private System.Windows.Forms.DataGridView dgvPuntajes;
         private System.Windows.Forms.Label lblTotalJugador1;
         private System.Windows.Forms.Label lblTotalJugador2;
+        private System.Windows.Forms.SaveFileDialog sfdBackup;
+        private System.Windows.Forms.OpenFileDialog ofdRestore;
     }
 }

@@ -110,6 +110,7 @@ namespace GUI
             this.Controls.Add(this.txtReglas);
             this.Controls.Add(this.pnlTitulo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = global::GUI.Properties.Resources.generala;
             this.MaximizeBox = false;
             this.Name = "FormReglas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

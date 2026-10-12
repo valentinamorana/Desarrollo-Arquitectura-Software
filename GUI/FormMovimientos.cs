@@ -12,7 +12,6 @@ namespace GUI
         public FormMovimientos(string rutaXml, string titulo)
         {
             InitializeComponent();
-            this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
             this.rutaXml = rutaXml;
             lblTitulo.Text = titulo;
         }

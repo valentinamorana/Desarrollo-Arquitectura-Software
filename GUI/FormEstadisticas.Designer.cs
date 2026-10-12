@@ -207,6 +207,7 @@ namespace GUI
             this.Controls.Add(this.lblJugador);
             this.Controls.Add(this.pnlTitulo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = global::GUI.Properties.Resources.generala;
             this.MaximizeBox = false;
             this.Name = "FormEstadisticas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
