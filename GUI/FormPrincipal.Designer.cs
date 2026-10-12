@@ -90,6 +90,7 @@ namespace GUI
             this.btnCerrarSesion.BackColor = System.Drawing.Color.White;
             this.btnCerrarSesion.FlatAppearance.BorderSize = 0;
             this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnCerrarSesion.Location = new System.Drawing.Point(890, 15);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
@@ -104,6 +105,7 @@ namespace GUI
             this.btnRestore.BackColor = System.Drawing.Color.White;
             this.btnRestore.FlatAppearance.BorderSize = 0;
             this.btnRestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRestore.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnRestore.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnRestore.Location = new System.Drawing.Point(790, 15);
             this.btnRestore.Name = "btnRestore";
@@ -118,6 +120,7 @@ namespace GUI
             this.btnBackup.BackColor = System.Drawing.Color.White;
             this.btnBackup.FlatAppearance.BorderSize = 0;
             this.btnBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBackup.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnBackup.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnBackup.Location = new System.Drawing.Point(690, 15);
             this.btnBackup.Name = "btnBackup";
@@ -132,6 +135,7 @@ namespace GUI
             this.btnEstadisticas.BackColor = System.Drawing.Color.White;
             this.btnEstadisticas.FlatAppearance.BorderSize = 0;
             this.btnEstadisticas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEstadisticas.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEstadisticas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnEstadisticas.Location = new System.Drawing.Point(560, 15);
             this.btnEstadisticas.Name = "btnEstadisticas";
@@ -146,6 +150,7 @@ namespace GUI
             this.btnReglas.BackColor = System.Drawing.Color.White;
             this.btnReglas.FlatAppearance.BorderSize = 0;
             this.btnReglas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReglas.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnReglas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnReglas.Location = new System.Drawing.Point(440, 15);
             this.btnReglas.Name = "btnReglas";
@@ -184,6 +189,7 @@ namespace GUI
             //
             this.btnAbandonar.BackColor = System.Drawing.Color.Crimson;
             this.btnAbandonar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAbandonar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAbandonar.ForeColor = System.Drawing.Color.White;
             this.btnAbandonar.Location = new System.Drawing.Point(770, 14);
             this.btnAbandonar.Name = "btnAbandonar";
@@ -199,6 +205,7 @@ namespace GUI
             this.btnComenzarPartida.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnComenzarPartida.Enabled = false;
             this.btnComenzarPartida.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnComenzarPartida.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnComenzarPartida.ForeColor = System.Drawing.Color.White;
             this.btnComenzarPartida.Location = new System.Drawing.Point(770, 14);
             this.btnComenzarPartida.Name = "btnComenzarPartida";
@@ -207,6 +214,7 @@ namespace GUI
             this.btnComenzarPartida.Text = "Comenzar Partida";
             this.btnComenzarPartida.UseVisualStyleBackColor = false;
             this.btnComenzarPartida.Click += new System.EventHandler(this.btnComenzarPartida_Click);
+            this.btnComenzarPartida.EnabledChanged += new System.EventHandler(this.btnPrincipal_EnabledChanged);
             //
             // btnLoginJugador2
             //
@@ -214,6 +222,7 @@ namespace GUI
             this.btnLoginJugador2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnLoginJugador2.FlatAppearance.BorderSize = 2;
             this.btnLoginJugador2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLoginJugador2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnLoginJugador2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnLoginJugador2.Location = new System.Drawing.Point(590, 14);
             this.btnLoginJugador2.Name = "btnLoginJugador2";
@@ -233,6 +242,7 @@ namespace GUI
             this.lblJugador2.Size = new System.Drawing.Size(240, 20);
             this.lblJugador2.TabIndex = 1;
             this.lblJugador2.Text = "Jugador 2: (sin ingresar)";
+            this.lblJugador2.UseMnemonic = false;
             //
             // lblJugador1
             //
@@ -244,6 +254,7 @@ namespace GUI
             this.lblJugador1.Size = new System.Drawing.Size(120, 20);
             this.lblJugador1.TabIndex = 0;
             this.lblJugador1.Text = "Jugador 1: -";
+            this.lblJugador1.UseMnemonic = false;
             //
             // pnlJuego
             //
@@ -276,6 +287,7 @@ namespace GUI
             this.btnAnotar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnAnotar.FlatAppearance.BorderSize = 2;
             this.btnAnotar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAnotar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAnotar.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnAnotar.Location = new System.Drawing.Point(705, 138);
             this.btnAnotar.Name = "btnAnotar";
@@ -308,6 +320,7 @@ namespace GUI
             this.btnTirarDados.Text = "Tirar Dados";
             this.btnTirarDados.UseVisualStyleBackColor = false;
             this.btnTirarDados.Click += new System.EventHandler(this.btnTirarDados_Click);
+            this.btnTirarDados.EnabledChanged += new System.EventHandler(this.btnPrincipal_EnabledChanged);
             //
             // chkGuardar5
             //
@@ -450,6 +463,7 @@ namespace GUI
             this.lblTurno.Size = new System.Drawing.Size(120, 25);
             this.lblTurno.TabIndex = 0;
             this.lblTurno.Text = "Turno de: -";
+            this.lblTurno.UseMnemonic = false;
             //
             // pnlPuntajes
             //
@@ -473,6 +487,7 @@ namespace GUI
             this.lblTotalJugador2.Size = new System.Drawing.Size(160, 25);
             this.lblTotalJugador2.TabIndex = 2;
             this.lblTotalJugador2.Text = "Total Jugador 2: 0";
+            this.lblTotalJugador2.UseMnemonic = false;
             //
             // lblTotalJugador1
             //
@@ -484,6 +499,7 @@ namespace GUI
             this.lblTotalJugador1.Size = new System.Drawing.Size(160, 25);
             this.lblTotalJugador1.TabIndex = 1;
             this.lblTotalJugador1.Text = "Total Jugador 1: 0";
+            this.lblTotalJugador1.UseMnemonic = false;
             //
             // dgvPuntajes
             //
