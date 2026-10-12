@@ -168,6 +168,7 @@ namespace GUI
             //
             this.btnCerrar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCerrar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCerrar.ForeColor = System.Drawing.Color.White;
             this.btnCerrar.Location = new System.Drawing.Point(560, 505);
             this.btnCerrar.Name = "btnCerrar";
@@ -181,6 +182,7 @@ namespace GUI
             //
             this.btnVerMovimientos.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnVerMovimientos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVerMovimientos.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnVerMovimientos.ForeColor = System.Drawing.Color.White;
             this.btnVerMovimientos.Location = new System.Drawing.Point(20, 505);
             this.btnVerMovimientos.Name = "btnVerMovimientos";

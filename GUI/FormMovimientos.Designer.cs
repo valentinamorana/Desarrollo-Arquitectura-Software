@@ -58,6 +58,7 @@ namespace GUI
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Movimientos de la partida";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitulo.UseMnemonic = false;
             //
             // lblArchivo
             //
@@ -69,6 +70,7 @@ namespace GUI
             this.lblArchivo.Size = new System.Drawing.Size(720, 20);
             this.lblArchivo.TabIndex = 1;
             this.lblArchivo.Text = "Archivo:";
+            this.lblArchivo.UseMnemonic = false;
             //
             // dgvMovimientos
             //
@@ -96,6 +98,7 @@ namespace GUI
             //
             this.btnCerrar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCerrar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCerrar.ForeColor = System.Drawing.Color.White;
             this.btnCerrar.Location = new System.Drawing.Point(630, 505);
             this.btnCerrar.Name = "btnCerrar";

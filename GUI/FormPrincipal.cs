@@ -36,6 +36,26 @@ namespace GUI
             lblJugador2.Text = "Jugador 2: (sin ingresar)";
             CargarTablaVacia();
             DeshabilitarJuego();
+
+            // btnComenzarPartida arranca deshabilitado desde el Diseñador, antes de que
+            // se conecte el EnabledChanged, así que el color inicial se aplica acá.
+            btnPrincipal_EnabledChanged(btnComenzarPartida, EventArgs.Empty);
+            btnPrincipal_EnabledChanged(btnTirarDados, EventArgs.Empty);
+        }
+
+        // Windows Forms pinta en gris el texto de un botón deshabilitado sin importar
+        // su ForeColor. Sobre el fondo bordó no se lee, así que deshabilitado pasa a rosa claro.
+        private void btnPrincipal_EnabledChanged(object sender, EventArgs e)
+        {
+            Button boton = (Button)sender;
+            if (boton.Enabled)
+            {
+                boton.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            }
+            else
+            {
+                boton.BackColor = System.Drawing.Color.FromArgb(240, 205, 220);
+            }
         }
 
         private void PartidaBLL_PartidaFinalizada(BE.PARTIDA partida, bool abandonada)
