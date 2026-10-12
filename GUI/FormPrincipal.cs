@@ -25,14 +25,12 @@ namespace GUI
         public FormPrincipal(USUARIO jugadorLogueado)
         {
             InitializeComponent();
-            this.Icon = new System.Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "generala.ico"));
             jugador1 = jugadorLogueado;
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
             partidaBLL.PartidaFinalizada += PartidaBLL_PartidaFinalizada;
-            this.FormClosing += FormPrincipal_FormClosing;
 
             lblJugador1.Text = "Jugador 1: " + jugador1.Nombre;
             lblJugador2.Text = "Jugador 2: (sin ingresar)";
@@ -471,17 +469,15 @@ namespace GUI
 
         private void btnBackup_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dialogo = new SaveFileDialog();
-            dialogo.Filter = "Backup de SQL Server (*.bak)|*.bak";
-            dialogo.FileName = "GENERALA_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".bak";
-            dialogo.InitialDirectory = CarpetaInicialBackups();
+            sfdBackup.FileName = "GENERALA_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".bak";
+            sfdBackup.InitialDirectory = CarpetaInicialBackups();
 
-            if (dialogo.ShowDialog() == DialogResult.OK)
+            if (sfdBackup.ShowDialog() == DialogResult.OK)
             {
-                string error = BLL.BACKUPRESTORE.HacerBackup(dialogo.FileName);
+                string error = BLL.BACKUPRESTORE.HacerBackup(sfdBackup.FileName);
                 if (error == "")
                 {
-                    MessageBox.Show("Backup realizado correctamente en:\n" + dialogo.FileName);
+                    MessageBox.Show("Backup realizado correctamente en:\n" + sfdBackup.FileName);
                 }
                 else
                 {
@@ -495,11 +491,9 @@ namespace GUI
 
         private void btnRestore_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialogo = new OpenFileDialog();
-            dialogo.Filter = "Backup de SQL Server (*.bak)|*.bak";
-            dialogo.InitialDirectory = CarpetaInicialBackups();
+            ofdRestore.InitialDirectory = CarpetaInicialBackups();
 
-            if (dialogo.ShowDialog() == DialogResult.OK)
+            if (ofdRestore.ShowDialog() == DialogResult.OK)
             {
                 DialogResult confirmar = MessageBox.Show(
                     "Esto va a reemplazar los datos actuales de la base por los del backup. ¿Confirmás?",
@@ -507,7 +501,7 @@ namespace GUI
 
                 if (confirmar == DialogResult.Yes)
                 {
-                    string error = BLL.BACKUPRESTORE.HacerRestore(dialogo.FileName);
+                    string error = BLL.BACKUPRESTORE.HacerRestore(ofdRestore.FileName);
                     if (error == "")
                     {
                         MessageBox.Show("Restore realizado correctamente");

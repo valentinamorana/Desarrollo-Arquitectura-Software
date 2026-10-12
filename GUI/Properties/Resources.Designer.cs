@@ -56,5 +56,29 @@ namespace GUI.Properties
                 resourceCulture = value;
             }
         }
+
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Icon.
+        /// </summary>
+        internal static System.Drawing.Icon generala
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("generala", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap generala_logo
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("generala_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
