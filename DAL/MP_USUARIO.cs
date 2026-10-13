@@ -1,13 +1,15 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DAL
 {
-    public class USUARIO
+    public class MP_USUARIO : MAPPER<BE.USUARIO>
     {
-        public int Insertar(BE.USUARIO usuario)
+        // Devuelve el ID del usuario nuevo, 0 si el nombre ya existe, o -1 si falló.
+        public override int Insertar(BE.USUARIO usuario)
         {
-            ACCESO acceso = new ACCESO();
+            acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@usu", usuario.Nombre));
             parametros.Add(acceso.CrearParametro("@pass", usuario.Contraseña));
@@ -22,64 +24,68 @@ namespace DAL
             {
                 acceso.Cerrar();
             }
-
             return id;
         }
 
+        // Si el usuario y la contraseña son correctos, completa el ID y devuelve true.
         public bool Login(BE.USUARIO usuario)
         {
-            ACCESO acceso = new ACCESO();
+            acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@usu", usuario.Nombre));
             parametros.Add(acceso.CrearParametro("@pass", usuario.Contraseña));
 
             acceso.Abrir();
-            bool ok = false;
+            DataTable tabla;
             try
             {
-                SqlDataReader reader = acceso.Leer("USUARIO_LOGIN", parametros);
-                if (reader.Read())
-                {
-                    ok = true;
-                    usuario.ID = reader.GetInt32(0);
-                    usuario.Nombre = reader.GetString(1);
-                    usuario.Contraseña = reader.GetString(2);
-                }
-                reader.Close();
+                tabla = acceso.Leer("USUARIO_LOGIN", parametros);
             }
             finally
             {
                 acceso.Cerrar();
             }
 
-            return ok;
+            if (tabla.Rows.Count == 0)
+            {
+                return false;
+            }
+
+            DataRow fila = tabla.Rows[0];
+            usuario.ID = int.Parse(fila["ID"].ToString());
+            usuario.Nombre = fila["Nombre"].ToString();
+            usuario.Contraseña = fila["Contraseña"].ToString();
+            return true;
         }
 
+        // Devuelve null si no existe un usuario con ese ID.
         public BE.USUARIO BuscarPorId(int id)
         {
-            ACCESO acceso = new ACCESO();
+            acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@id", id));
 
             acceso.Abrir();
-            BE.USUARIO usuario = null;
+            DataTable tabla;
             try
             {
-                SqlDataReader reader = acceso.Leer("USUARIO_BUSCAR_POR_ID", parametros);
-                if (reader.Read())
-                {
-                    usuario = new BE.USUARIO();
-                    usuario.ID = reader.GetInt32(0);
-                    usuario.Nombre = reader.GetString(1);
-                    usuario.Contraseña = reader.GetString(2);
-                }
-                reader.Close();
+                tabla = acceso.Leer("USUARIO_BUSCAR_POR_ID", parametros);
             }
             finally
             {
                 acceso.Cerrar();
             }
 
+            if (tabla.Rows.Count == 0)
+            {
+                return null;
+            }
+
+            DataRow fila = tabla.Rows[0];
+            BE.USUARIO usuario = new BE.USUARIO();
+            usuario.ID = int.Parse(fila["ID"].ToString());
+            usuario.Nombre = fila["Nombre"].ToString();
+            usuario.Contraseña = fila["Contraseña"].ToString();
             return usuario;
         }
     }

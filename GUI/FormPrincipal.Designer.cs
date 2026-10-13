@@ -45,16 +45,11 @@ namespace GUI
             this.btnAnotar = new System.Windows.Forms.Button();
             this.cmbCategoria = new System.Windows.Forms.ComboBox();
             this.btnTirarDados = new System.Windows.Forms.Button();
-            this.chkGuardar5 = new System.Windows.Forms.CheckBox();
-            this.chkGuardar4 = new System.Windows.Forms.CheckBox();
-            this.chkGuardar3 = new System.Windows.Forms.CheckBox();
-            this.chkGuardar2 = new System.Windows.Forms.CheckBox();
-            this.chkGuardar1 = new System.Windows.Forms.CheckBox();
-            this.lblDado5 = new System.Windows.Forms.Label();
-            this.lblDado4 = new System.Windows.Forms.Label();
-            this.lblDado3 = new System.Windows.Forms.Label();
-            this.lblDado2 = new System.Windows.Forms.Label();
-            this.lblDado1 = new System.Windows.Forms.Label();
+            this.ucDado1 = new GUI.ucDado();
+            this.ucDado2 = new GUI.ucDado();
+            this.ucDado3 = new GUI.ucDado();
+            this.ucDado4 = new GUI.ucDado();
+            this.ucDado5 = new GUI.ucDado();
             this.lblTirosRestantes = new System.Windows.Forms.Label();
             this.lblTurno = new System.Windows.Forms.Label();
             this.pnlPuntajes = new System.Windows.Forms.Panel();
@@ -263,16 +258,11 @@ namespace GUI
             this.pnlJuego.Controls.Add(this.btnAnotar);
             this.pnlJuego.Controls.Add(this.cmbCategoria);
             this.pnlJuego.Controls.Add(this.btnTirarDados);
-            this.pnlJuego.Controls.Add(this.chkGuardar5);
-            this.pnlJuego.Controls.Add(this.chkGuardar4);
-            this.pnlJuego.Controls.Add(this.chkGuardar3);
-            this.pnlJuego.Controls.Add(this.chkGuardar2);
-            this.pnlJuego.Controls.Add(this.chkGuardar1);
-            this.pnlJuego.Controls.Add(this.lblDado5);
-            this.pnlJuego.Controls.Add(this.lblDado4);
-            this.pnlJuego.Controls.Add(this.lblDado3);
-            this.pnlJuego.Controls.Add(this.lblDado2);
-            this.pnlJuego.Controls.Add(this.lblDado1);
+            this.pnlJuego.Controls.Add(this.ucDado5);
+            this.pnlJuego.Controls.Add(this.ucDado4);
+            this.pnlJuego.Controls.Add(this.ucDado3);
+            this.pnlJuego.Controls.Add(this.ucDado2);
+            this.pnlJuego.Controls.Add(this.ucDado1);
             this.pnlJuego.Controls.Add(this.lblTirosRestantes);
             this.pnlJuego.Controls.Add(this.lblTurno);
             this.pnlJuego.Location = new System.Drawing.Point(20, 160);
@@ -322,125 +312,45 @@ namespace GUI
             this.btnTirarDados.Click += new System.EventHandler(this.btnTirarDados_Click);
             this.btnTirarDados.EnabledChanged += new System.EventHandler(this.btnPrincipal_EnabledChanged);
             //
-            // chkGuardar5
+            // ucDado1
             //
-            this.chkGuardar5.AutoSize = true;
-            this.chkGuardar5.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkGuardar5.Location = new System.Drawing.Point(399, 140);
-            this.chkGuardar5.Name = "chkGuardar5";
-            this.chkGuardar5.Size = new System.Drawing.Size(72, 24);
-            this.chkGuardar5.TabIndex = 11;
-            this.chkGuardar5.Text = "Guardar";
-            this.chkGuardar5.UseVisualStyleBackColor = true;
+            this.ucDado1.BackColor = System.Drawing.Color.White;
+            this.ucDado1.Location = new System.Drawing.Point(15, 55);
+            this.ucDado1.Name = "ucDado1";
+            this.ucDado1.Size = new System.Drawing.Size(80, 112);
+            this.ucDado1.TabIndex = 2;
             //
-            // chkGuardar4
+            // ucDado2
             //
-            this.chkGuardar4.AutoSize = true;
-            this.chkGuardar4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkGuardar4.Location = new System.Drawing.Point(304, 140);
-            this.chkGuardar4.Name = "chkGuardar4";
-            this.chkGuardar4.Size = new System.Drawing.Size(72, 24);
-            this.chkGuardar4.TabIndex = 10;
-            this.chkGuardar4.Text = "Guardar";
-            this.chkGuardar4.UseVisualStyleBackColor = true;
+            this.ucDado2.BackColor = System.Drawing.Color.White;
+            this.ucDado2.Location = new System.Drawing.Point(105, 55);
+            this.ucDado2.Name = "ucDado2";
+            this.ucDado2.Size = new System.Drawing.Size(80, 112);
+            this.ucDado2.TabIndex = 3;
             //
-            // chkGuardar3
+            // ucDado3
             //
-            this.chkGuardar3.AutoSize = true;
-            this.chkGuardar3.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkGuardar3.Location = new System.Drawing.Point(209, 140);
-            this.chkGuardar3.Name = "chkGuardar3";
-            this.chkGuardar3.Size = new System.Drawing.Size(72, 24);
-            this.chkGuardar3.TabIndex = 9;
-            this.chkGuardar3.Text = "Guardar";
-            this.chkGuardar3.UseVisualStyleBackColor = true;
+            this.ucDado3.BackColor = System.Drawing.Color.White;
+            this.ucDado3.Location = new System.Drawing.Point(195, 55);
+            this.ucDado3.Name = "ucDado3";
+            this.ucDado3.Size = new System.Drawing.Size(80, 112);
+            this.ucDado3.TabIndex = 4;
             //
-            // chkGuardar2
+            // ucDado4
             //
-            this.chkGuardar2.AutoSize = true;
-            this.chkGuardar2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkGuardar2.Location = new System.Drawing.Point(114, 140);
-            this.chkGuardar2.Name = "chkGuardar2";
-            this.chkGuardar2.Size = new System.Drawing.Size(72, 24);
-            this.chkGuardar2.TabIndex = 8;
-            this.chkGuardar2.Text = "Guardar";
-            this.chkGuardar2.UseVisualStyleBackColor = true;
+            this.ucDado4.BackColor = System.Drawing.Color.White;
+            this.ucDado4.Location = new System.Drawing.Point(285, 55);
+            this.ucDado4.Name = "ucDado4";
+            this.ucDado4.Size = new System.Drawing.Size(80, 112);
+            this.ucDado4.TabIndex = 5;
             //
-            // chkGuardar1
+            // ucDado5
             //
-            this.chkGuardar1.AutoSize = true;
-            this.chkGuardar1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkGuardar1.Location = new System.Drawing.Point(19, 140);
-            this.chkGuardar1.Name = "chkGuardar1";
-            this.chkGuardar1.Size = new System.Drawing.Size(72, 24);
-            this.chkGuardar1.TabIndex = 7;
-            this.chkGuardar1.Text = "Guardar";
-            this.chkGuardar1.UseVisualStyleBackColor = true;
-            //
-            // lblDado5
-            //
-            this.lblDado5.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
-            this.lblDado5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDado5.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado5.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.lblDado5.Location = new System.Drawing.Point(375, 55);
-            this.lblDado5.Name = "lblDado5";
-            this.lblDado5.Size = new System.Drawing.Size(80, 80);
-            this.lblDado5.TabIndex = 6;
-            this.lblDado5.Text = "-";
-            this.lblDado5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // lblDado4
-            //
-            this.lblDado4.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
-            this.lblDado4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDado4.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado4.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.lblDado4.Location = new System.Drawing.Point(285, 55);
-            this.lblDado4.Name = "lblDado4";
-            this.lblDado4.Size = new System.Drawing.Size(80, 80);
-            this.lblDado4.TabIndex = 5;
-            this.lblDado4.Text = "-";
-            this.lblDado4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // lblDado3
-            //
-            this.lblDado3.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
-            this.lblDado3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDado3.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado3.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.lblDado3.Location = new System.Drawing.Point(195, 55);
-            this.lblDado3.Name = "lblDado3";
-            this.lblDado3.Size = new System.Drawing.Size(80, 80);
-            this.lblDado3.TabIndex = 4;
-            this.lblDado3.Text = "-";
-            this.lblDado3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // lblDado2
-            //
-            this.lblDado2.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
-            this.lblDado2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDado2.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.lblDado2.Location = new System.Drawing.Point(105, 55);
-            this.lblDado2.Name = "lblDado2";
-            this.lblDado2.Size = new System.Drawing.Size(80, 80);
-            this.lblDado2.TabIndex = 3;
-            this.lblDado2.Text = "-";
-            this.lblDado2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // lblDado1
-            //
-            this.lblDado1.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
-            this.lblDado1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDado1.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblDado1.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.lblDado1.Location = new System.Drawing.Point(15, 55);
-            this.lblDado1.Name = "lblDado1";
-            this.lblDado1.Size = new System.Drawing.Size(80, 80);
-            this.lblDado1.TabIndex = 2;
-            this.lblDado1.Text = "-";
-            this.lblDado1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ucDado5.BackColor = System.Drawing.Color.White;
+            this.ucDado5.Location = new System.Drawing.Point(375, 55);
+            this.ucDado5.Name = "ucDado5";
+            this.ucDado5.Size = new System.Drawing.Size(80, 112);
+            this.ucDado5.TabIndex = 6;
             //
             // lblTirosRestantes
             //
@@ -581,16 +491,11 @@ namespace GUI
         private System.Windows.Forms.Panel pnlJuego;
         private System.Windows.Forms.Label lblTurno;
         private System.Windows.Forms.Label lblTirosRestantes;
-        private System.Windows.Forms.Label lblDado1;
-        private System.Windows.Forms.Label lblDado2;
-        private System.Windows.Forms.Label lblDado3;
-        private System.Windows.Forms.Label lblDado4;
-        private System.Windows.Forms.Label lblDado5;
-        private System.Windows.Forms.CheckBox chkGuardar1;
-        private System.Windows.Forms.CheckBox chkGuardar2;
-        private System.Windows.Forms.CheckBox chkGuardar3;
-        private System.Windows.Forms.CheckBox chkGuardar4;
-        private System.Windows.Forms.CheckBox chkGuardar5;
+        private GUI.ucDado ucDado1;
+        private GUI.ucDado ucDado2;
+        private GUI.ucDado ucDado3;
+        private GUI.ucDado ucDado4;
+        private GUI.ucDado ucDado5;
         private System.Windows.Forms.Button btnTirarDados;
         private System.Windows.Forms.ComboBox cmbCategoria;
         private System.Windows.Forms.Button btnAnotar;

@@ -8,12 +8,11 @@ namespace DAL
     {
         // El backup y el restore se hacen contra la base "master", porque no se puede
         // restaurar una base de datos mientras hay una conexión abierta contra ella misma.
-        // Se usa la misma cadena del App.config, cambiando solo la base.
+        // Por eso en el App.config hay una segunda cadena, "MASTER", igual a "GENERALA"
+        // pero con Initial Catalog=master.
         private static string ConexionMaster()
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(ACCESO.CadenaConexion());
-            builder.InitialCatalog = "master";
-            return builder.ConnectionString;
+            return ACCESO.CadenaConexion("MASTER");
         }
 
         // BACKUP/RESTORE no se pueden parametrizar con SqlParameter, así que la ruta se

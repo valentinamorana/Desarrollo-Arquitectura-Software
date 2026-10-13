@@ -39,8 +39,8 @@ namespace GUI
             }
 
             // SQL Server compara los nombres sin distinguir mayúsculas ni espacios al final,
-            // así que acá se compara igual.
-            if (usuarioNoPermitido != "" && string.Equals(txtUsuario.Text.TrimEnd(), usuarioNoPermitido, StringComparison.OrdinalIgnoreCase))
+            // así que acá se compara igual (todo en minúscula y sin espacios al final).
+            if (usuarioNoPermitido != "" && txtUsuario.Text.TrimEnd().ToLower() == usuarioNoPermitido.ToLower())
             {
                 lblMensaje.Text = "Tiene que ser un usuario distinto al Jugador 1";
                 return;
@@ -51,7 +51,18 @@ namespace GUI
             usuario.Contraseña = txtContraseña.Text;
 
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-            if (usuarioBLL.Login(usuario))
+            bool ok;
+            try
+            {
+                ok = usuarioBLL.Login(usuario);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo ingresar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (ok)
             {
                 UsuarioLogueado = usuario;
                 this.DialogResult = DialogResult.OK;

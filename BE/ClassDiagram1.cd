@@ -35,5 +35,19 @@
       <FileName>MOVIMIENTO.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="BE.LOG">
+    <Position X="0.5" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LOG.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BE.ESTADISTICA">
+    <Position X="3.75" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ESTADISTICA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

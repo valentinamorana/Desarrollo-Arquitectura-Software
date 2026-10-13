@@ -37,9 +37,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACCESO.cs" />
-    <Compile Include="USUARIO.cs" />
-    <Compile Include="PARTIDA.cs" />
-    <Compile Include="LOG.cs" />
+    <Compile Include="MAPPER.cs" />
+    <Compile Include="MP_USUARIO.cs" />
+    <Compile Include="MP_PARTIDA.cs" />
+    <Compile Include="MP_LOG.cs" />
     <Compile Include="BACKUPRESTORE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

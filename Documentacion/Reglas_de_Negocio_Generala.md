@@ -47,6 +47,6 @@ Para confirmar con la cátedra antes de la entrega.
 
 ## 7. Puntos a confirmar con el profe
 
-- ¿"2 jugadores" tiene que ser necesariamente pasar-y-jugar en la misma PC, o se espera algún tipo de separación/red entre ambos jugadores? (La consigna no lo aclara explícitamente, y ninguno de los 2 TP de referencia de la cátedra que se revisaron implementa red tampoco).
+- ¿"2 jugadores" tiene que ser necesariamente pasar-y-jugar en la misma PC, o se espera algún tipo de separación/red entre ambos jugadores? (La consigna no lo aclara explícitamente).
 - ¿Generala Doble (100 puntos, requiere haber anotado Generala antes) y el bonus x2 por tirada servida son una interpretación válida de "combinatoria obtenida (Generala, Full, Póker, etc.)", o la cátedra espera solo las categorías básicas sin extras?
 - ¿Alcanza con que la revancha reutilice al mismo Jugador 2 sin re-loguear, o se espera loguear de nuevo en cada partida?

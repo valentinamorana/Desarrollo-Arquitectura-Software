@@ -146,6 +146,13 @@ CREATE OR ALTER PROC [dbo].[USUARIO_INSERTAR]
 @usu varchar(50), @pass varchar(50)
 AS
 BEGIN
+	-- Nombre repetido: devuelve 0 (y no -1, que la app usa para "error de base de datos").
+	IF EXISTS (SELECT 1 FROM USUARIO WHERE Nombre = @usu)
+	BEGIN
+		SELECT 0 AS ID
+		RETURN
+	END
+
 	DECLARE @ID int
 	SET @ID = (SELECT ISNULL(MAX(ID),0)+1 FROM USUARIO)
 
