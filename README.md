@@ -18,6 +18,8 @@ Abrir `Script.sql` en SSMS, conectado a la instancia de SQL Server, y ejecutarlo
 
 El script crea la base `GENERALA` con sus tablas, stored procedures y usuarios de prueba. Se puede volver a correr sin errores: solo crea lo que falte.
 
+Si la base ya existía de una versión anterior del TP, hay que volver a correr el script: actualiza los stored procedures (por ejemplo `USUARIO_INSERTAR`, que ahora devuelve 0 cuando el nombre ya existe) y agranda la columna `PARTIDA.RUTA_XML` a 500 caracteres, sin borrar datos.
+
 ### 2. Configurar la conexión (solo si hace falta)
 
 La app se conecta por defecto a la instancia `.\SQLEXPRESS` con autenticación de Windows. Si SQL Server está instalado con otro nombre de instancia, cambiar el `Data Source` de las dos cadenas (`GENERALA` y `MASTER`) en `GUI/App.config`:
@@ -53,7 +55,7 @@ Los carga `Script.sql`:
 | jugador2 | 1234 |
 | jugador3 | 1234 |
 
-También se pueden crear usuarios nuevos con el botón "Registrarme" de la pantalla de login.
+También se pueden crear usuarios nuevos con el botón "Registrarme" de la pantalla de login. El usuario y la contraseña admiten hasta 50 caracteres.
 
 ## Cómo se juega
 
@@ -62,14 +64,14 @@ También se pueden crear usuarios nuevos con el botón "Registrarme" de la panta
 3. "Comenzar Partida". Cada turno: hasta 3 tiradas, tildar los dados a guardar después de cada tirada y elegir la categoría a anotar.
 4. La partida termina cuando los dos completan las 11 categorías. También se puede abandonar: la gana el rival.
 
-Las reglas completas están en el botón "Reglas" de la app y en `Documentacion/Reglas_de_Negocio_Generala.md`.
+Las reglas completas están en el botón "Reglas" de la app y en `Documentacion/Reglas_de_Negocio_Generala.md`. En ese archivo, la sección 7 explica las decisiones tomadas donde la consigna no especifica (juego en la misma PC, Generala Doble, tirada servida, revancha).
 
 ## Dónde ver cada requisito
 
 | Requisito | Dónde |
 |---|---|
 | Registro / Login / Logout | Pantalla de login → "Registrarme"; botón "Salir" (o cerrar la ventana) |
-| Bitácora | Tabla `LOG` de la base (tipos en `TIPO_LOG`) |
+| Bitácora | Tabla `LOG` de la base (tipos en `TIPO_LOG`). El inicio y el fin de partida se graban en la misma transacción que la partida |
 | Estadísticas, promedio de victorias, tiempo jugado | Botón "Estadísticas" |
 | XML de movimientos | Se guardan en `GUI/bin/Debug/Partidas/`. Se consultan desde Estadísticas → elegir partida → "Ver movimientos" |
 | Backup / Restore | Botones "Backup" y "Restore" (deshabilitados durante una partida) |
