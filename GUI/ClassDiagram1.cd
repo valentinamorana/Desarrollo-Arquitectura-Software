@@ -67,5 +67,12 @@
       <FileName>FormReglas.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GUI.ucDado">
+    <Position X="0.5" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ucDado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -49,5 +49,12 @@
       <FileName>BACKUPRESTORE.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="BLL.ESTADISTICA">
+    <Position X="10.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ESTADISTICA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

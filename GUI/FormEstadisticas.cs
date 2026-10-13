@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using BE;
 
@@ -41,80 +40,24 @@ namespace GUI
             CargarEstadisticas(usuario);
         }
 
+        // Los cálculos los hace BLL.ESTADISTICA; acá solo se muestran.
         private void CargarEstadisticas(USUARIO usuario)
         {
-            BLL.PARTIDA partidaBLL = new BLL.PARTIDA();
-            List<PARTIDA> partidas = partidaBLL.ListarPorUsuario(usuario.ID);
-
-            BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-
-            int ganadas = 0;
-            int perdidas = 0;
-            int empatadas = 0;
-            TimeSpan tiempoTotal = TimeSpan.Zero;
-
-            List<FILAHISTORIAL> filas = new List<FILAHISTORIAL>();
-
-            foreach (PARTIDA p in partidas)
+            BLL.ESTADISTICA estadisticaBLL = new BLL.ESTADISTICA();
+            ESTADISTICA estadistica;
+            try
             {
-                bool esJugador1 = p.IdJugador1 == usuario.ID;
-
-                int idRival;
-                int puntajePropio;
-                int puntajeRival;
-                if (esJugador1)
-                {
-                    idRival = p.IdJugador2;
-                    puntajePropio = p.PuntajeJugador1;
-                    puntajeRival = p.PuntajeJugador2;
-                }
-                else
-                {
-                    idRival = p.IdJugador1;
-                    puntajePropio = p.PuntajeJugador2;
-                    puntajeRival = p.PuntajeJugador1;
-                }
-
-                string resultado;
-                if (p.IdGanador == 0)
-                {
-                    resultado = "Empate";
-                    empatadas++;
-                }
-                else if (p.IdGanador == usuario.ID)
-                {
-                    resultado = "Ganada";
-                    ganadas++;
-                }
-                else
-                {
-                    resultado = "Perdida";
-                    perdidas++;
-                }
-
-                tiempoTotal += p.FechaFin - p.FechaInicio;
-
-                USUARIO rival = usuarioBLL.BuscarPorId(idRival);
-
-                FILAHISTORIAL fila = new FILAHISTORIAL();
-                fila.Fecha = p.FechaInicio.ToString("dd/MM/yyyy HH:mm");
-                if (rival != null)
-                {
-                    fila.Rival = rival.Nombre;
-                }
-                else
-                {
-                    fila.Rival = "-";
-                }
-                fila.PuntajePropio = puntajePropio;
-                fila.PuntajeRival = puntajeRival;
-                fila.Resultado = resultado;
-                fila.RutaXml = p.RutaXml;
-                filas.Add(fila);
+                estadistica = estadisticaBLL.Calcular(usuario);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudieron cargar las estadísticas: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             dgvHistorial.DataSource = null;
-            dgvHistorial.DataSource = filas;
+            dgvHistorial.DataSource = estadistica.Historial;
 
             dgvHistorial.Columns["Fecha"].HeaderText = "Fecha";
             dgvHistorial.Columns["Rival"].HeaderText = "Rival";
@@ -123,22 +66,11 @@ namespace GUI
             dgvHistorial.Columns["Resultado"].HeaderText = "Resultado";
             dgvHistorial.Columns["RutaXml"].Visible = false;
 
-            int totalPartidas = partidas.Count;
-            double promedio;
-            if (totalPartidas > 0)
-            {
-                promedio = ganadas * 100.0 / totalPartidas;
-            }
-            else
-            {
-                promedio = 0;
-            }
-
-            lblGanadas.Text = "Ganadas: " + ganadas;
-            lblPerdidas.Text = "Perdidas: " + perdidas;
-            lblEmpatadas.Text = "Empatadas: " + empatadas;
-            lblPromedio.Text = "Promedio de victorias: " + promedio.ToString("0.0") + "%";
-            lblTiempoTotal.Text = "Tiempo total jugado: " + (int)tiempoTotal.TotalHours + "h " + tiempoTotal.Minutes + "m";
+            lblGanadas.Text = "Ganadas: " + estadistica.Ganadas;
+            lblPerdidas.Text = "Perdidas: " + estadistica.Perdidas;
+            lblEmpatadas.Text = "Empatadas: " + estadistica.Empatadas;
+            lblPromedio.Text = "Promedio de victorias: " + estadistica.PromedioVictorias.ToString("0.0") + "%";
+            lblTiempoTotal.Text = "Tiempo total jugado: " + (int)estadistica.TiempoTotal.TotalHours + "h " + estadistica.TiempoTotal.Minutes + "m";
         }
 
         // Consulta posterior del XML de movimientos de la partida elegida en el historial.

@@ -12,7 +12,7 @@
 <body>
 <div id="wrap">
   <h1>Generala — Diagrama de clases</h1>
-  <p class="sub">4 proyectos: BE (entidades) &#8592; DAL (acceso a datos) &#8592; BLL (negocio) &#8592; GUI (presentación)</p>
+  <p class="sub">4 proyectos: BE (entidades) &#8592; DAL (acceso a datos) &#8592; BLL (negocio) &#8592; GUI (presentación). Versión completa con todos los miembros: TP_Generala.eapx / DiagramaClases.png.</p>
   <pre class="mermaid">
 classDiagram
     class BE_USUARIO["USUARIO"] {
@@ -29,113 +29,163 @@ classDiagram
         +int IdGanador
         +int PuntajeJugador1
         +int PuntajeJugador2
+        +DateTime FechaInicio
+        +DateTime FechaFin
         +string RutaXml
+    }
+    class BE_LOG["LOG"] {
+        &lt;&lt;BE&gt;&gt;
+        +int INICIO_SESION$
+        +int CIERRE_SESION$
+        +int INICIO_PARTIDA$
+        +int FIN_PARTIDA$
+        +int IdUsuario
+        +int IdTipo
+        +string Descripcion
+    }
+    class BE_ESTADISTICA["ESTADISTICA"] {
+        &lt;&lt;BE&gt;&gt;
+        +int Ganadas
+        +int Perdidas
+        +int Empatadas
+        +double PromedioVictorias
+        +TimeSpan TiempoTotal
+        +List~FILAHISTORIAL~ Historial
     }
     class BE_FILAPUNTAJE["FILAPUNTAJE"] { &lt;&lt;BE&gt;&gt; }
     class BE_FILAHISTORIAL["FILAHISTORIAL"] { &lt;&lt;BE&gt;&gt; }
+    class BE_MOVIMIENTO["MOVIMIENTO"] { &lt;&lt;BE&gt;&gt; }
 
     class DAL_ACCESO["ACCESO"] {
-        &lt;&lt;DAL&gt;&gt;
-        +Abrir() +Cerrar()
+        &lt;&lt;DAL internal&gt;&gt;
+        +CadenaConexion(nombre)$ string
+        +Abrir()
+        +Cerrar()
+        +IniciarTx()
+        +AceptarTx()
+        +CancelarTx()
         +Escribir(sql, parametros) int
         +LeerEscalar(sql, parametros) int
-        +Leer(sql, parametros) SqlDataReader
+        +Leer(sql, parametros) DataTable
     }
-    class DAL_USUARIO["USUARIO"] {
-        &lt;&lt;DAL&gt;&gt;
+    class DAL_MAPPER["MAPPER~T~"] {
+        &lt;&lt;abstract&gt;&gt;
+        ~ACCESO acceso
+        +Insertar(T objeto)* int
+    }
+    class DAL_MP_USUARIO["MP_USUARIO"] {
         +Insertar(usuario) int
         +Login(usuario) bool
         +BuscarPorId(id) USUARIO
     }
-    class DAL_PARTIDA["PARTIDA"] {
-        &lt;&lt;DAL&gt;&gt;
+    class DAL_MP_PARTIDA["MP_PARTIDA"] {
         +Insertar(partida) int
-        +Finalizar(partida)
-        +ListarPorUsuario(id) List
+        +Finalizar(partida, descripcion) bool
+        +ListarPorUsuario(idUsuario) List
     }
-    class DAL_LOG["LOG"] {
-        &lt;&lt;DAL&gt;&gt;
-        +Insertar(idUsuario, idTipo, descripcion)
+    class DAL_MP_LOG["MP_LOG"] {
+        +Insertar(log) int
     }
     class DAL_BACKUPRESTORE["BACKUPRESTORE"] {
-        &lt;&lt;DAL&gt;&gt;
-        +HacerBackup(ruta)$ bool
-        +HacerRestore(ruta)$ bool
+        &lt;&lt;static&gt;&gt;
+        +CarpetaBackupPorDefecto()$ string
+        +HacerBackup(ruta)$ string
+        +HacerRestore(ruta)$ string
     }
 
+    class BLL_PARTIDA["PARTIDA"] {
+        &lt;&lt;BLL&gt;&gt;
+        +event PartidaFinalizada
+        +Iniciar(j1, j2)
+        +Tirar(guardar)
+        +CategoriasDisponibles() List
+        +CalcularPuntaje(categoria) int
+        +Anotar(categoria) int
+        +CalcularTotal(numeroJugador) int
+        +Abandonar()
+    }
+    class BLL_ESTADISTICA["ESTADISTICA"] {
+        &lt;&lt;BLL&gt;&gt;
+        +Calcular(usuario) ESTADISTICA
+    }
     class BLL_USUARIO["USUARIO"] {
         &lt;&lt;BLL&gt;&gt;
         +Login(usuario) bool
         +Logout(usuario)
-        +Insertar(usuario)
+        +Insertar(usuario) bool
         +BuscarPorId(id) USUARIO
     }
-    class BLL_PARTIDA["PARTIDA"] {
-        &lt;&lt;BLL&gt;&gt;
-        +Iniciar(partida)
-        +Finalizar(partida, descripcion)
-        +ListarPorUsuario(id) List
-    }
     class BLL_BITACORA["BITACORA"] {
-        &lt;&lt;BLL&gt;&gt;
+        &lt;&lt;static&gt;&gt;
         +Registrar(idUsuario, idTipo, descripcion)$
     }
     class BLL_GENERALA["GENERALA"] {
-        &lt;&lt;BLL&gt;&gt;
+        &lt;&lt;static&gt;&gt;
         +Tirar(dados, guardar)$ int[]
         +CalcularPuntaje(categoria, dados, servido)$ int
         +EsCombinacion(categoria)$ bool
     }
     class BLL_MOVIMIENTOXML["MOVIMIENTOXML"] {
-        &lt;&lt;BLL&gt;&gt;
+        &lt;&lt;static&gt;&gt;
         +GenerarRuta()$ string
+        +CrearArchivo(ruta)$
         +RegistrarMovimiento(...)$
+        +LeerMovimientos(ruta)$ List
     }
-    class BLL_BACKUPRESTORE["BACKUPRESTORE"] {
-        &lt;&lt;BLL&gt;&gt;
-        +HacerBackup(ruta)$ bool
-        +HacerRestore(ruta)$ bool
-    }
+    class BLL_BACKUPRESTORE["BACKUPRESTORE"] { &lt;&lt;static&gt;&gt; }
+    class BLL_delPartidaFinalizada["delPartidaFinalizada"] { &lt;&lt;delegate&gt;&gt; }
 
+    class GUI_FormPrincipal["FormPrincipal"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_ucDado["ucDado"] {
+        &lt;&lt;UserControl&gt;&gt;
+        +int Valor
+        +bool Guardado
+        +bool PermitirGuardar
+        +Limpiar()
+    }
     class GUI_FormLogin["FormLogin"] { &lt;&lt;GUI&gt;&gt; }
     class GUI_FormRegistro["FormRegistro"] { &lt;&lt;GUI&gt;&gt; }
-    class GUI_FormPrincipal["FormPrincipal"] { &lt;&lt;GUI&gt;&gt; }
     class GUI_FormEstadisticas["FormEstadisticas"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_FormMovimientos["FormMovimientos"] { &lt;&lt;GUI&gt;&gt; }
     class GUI_FormReglas["FormReglas"] { &lt;&lt;GUI&gt;&gt; }
-    class GUI_Program["Program"] {
-        &lt;&lt;GUI&gt;&gt;
-        +Main()$
-    }
 
-    DAL_USUARIO ..&gt; DAL_ACCESO : usa
-    DAL_USUARIO ..&gt; BE_USUARIO : opera sobre
-    DAL_PARTIDA ..&gt; DAL_ACCESO : usa
-    DAL_PARTIDA ..&gt; BE_PARTIDA : opera sobre
-    DAL_LOG ..&gt; DAL_ACCESO : usa
+    DAL_MAPPER &lt;|-- DAL_MP_USUARIO : T = USUARIO
+    DAL_MAPPER &lt;|-- DAL_MP_PARTIDA : T = PARTIDA
+    DAL_MAPPER &lt;|-- DAL_MP_LOG : T = LOG
+    DAL_MAPPER --&gt; DAL_ACCESO : acceso
+    DAL_BACKUPRESTORE ..&gt; DAL_ACCESO : usa
+    DAL_MP_USUARIO ..&gt; BE_USUARIO
+    DAL_MP_PARTIDA ..&gt; BE_PARTIDA
+    DAL_MP_PARTIDA ..&gt; BE_LOG
+    DAL_MP_LOG ..&gt; BE_LOG
 
-    BLL_USUARIO ..&gt; DAL_USUARIO : usa
+    BLL_USUARIO --&gt; DAL_MP_USUARIO : mapper
     BLL_USUARIO ..&gt; BLL_BITACORA : usa
-    BLL_PARTIDA ..&gt; DAL_PARTIDA : usa
-    BLL_PARTIDA ..&gt; BLL_BITACORA : usa
+    BLL_BITACORA ..&gt; DAL_MP_LOG : usa
+    BLL_PARTIDA --&gt; DAL_MP_PARTIDA : mapper
+    BLL_PARTIDA --&gt; BE_FILAPUNTAJE : tabla
+    BLL_PARTIDA --&gt; BLL_delPartidaFinalizada : PartidaFinalizada
+    BLL_PARTIDA ..&gt; BLL_GENERALA : usa
     BLL_PARTIDA ..&gt; BLL_MOVIMIENTOXML : usa
-    BLL_BITACORA ..&gt; DAL_LOG : usa
+    BLL_ESTADISTICA --&gt; DAL_MP_PARTIDA : mapperPartida
+    BLL_ESTADISTICA --&gt; DAL_MP_USUARIO : mapperUsuario
+    BLL_ESTADISTICA ..&gt; BE_ESTADISTICA : crea
+    BLL_MOVIMIENTOXML ..&gt; BE_MOVIMIENTO
     BLL_BACKUPRESTORE ..&gt; DAL_BACKUPRESTORE : usa
 
-    GUI_FormLogin ..&gt; BLL_USUARIO : usa
-    GUI_FormLogin ..&gt; GUI_FormRegistro : abre
-    GUI_FormRegistro ..&gt; BLL_USUARIO : usa
+    GUI_FormPrincipal --&gt; BLL_PARTIDA : partidaBLL
+    GUI_FormPrincipal --&gt; GUI_ucDado : ucDados (5)
     GUI_FormPrincipal ..&gt; BLL_USUARIO : usa
-    GUI_FormPrincipal ..&gt; BLL_PARTIDA : usa
-    GUI_FormPrincipal ..&gt; BLL_GENERALA : usa
-    GUI_FormPrincipal ..&gt; BLL_MOVIMIENTOXML : usa
     GUI_FormPrincipal ..&gt; BLL_BACKUPRESTORE : usa
     GUI_FormPrincipal ..&gt; GUI_FormLogin : abre
     GUI_FormPrincipal ..&gt; GUI_FormEstadisticas : abre
     GUI_FormPrincipal ..&gt; GUI_FormReglas : abre
-    GUI_FormEstadisticas ..&gt; BLL_PARTIDA : usa
-    GUI_FormEstadisticas ..&gt; BLL_USUARIO : usa
-    GUI_Program ..&gt; GUI_FormLogin : abre
-    GUI_Program ..&gt; GUI_FormPrincipal : usa
+    GUI_FormLogin ..&gt; BLL_USUARIO : usa
+    GUI_FormLogin ..&gt; GUI_FormRegistro : abre
+    GUI_FormRegistro ..&gt; BLL_USUARIO : usa
+    GUI_FormEstadisticas ..&gt; BLL_ESTADISTICA : usa
+    GUI_FormEstadisticas ..&gt; GUI_FormMovimientos : abre
+    GUI_FormMovimientos ..&gt; BLL_MOVIMIENTOXML : usa
   </pre>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>

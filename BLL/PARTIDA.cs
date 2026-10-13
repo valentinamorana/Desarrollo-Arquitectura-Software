@@ -1,50 +1,189 @@
+using System;
 using System.Collections.Generic;
 
 namespace BLL
 {
+    // Maneja una partida de principio a fin: turnos, tiradas, planilla de puntajes,
+    // movimientos en XML, ganador y cierre. La GUI solo muestra este estado y le avisa
+    // a esta clase lo que hace el usuario (tirar, anotar, abandonar).
     public class PARTIDA
     {
-        private DAL.PARTIDA dal = new DAL.PARTIDA();
+        public const int TIRADAS_POR_TURNO = 3;
+
+        private DAL.MP_PARTIDA mapper = new DAL.MP_PARTIDA();
+
+        private BE.PARTIDA partida;
+        private BE.USUARIO jugador1;
+        private BE.USUARIO jugador2;
+
+        // Planilla: una fila por categoría, con el puntaje de cada jugador.
+        private List<BE.FILAPUNTAJE> tabla;
+
+        private int jugadorActual;      // 1 o 2
+        private int tirosRestantes;
+        private int[] dados;
+        private int turno;              // cuántas categorías se anotaron en total (numera el XML)
+        private bool enCurso = false;
 
         public event delPartidaFinalizada PartidaFinalizada;
 
-        public void Iniciar(BE.PARTIDA partida)
+        public PARTIDA()
         {
-            partida.RutaXml = MOVIMIENTOXML.GenerarRuta();
-            partida.ID = dal.Insertar(partida);
-            MOVIMIENTOXML.CrearArchivo(partida.RutaXml);
-
-            BITACORA.Registrar(partida.IdJugador1, BITACORA.INICIO_PARTIDA, "Inicio de partida");
-            BITACORA.Registrar(partida.IdJugador2, BITACORA.INICIO_PARTIDA, "Inicio de partida");
+            tabla = CrearTablaVacia();
+            dados = new int[5];
         }
 
-        // -------------------- Planilla de puntajes --------------------
-        // La GUI guarda la planilla (List<FILAPUNTAJE>) para mostrarla en la grilla,
-        // pero todas las reglas sobre ella (qué se puede anotar, cuánto vale, totales,
-        // ganador, fin de partida) las decide BLL. "numeroJugador" es 1 o 2.
-
-        public List<BE.FILAPUNTAJE> CrearTablaVacia()
+        public bool EnCurso
         {
-            List<BE.FILAPUNTAJE> tabla = new List<BE.FILAPUNTAJE>();
+            get { return enCurso; }
+        }
+
+        public int TirosRestantes
+        {
+            get { return tirosRestantes; }
+        }
+
+        public int[] Dados
+        {
+            get { return dados; }
+        }
+
+        public List<BE.FILAPUNTAJE> Tabla
+        {
+            get { return tabla; }
+        }
+
+        // -------------------- Inicio --------------------
+
+        public void Iniciar(BE.USUARIO j1, BE.USUARIO j2)
+        {
+            if (j1.ID == j2.ID)
+            {
+                throw new Exception("El Jugador 2 tiene que ser un usuario distinto al Jugador 1.");
+            }
+
+            BE.PARTIDA nueva = new BE.PARTIDA();
+            nueva.IdJugador1 = j1.ID;
+            nueva.IdJugador2 = j2.ID;
+            nueva.RutaXml = MOVIMIENTOXML.GenerarRuta();
+
+            // Graba la partida y el inicio en la bitácora en una sola transacción.
+            nueva.ID = mapper.Insertar(nueva);
+            if (nueva.ID == -1)
+            {
+                throw new Exception("No se pudo iniciar la partida en la base de datos. " +
+                    "Si se restauró un backup, puede que alguno de los jugadores ya no exista: volvé a ingresar.");
+            }
+
+            MOVIMIENTOXML.CrearArchivo(nueva.RutaXml);
+
+            partida = nueva;
+            jugador1 = j1;
+            jugador2 = j2;
+            tabla = CrearTablaVacia();
+            jugadorActual = 1;
+            turno = 0;
+            enCurso = true;
+            IniciarTurno();
+        }
+
+        private void IniciarTurno()
+        {
+            dados = new int[5];
+            tirosRestantes = TIRADAS_POR_TURNO;
+        }
+
+        private List<BE.FILAPUNTAJE> CrearTablaVacia()
+        {
+            List<BE.FILAPUNTAJE> nueva = new List<BE.FILAPUNTAJE>();
             foreach (string categoria in GENERALA.CATEGORIAS)
             {
                 BE.FILAPUNTAJE fila = new BE.FILAPUNTAJE();
                 fila.Categoria = categoria;
                 fila.PuntajeJugador1 = BE.FILAPUNTAJE.SIN_ANOTAR;
                 fila.PuntajeJugador2 = BE.FILAPUNTAJE.SIN_ANOTAR;
-                tabla.Add(fila);
+                nueva.Add(fila);
             }
-            return tabla;
+            return nueva;
         }
 
-        public List<string> CategoriasDisponibles(List<BE.FILAPUNTAJE> tabla, int numeroJugador)
+        // -------------------- Turno --------------------
+
+        public BE.USUARIO JugadorDelTurno()
         {
-            bool generalaYaAnotada = PuntajeDe(BuscarFila(tabla, "Generala"), numeroJugador) != BE.FILAPUNTAJE.SIN_ANOTAR;
+            if (jugadorActual == 1)
+            {
+                return jugador1;
+            }
+            return jugador2;
+        }
+
+        public BE.USUARIO RivalDelTurno()
+        {
+            if (jugadorActual == 1)
+            {
+                return jugador2;
+            }
+            return jugador1;
+        }
+
+        // Ya hubo al menos una tirada en este turno.
+        private bool YaTiro()
+        {
+            return tirosRestantes < TIRADAS_POR_TURNO;
+        }
+
+        public bool PuedeTirar()
+        {
+            return enCurso && tirosRestantes > 0;
+        }
+
+        // Solo se puede anotar después de la primera tirada del turno.
+        public bool PuedeAnotar()
+        {
+            return enCurso && YaTiro();
+        }
+
+        // Los dados se pueden guardar después de la primera tirada y mientras queden tiradas:
+        // antes de tirar no hay ningún dado para conservar.
+        public bool PuedeGuardarDados()
+        {
+            return enCurso && YaTiro() && tirosRestantes > 0;
+        }
+
+        public void Tirar(bool[] guardar)
+        {
+            if (!PuedeTirar())
+            {
+                throw new Exception("No quedan tiradas en este turno.");
+            }
+
+            if (!YaTiro())
+            {
+                guardar = new bool[5];
+            }
+
+            dados = GENERALA.Tirar(dados, guardar);
+            tirosRestantes--;
+        }
+
+        // "Servida": se anota en la primera tirada del turno, sin volver a tirar.
+        private bool EsTiradaServida()
+        {
+            return tirosRestantes == TIRADAS_POR_TURNO - 1;
+        }
+
+        // -------------------- Anotación --------------------
+
+        // Categorías que el jugador del turno todavía puede anotar.
+        public List<string> CategoriasDisponibles()
+        {
+            bool generalaYaAnotada = PuntajeDe(BuscarFila("Generala"), jugadorActual) != BE.FILAPUNTAJE.SIN_ANOTAR;
 
             List<string> disponibles = new List<string>();
             foreach (BE.FILAPUNTAJE fila in tabla)
             {
-                if (PuntajeDe(fila, numeroJugador) != BE.FILAPUNTAJE.SIN_ANOTAR)
+                if (PuntajeDe(fila, jugadorActual) != BE.FILAPUNTAJE.SIN_ANOTAR)
                 {
                     continue;
                 }
@@ -60,20 +199,51 @@ namespace BLL
             return disponibles;
         }
 
-        // Calcula el puntaje de la categoría elegida, lo anota en la planilla y lo devuelve.
-        public int Anotar(List<BE.FILAPUNTAJE> tabla, int numeroJugador, string categoria, int[] dados, bool servido)
+        // Cuánto vale la categoría con los dados actuales, sin anotarla.
+        // La GUI lo usa para avisar antes de anotar (tachada, servida).
+        public int CalcularPuntaje(string categoria)
         {
-            int puntaje = GENERALA.CalcularPuntaje(categoria, dados, servido);
-
-            // La Generala Doble solo vale si la Generala se anotó con puntos.
-            // Si la Generala quedó tachada (0), la Generala Doble solo se puede tachar.
-            if (categoria == GENERALA.GENERALA_DOBLE && !GeneralaConPuntos(tabla, numeroJugador))
+            if (GeneralaDobleSoloTachable(categoria))
             {
-                puntaje = 0;
+                return 0;
+            }
+            return GENERALA.CalcularPuntaje(categoria, dados, EsTiradaServida());
+        }
+
+        // La Generala Doble solo vale si la Generala se anotó con puntos.
+        // Si la Generala quedó tachada (0), la Generala Doble solo se puede tachar.
+        public bool GeneralaDobleSoloTachable(string categoria)
+        {
+            return categoria == GENERALA.GENERALA_DOBLE && PuntajeDe(BuscarFila("Generala"), jugadorActual) <= 0;
+        }
+
+        // Si se anota ahora, ¿se cobra el doble por tirada servida?
+        public bool AplicaBonusServida(string categoria)
+        {
+            return EsTiradaServida() && GENERALA.EsCombinacion(categoria) && CalcularPuntaje(categoria) > 0;
+        }
+
+        // Anota la categoría para el jugador del turno, la registra en el XML y pasa el turno.
+        // Si con esto se completó la planilla, cierra la partida (dispara PartidaFinalizada).
+        public int Anotar(string categoria)
+        {
+            if (!PuedeAnotar())
+            {
+                throw new Exception("Primero hay que tirar los dados.");
+            }
+            if (!CategoriasDisponibles().Contains(categoria))
+            {
+                throw new Exception("La categoría \"" + categoria + "\" no se puede anotar.");
             }
 
-            BE.FILAPUNTAJE fila = BuscarFila(tabla, categoria);
-            if (numeroJugador == 1)
+            int puntaje = CalcularPuntaje(categoria);
+
+            // Primero el XML: si no se puede escribir, la planilla queda como estaba.
+            MOVIMIENTOXML.RegistrarMovimiento(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, dados, categoria, puntaje);
+            turno++;
+
+            BE.FILAPUNTAJE fila = BuscarFila(categoria);
+            if (jugadorActual == 1)
             {
                 fila.PuntajeJugador1 = puntaje;
             }
@@ -81,15 +251,28 @@ namespace BLL
             {
                 fila.PuntajeJugador2 = puntaje;
             }
+
+            if (jugadorActual == 1)
+            {
+                jugadorActual = 2;
+            }
+            else
+            {
+                jugadorActual = 1;
+            }
+
+            if (EstaCompleta())
+            {
+                Finalizar();
+            }
+            else
+            {
+                IniciarTurno();
+            }
             return puntaje;
         }
 
-        public bool GeneralaConPuntos(List<BE.FILAPUNTAJE> tabla, int numeroJugador)
-        {
-            return PuntajeDe(BuscarFila(tabla, "Generala"), numeroJugador) > 0;
-        }
-
-        public int CalcularTotal(List<BE.FILAPUNTAJE> tabla, int numeroJugador)
+        public int CalcularTotal(int numeroJugador)
         {
             int total = 0;
             foreach (BE.FILAPUNTAJE fila in tabla)
@@ -103,9 +286,8 @@ namespace BLL
             return total;
         }
 
-        // La GUI le pasa la tabla de puntajes y BLL decide si la partida ya terminó,
-        // en vez de que sea la GUI quien conozca esa regla.
-        public bool EstaFinalizada(List<BE.FILAPUNTAJE> tabla)
+        // La partida termina cuando los 2 jugadores anotaron las 11 categorías.
+        private bool EstaCompleta()
         {
             foreach (BE.FILAPUNTAJE fila in tabla)
             {
@@ -117,7 +299,7 @@ namespace BLL
             return true;
         }
 
-        private BE.FILAPUNTAJE BuscarFila(List<BE.FILAPUNTAJE> tabla, string categoria)
+        private BE.FILAPUNTAJE BuscarFila(string categoria)
         {
             foreach (BE.FILAPUNTAJE fila in tabla)
             {
@@ -141,10 +323,10 @@ namespace BLL
         // -------------------- Fin de partida --------------------
 
         // Fin normal: se completaron todas las categorías. Gana el de más puntos (o empate).
-        public void Finalizar(BE.PARTIDA partida, List<BE.FILAPUNTAJE> tabla)
+        private void Finalizar()
         {
-            partida.PuntajeJugador1 = CalcularTotal(tabla, 1);
-            partida.PuntajeJugador2 = CalcularTotal(tabla, 2);
+            partida.PuntajeJugador1 = CalcularTotal(1);
+            partida.PuntajeJugador2 = CalcularTotal(2);
 
             if (partida.PuntajeJugador1 > partida.PuntajeJugador2)
             {
@@ -159,31 +341,31 @@ namespace BLL
                 partida.IdGanador = 0;
             }
 
-            Cerrar(partida, false);
+            Cerrar(false);
         }
 
-        // Abandono: se guardan los puntajes parciales, pero la partida la gana siempre
-        // el rival de quien abandonó, sin importar cómo venían los puntos.
-        public void Abandonar(BE.PARTIDA partida, List<BE.FILAPUNTAJE> tabla, int idQuienAbandona)
+        // Abandona el jugador del turno: se guardan los puntajes parciales, pero la
+        // partida la gana siempre el rival, sin importar cómo venían los puntos.
+        public void Abandonar()
         {
-            partida.PuntajeJugador1 = CalcularTotal(tabla, 1);
-            partida.PuntajeJugador2 = CalcularTotal(tabla, 2);
-
-            if (idQuienAbandona == partida.IdJugador1)
+            if (!enCurso)
             {
-                partida.IdGanador = partida.IdJugador2;
-            }
-            else
-            {
-                partida.IdGanador = partida.IdJugador1;
+                return;
             }
 
-            Cerrar(partida, true);
+            partida.PuntajeJugador1 = CalcularTotal(1);
+            partida.PuntajeJugador2 = CalcularTotal(2);
+            partida.IdGanador = RivalDelTurno().ID;
+
+            Cerrar(true);
         }
 
-        private void Cerrar(BE.PARTIDA partida, bool abandonada)
+        private void Cerrar(bool abandonada)
         {
-            dal.Finalizar(partida);
+            // La partida termina en pantalla aunque falle la base: no se puede seguir jugando
+            // con la planilla completa. Si falla, se avisa con la excepción.
+            enCurso = false;
+            tirosRestantes = 0;
 
             string descripcion;
             if (abandonada)
@@ -195,15 +377,16 @@ namespace BLL
                 descripcion = "Fin de partida";
             }
 
-            BITACORA.Registrar(partida.IdJugador1, BITACORA.FIN_PARTIDA, descripcion);
-            BITACORA.Registrar(partida.IdJugador2, BITACORA.FIN_PARTIDA, descripcion);
+            // Resultado + fin de partida en la bitácora, en una sola transacción.
+            if (!mapper.Finalizar(partida, descripcion))
+            {
+                throw new Exception("La partida terminó, pero no se pudo guardar el resultado en la base de datos.");
+            }
 
-            PartidaFinalizada(partida, abandonada);
-        }
-
-        public List<BE.PARTIDA> ListarPorUsuario(int idUsuario)
-        {
-            return dal.ListarPorUsuario(idUsuario);
+            if (PartidaFinalizada != null)
+            {
+                PartidaFinalizada(partida, abandonada);
+            }
         }
     }
 }

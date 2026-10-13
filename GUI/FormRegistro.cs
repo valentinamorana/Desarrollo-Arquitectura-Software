@@ -40,7 +40,18 @@ namespace GUI
             usuario.Contraseña = txtContraseña.Text;
 
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-            if (!usuarioBLL.Insertar(usuario))
+            bool creado;
+            try
+            {
+                creado = usuarioBLL.Insertar(usuario);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!creado)
             {
                 lblMensaje.Text = "Ese nombre de usuario ya existe";
                 return;

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using BE;
 
@@ -10,22 +9,17 @@ namespace GUI
         private USUARIO jugador1;
         private USUARIO jugador2;
 
-        private int[] dados = new int[5];
-        private bool[] guardar = new bool[5];
-        private int tirosRestantes;
-        private int jugadorActual;
-
-        private List<FILAPUNTAJE> tabla;
-        private PARTIDA partidaActual;
-        private int turnoContador;
-        private bool partidaEnCurso = false;
-
+        // Todo el estado de la partida (turno, tiradas, dados, planilla) lo maneja BLL.PARTIDA.
+        // Este form solo lo muestra y le avisa lo que hace el usuario.
         private BLL.PARTIDA partidaBLL = new BLL.PARTIDA();
+
+        private ucDado[] ucDados;
 
         public FormPrincipal(USUARIO jugadorLogueado)
         {
             InitializeComponent();
             jugador1 = jugadorLogueado;
+            ucDados = new ucDado[] { ucDado1, ucDado2, ucDado3, ucDado4, ucDado5 };
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
@@ -34,8 +28,9 @@ namespace GUI
 
             lblJugador1.Text = "Jugador 1: " + jugador1.Nombre;
             lblJugador2.Text = "Jugador 2: (sin ingresar)";
-            CargarTablaVacia();
-            DeshabilitarJuego();
+            RefrescarGrilla();
+            ActualizarTotales();
+            ActualizarPantalla();
 
             // btnComenzarPartida arranca deshabilitado desde el Diseñador, antes de que
             // se conecte el EnabledChanged, así que el color inicial se aplica acá.
@@ -58,8 +53,18 @@ namespace GUI
             }
         }
 
+        private void MostrarError(Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        // La BLL avisa con este evento que la partida terminó (completa o abandonada).
         private void PartidaBLL_PartidaFinalizada(BE.PARTIDA partida, bool abandonada)
         {
+            RefrescarGrilla();
+            ActualizarTotales();
+            ActualizarPantalla();
+
             string mensaje;
             if (partida.IdGanador == jugador1.ID)
             {
@@ -80,271 +85,96 @@ namespace GUI
             }
 
             MessageBox.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            partidaEnCurso = false;
-            DeshabilitarJuego();
-            lblTurno.Text = "Turno de: -";
-            lblTirosRestantes.Text = "Tiros restantes: -";
-            btnComenzarPartida.Visible = true;
-            btnComenzarPartida.Enabled = true;
-            btnLoginJugador2.Enabled = true;
-            btnAbandonar.Visible = false;
         }
 
-        // -------------------- Alta de jugador 2 / inicio de partida --------------------
+        // -------------------- Pantalla --------------------
 
-        private void btnLoginJugador2_Click(object sender, EventArgs e)
+        // Pone cada control según el estado de la partida que tiene la BLL.
+        // Se llama después de cada acción del usuario.
+        private void ActualizarPantalla()
         {
-            FormLogin formLogin = new FormLogin(jugador1.Nombre);
-            if (formLogin.ShowDialog() == DialogResult.OK)
+            bool enCurso = partidaBLL.EnCurso;
+
+            if (enCurso)
             {
-                // Control de respaldo: FormLogin ya rechaza al Jugador 1 antes de loguearlo.
-                if (formLogin.UsuarioLogueado.ID == jugador1.ID)
-                {
-                    MessageBox.Show("El Jugador 2 tiene que ser un usuario distinto al Jugador 1");
-                    return;
-                }
-
-                // Si entra un Jugador 2 distinto al de la partida anterior, al anterior
-                // se le registra el cierre de sesión en la bitácora.
-                if (jugador2 != null && jugador2.ID != formLogin.UsuarioLogueado.ID)
-                {
-                    BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-                    usuarioBLL.Logout(jugador2);
-                }
-
-                jugador2 = formLogin.UsuarioLogueado;
-                lblJugador2.Text = "Jugador 2: " + jugador2.Nombre;
-                btnComenzarPartida.Enabled = true;
-                btnLoginJugador2.Enabled = false;
-            }
-        }
-
-        private void btnComenzarPartida_Click(object sender, EventArgs e)
-        {
-            if (jugador2 == null)
-            {
-                MessageBox.Show("Primero tiene que ingresar el Jugador 2");
-                return;
-            }
-
-            partidaActual = new PARTIDA();
-            partidaActual.IdJugador1 = jugador1.ID;
-            partidaActual.IdJugador2 = jugador2.ID;
-
-            partidaBLL.Iniciar(partidaActual);
-            partidaEnCurso = true;
-
-            turnoContador = 0;
-            jugadorActual = 1;
-            CargarTablaVacia();
-            ActualizarTotales();
-            HabilitarJuego();
-            IniciarTurno();
-
-            btnComenzarPartida.Visible = false;
-            btnLoginJugador2.Enabled = false;
-            btnAbandonar.Visible = true;
-        }
-
-        // -------------------- Turno de juego --------------------
-
-        private void IniciarTurno()
-        {
-            dados = new int[5];
-            guardar = new bool[5];
-            tirosRestantes = 3;
-
-            lblDado1.Text = "-";
-            lblDado2.Text = "-";
-            lblDado3.Text = "-";
-            lblDado4.Text = "-";
-            lblDado5.Text = "-";
-
-            chkGuardar1.Checked = false;
-            chkGuardar2.Checked = false;
-            chkGuardar3.Checked = false;
-            chkGuardar4.Checked = false;
-            chkGuardar5.Checked = false;
-
-            // Todavía no se tiró ningún dado este turno: no hay nada que "guardar".
-            // Si se dejaran habilitados, tildar un casillero acá haría que ese dado
-            // se quede en 0 en la primera tirada en vez de tirarse.
-            DeshabilitarCheckboxesGuardar();
-
-            string nombreActual;
-            if (jugadorActual == 1)
-            {
-                nombreActual = jugador1.Nombre;
+                lblTurno.Text = "Turno de: " + partidaBLL.JugadorDelTurno().Nombre;
+                lblTirosRestantes.Text = "Tiros restantes: " + partidaBLL.TirosRestantes;
             }
             else
             {
-                nombreActual = jugador2.Nombre;
+                lblTurno.Text = "Turno de: -";
+                lblTirosRestantes.Text = "Tiros restantes: -";
             }
-            lblTurno.Text = "Turno de: " + nombreActual;
-            lblTirosRestantes.Text = "Tiros restantes: " + tirosRestantes;
 
-            btnTirarDados.Enabled = true;
-            btnAnotar.Enabled = false;
+            // Turno nuevo (o sin partida): todavía no se tiró, no hay dados para mostrar ni guardar.
+            bool turnoNuevo = !partidaBLL.PuedeAnotar();
 
-            ActualizarComboCategorias();
+            int[] dados = partidaBLL.Dados;
+            for (int i = 0; i < ucDados.Length; i++)
+            {
+                if (turnoNuevo)
+                {
+                    ucDados[i].Limpiar();
+                }
+                else
+                {
+                    ucDados[i].Valor = dados[i];
+                    ucDados[i].PermitirGuardar = partidaBLL.PuedeGuardarDados();
+                }
+            }
+
+            ActualizarComboCategorias(turnoNuevo);
+
+            btnTirarDados.Enabled = partidaBLL.PuedeTirar();
+            btnAnotar.Enabled = partidaBLL.PuedeAnotar();
+            cmbCategoria.Enabled = enCurso;
+
+            btnComenzarPartida.Visible = !enCurso;
+            btnComenzarPartida.Enabled = !enCurso && jugador2 != null;
+            btnLoginJugador2.Enabled = !enCurso;
+            btnAbandonar.Visible = enCurso;
+
+            // Durante la partida no se puede hacer backup ni restore: un restore a mitad
+            // de partida reemplazaría la base y la partida en curso quedaría inconsistente.
+            btnBackup.Enabled = !enCurso;
+            btnRestore.Enabled = !enCurso;
         }
 
-        private void btnTirarDados_Click(object sender, EventArgs e)
+        // Lista las categorías que el jugador del turno todavía puede anotar.
+        // Entre tiradas del mismo turno se mantiene la categoría que tenía elegida.
+        private void ActualizarComboCategorias(bool turnoNuevo)
         {
-            if (tirosRestantes <= 0)
+            string seleccionada = null;
+            if (cmbCategoria.SelectedItem != null)
             {
-                return;
+                seleccionada = cmbCategoria.SelectedItem.ToString();
             }
 
-            guardar[0] = chkGuardar1.Checked;
-            guardar[1] = chkGuardar2.Checked;
-            guardar[2] = chkGuardar3.Checked;
-            guardar[3] = chkGuardar4.Checked;
-            guardar[4] = chkGuardar5.Checked;
-
-            dados = BLL.GENERALA.Tirar(dados, guardar);
-            tirosRestantes--;
-
-            lblDado1.Text = dados[0].ToString();
-            lblDado2.Text = dados[1].ToString();
-            lblDado3.Text = dados[2].ToString();
-            lblDado4.Text = dados[3].ToString();
-            lblDado5.Text = dados[4].ToString();
-
-            lblTirosRestantes.Text = "Tiros restantes: " + tirosRestantes;
-            btnAnotar.Enabled = true;
-
-            if (tirosRestantes == 0)
-            {
-                btnTirarDados.Enabled = false;
-                DeshabilitarCheckboxesGuardar();
-            }
-            else
-            {
-                HabilitarCheckboxesGuardar();
-            }
-        }
-
-        private void ActualizarComboCategorias()
-        {
             cmbCategoria.Items.Clear();
+            if (!partidaBLL.EnCurso)
+            {
+                return;
+            }
 
-            foreach (string categoria in partidaBLL.CategoriasDisponibles(tabla, jugadorActual))
+            foreach (string categoria in partidaBLL.CategoriasDisponibles())
             {
                 cmbCategoria.Items.Add(categoria);
             }
 
-            if (cmbCategoria.Items.Count > 0)
+            if (!turnoNuevo && seleccionada != null && cmbCategoria.Items.Contains(seleccionada))
+            {
+                cmbCategoria.SelectedItem = seleccionada;
+            }
+            else if (cmbCategoria.Items.Count > 0)
             {
                 cmbCategoria.SelectedIndex = 0;
-            }
-        }
-
-        private void btnAnotar_Click(object sender, EventArgs e)
-        {
-            if (cmbCategoria.SelectedItem == null)
-            {
-                MessageBox.Show("Elegí una categoría para anotar");
-                return;
-            }
-
-            string categoria = cmbCategoria.SelectedItem.ToString();
-            bool servido = tirosRestantes == 2;
-            int puntaje = partidaBLL.Anotar(tabla, jugadorActual, categoria, dados, servido);
-
-            if (puntaje == 0 && categoria == BLL.GENERALA.GENERALA_DOBLE && !partidaBLL.GeneralaConPuntos(tabla, jugadorActual))
-            {
-                MessageBox.Show(
-                    "Como tu Generala quedó tachada, la Generala Doble no suma: se anota 0 y queda tachada.",
-                    "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (puntaje == 0)
-            {
-                MessageBox.Show(
-                    "Los dados no alcanzan para puntuar en \"" + categoria + "\". Se anota 0 y la categoría queda tachada.",
-                    "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (servido && BLL.GENERALA.EsCombinacion(categoria))
-            {
-                MessageBox.Show(
-                    "¡Tirada servida! Lograste \"" + categoria + "\" en el primer tiro: puntaje doble (" + puntaje + ").",
-                    "Servido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            string nombreActual;
-            if (jugadorActual == 1)
-            {
-                nombreActual = jugador1.Nombre;
-            }
-            else
-            {
-                nombreActual = jugador2.Nombre;
-            }
-
-            turnoContador++;
-            BLL.MOVIMIENTOXML.RegistrarMovimiento(partidaActual.RutaXml, turnoContador, nombreActual, dados, categoria, puntaje);
-
-            RefrescarGrilla();
-            ActualizarTotales();
-
-            if (jugadorActual == 1)
-            {
-                jugadorActual = 2;
-            }
-            else
-            {
-                jugadorActual = 1;
-            }
-
-            // El mensaje y el reseteo de la pantalla los hace PartidaBLL_PartidaFinalizada,
-            // suscripto al evento que dispara BLL.PARTIDA al cerrar la partida.
-            if (partidaBLL.EstaFinalizada(tabla))
-            {
-                partidaBLL.Finalizar(partidaActual, tabla);
-            }
-            else
-            {
-                IniciarTurno();
-            }
-        }
-
-        // Abandona el jugador al que le toca el turno; el rival gana la partida.
-        private USUARIO JugadorDelTurno()
-        {
-            if (jugadorActual == 1)
-            {
-                return jugador1;
-            }
-            return jugador2;
-        }
-
-        private USUARIO RivalDelTurno()
-        {
-            if (jugadorActual == 1)
-            {
-                return jugador2;
-            }
-            return jugador1;
-        }
-
-        private void btnAbandonar_Click(object sender, EventArgs e)
-        {
-            DialogResult confirmar = MessageBox.Show(
-                "¿Seguro que " + JugadorDelTurno().Nombre + " quiere abandonar la partida? " +
-                "Se registra con el puntaje actual y la gana " + RivalDelTurno().Nombre + ".",
-                "Abandonar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (confirmar == DialogResult.Yes)
-            {
-                partidaBLL.Abandonar(partidaActual, tabla, JugadorDelTurno().ID);
             }
         }
 
         private void RefrescarGrilla()
         {
             dgvPuntajes.DataSource = null;
-            dgvPuntajes.DataSource = tabla;
+            dgvPuntajes.DataSource = partidaBLL.Tabla;
 
             string nombreColumna2;
             if (jugador2 != null)
@@ -370,17 +200,8 @@ namespace GUI
             }
         }
 
-        private void CargarTablaVacia()
-        {
-            tabla = partidaBLL.CrearTablaVacia();
-            RefrescarGrilla();
-        }
-
         private void ActualizarTotales()
         {
-            int total1 = partidaBLL.CalcularTotal(tabla, 1);
-            int total2 = partidaBLL.CalcularTotal(tabla, 2);
-
             string nombreJugador2;
             if (jugador2 != null)
             {
@@ -391,51 +212,154 @@ namespace GUI
                 nombreJugador2 = "Jugador 2";
             }
 
-            lblTotalJugador1.Text = "Total " + jugador1.Nombre + ": " + total1;
-            lblTotalJugador2.Text = "Total " + nombreJugador2 + ": " + total2;
+            lblTotalJugador1.Text = "Total " + jugador1.Nombre + ": " + partidaBLL.CalcularTotal(1);
+            lblTotalJugador2.Text = "Total " + nombreJugador2 + ": " + partidaBLL.CalcularTotal(2);
         }
 
-        private void HabilitarJuego()
-        {
-            btnTirarDados.Enabled = true;
-            cmbCategoria.Enabled = true;
-            btnAnotar.Enabled = false;
-            // Los checkboxes "Guardar" los habilita/deshabilita cada turno IniciarTurno()
-            // y btnTirarDados_Click(), según si ya hay dados tirados para conservar.
+        // -------------------- Alta de jugador 2 / inicio de partida --------------------
 
-            // Durante la partida no se puede hacer backup ni restore: un restore a mitad
-            // de partida reemplazaría la base y la partida en curso quedaría inconsistente.
-            btnBackup.Enabled = false;
-            btnRestore.Enabled = false;
+        private void btnLoginJugador2_Click(object sender, EventArgs e)
+        {
+            FormLogin formLogin = new FormLogin(jugador1.Nombre);
+            if (formLogin.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            // Si entra un Jugador 2 distinto al de la partida anterior, al anterior
+            // se le registra el cierre de sesión en la bitácora.
+            if (jugador2 != null && jugador2.ID != formLogin.UsuarioLogueado.ID)
+            {
+                try
+                {
+                    BLL.USUARIO usuarioBLL = new BLL.USUARIO();
+                    usuarioBLL.Logout(jugador2);
+                }
+                catch (Exception ex)
+                {
+                    MostrarError(ex);
+                }
+            }
+
+            jugador2 = formLogin.UsuarioLogueado;
+            lblJugador2.Text = "Jugador 2: " + jugador2.Nombre;
+            RefrescarGrilla();
+            ActualizarTotales();
+            ActualizarPantalla();
         }
 
-        private void DeshabilitarJuego()
+        private void btnComenzarPartida_Click(object sender, EventArgs e)
         {
-            btnTirarDados.Enabled = false;
-            cmbCategoria.Enabled = false;
-            btnAnotar.Enabled = false;
-            DeshabilitarCheckboxesGuardar();
+            if (jugador2 == null)
+            {
+                MessageBox.Show("Primero tiene que ingresar el Jugador 2");
+                return;
+            }
 
-            btnBackup.Enabled = true;
-            btnRestore.Enabled = true;
+            try
+            {
+                partidaBLL.Iniciar(jugador1, jugador2);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+                return;
+            }
+
+            RefrescarGrilla();
+            ActualizarTotales();
+            ActualizarPantalla();
         }
 
-        private void HabilitarCheckboxesGuardar()
+        // -------------------- Turno de juego --------------------
+
+        private void btnTirarDados_Click(object sender, EventArgs e)
         {
-            chkGuardar1.Enabled = true;
-            chkGuardar2.Enabled = true;
-            chkGuardar3.Enabled = true;
-            chkGuardar4.Enabled = true;
-            chkGuardar5.Enabled = true;
+            bool[] guardar = new bool[ucDados.Length];
+            for (int i = 0; i < ucDados.Length; i++)
+            {
+                guardar[i] = ucDados[i].Guardado;
+            }
+
+            try
+            {
+                partidaBLL.Tirar(guardar);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+            ActualizarPantalla();
         }
 
-        private void DeshabilitarCheckboxesGuardar()
+        private void btnAnotar_Click(object sender, EventArgs e)
         {
-            chkGuardar1.Enabled = false;
-            chkGuardar2.Enabled = false;
-            chkGuardar3.Enabled = false;
-            chkGuardar4.Enabled = false;
-            chkGuardar5.Enabled = false;
+            if (cmbCategoria.SelectedItem == null)
+            {
+                MessageBox.Show("Elegí una categoría para anotar");
+                return;
+            }
+
+            string categoria = cmbCategoria.SelectedItem.ToString();
+
+            try
+            {
+                // Los avisos se muestran antes de anotar: si con esta anotación termina la
+                // partida, después aparece el mensaje con el ganador.
+                int puntaje = partidaBLL.CalcularPuntaje(categoria);
+                if (partidaBLL.GeneralaDobleSoloTachable(categoria))
+                {
+                    MessageBox.Show(
+                        "Como tu Generala quedó tachada, la Generala Doble no suma: se anota 0 y queda tachada.",
+                        "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (puntaje == 0)
+                {
+                    MessageBox.Show(
+                        "Los dados no alcanzan para puntuar en \"" + categoria + "\". Se anota 0 y la categoría queda tachada.",
+                        "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (partidaBLL.AplicaBonusServida(categoria))
+                {
+                    MessageBox.Show(
+                        "¡Tirada servida! Lograste \"" + categoria + "\" en el primer tiro: puntaje doble (" + puntaje + ").",
+                        "Servido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                // Anota, pasa el turno y, si era la última categoría, cierra la partida
+                // (la BLL dispara PartidaFinalizada).
+                partidaBLL.Anotar(categoria);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+
+            RefrescarGrilla();
+            ActualizarTotales();
+            ActualizarPantalla();
+        }
+
+        // Abandona el jugador al que le toca el turno; el rival gana la partida.
+        private void btnAbandonar_Click(object sender, EventArgs e)
+        {
+            DialogResult confirmar = MessageBox.Show(
+                "¿Seguro que " + partidaBLL.JugadorDelTurno().Nombre + " quiere abandonar la partida? " +
+                "Se registra con el puntaje actual y la gana " + partidaBLL.RivalDelTurno().Nombre + ".",
+                "Abandonar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirmar == DialogResult.Yes)
+            {
+                try
+                {
+                    partidaBLL.Abandonar();
+                }
+                catch (Exception ex)
+                {
+                    MostrarError(ex);
+                }
+                ActualizarPantalla();
+            }
         }
 
         // -------------------- Menú superior --------------------
@@ -450,11 +374,11 @@ namespace GUI
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (partidaEnCurso)
+            if (partidaBLL.EnCurso)
             {
                 DialogResult confirmar = MessageBox.Show(
-                    "Hay una partida en curso. Si salís, " + JugadorDelTurno().Nombre + " la abandona " +
-                    "y la gana " + RivalDelTurno().Nombre + ". ¿Salir igual?",
+                    "Hay una partida en curso. Si salís, " + partidaBLL.JugadorDelTurno().Nombre + " la abandona " +
+                    "y la gana " + partidaBLL.RivalDelTurno().Nombre + ". ¿Salir igual?",
                     "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (confirmar != DialogResult.Yes)
@@ -463,14 +387,29 @@ namespace GUI
                     return;
                 }
 
-                partidaBLL.Abandonar(partidaActual, tabla, JugadorDelTurno().ID);
+                try
+                {
+                    partidaBLL.Abandonar();
+                }
+                catch (Exception ex)
+                {
+                    MostrarError(ex);
+                }
             }
 
-            BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-            usuarioBLL.Logout(jugador1);
-            if (jugador2 != null)
+            // Si falla la bitácora se avisa, pero la aplicación se cierra igual.
+            try
             {
-                usuarioBLL.Logout(jugador2);
+                BLL.USUARIO usuarioBLL = new BLL.USUARIO();
+                usuarioBLL.Logout(jugador1);
+                if (jugador2 != null)
+                {
+                    usuarioBLL.Logout(jugador2);
+                }
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
             }
         }
 

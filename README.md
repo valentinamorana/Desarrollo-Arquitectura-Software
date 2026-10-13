@@ -20,11 +20,12 @@ El script crea la base `GENERALA` con sus tablas, stored procedures y usuarios d
 
 ### 2. Configurar la conexión (solo si hace falta)
 
-La app se conecta por defecto a la instancia `.\SQLEXPRESS` con autenticación de Windows. Si SQL Server está instalado con otro nombre de instancia, cambiar el `Data Source` en `GUI/App.config`:
+La app se conecta por defecto a la instancia `.\SQLEXPRESS` con autenticación de Windows. Si SQL Server está instalado con otro nombre de instancia, cambiar el `Data Source` de las dos cadenas (`GENERALA` y `MASTER`) en `GUI/App.config`:
 
 ```xml
 <connectionStrings>
     <add name="GENERALA" connectionString="Data Source=.\SQLEXPRESS; Initial Catalog=GENERALA; Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
+    <add name="MASTER" connectionString="Data Source=.\SQLEXPRESS; Initial Catalog=master; Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```
 
@@ -79,11 +80,11 @@ Las reglas completas están en el botón "Reglas" de la app y en `Documentacion/
 
 ```
 TP_Generala/
-├── BE/             entidades (USUARIO, PARTIDA, MOVIMIENTO, filas de grillas)
-├── DAL/            acceso a SQL Server (ACCESO + una clase por tabla, backup/restore)
-├── BLL/            reglas del juego, partida, bitácora, XML de movimientos
-├── GUI/            Windows Forms (ejecutable)
-├── Documentacion/  documento del TP (.docx), auditoría, reglas, diagramas
+├── BE/             entidades (USUARIO, PARTIDA, MOVIMIENTO, LOG, ESTADISTICA, filas de grillas)
+├── DAL/            acceso a SQL Server (ACCESO, MAPPER<T> y un mapper por tabla, backup/restore)
+├── BLL/            reglas del juego, partida, estadísticas, bitácora, XML de movimientos
+├── GUI/            Windows Forms (ejecutable) y el control de usuario ucDado
+├── Documentacion/  documento del TP (.docx), reglas, diagramas
 ├── Script.sql      creación de la base, stored procedures y datos de prueba
 └── TP_Generala.sln
 ```

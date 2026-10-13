@@ -1,28 +1,36 @@
+using System;
+
 namespace BLL
 {
     public class USUARIO
     {
-        private DAL.USUARIO dal = new DAL.USUARIO();
+        private DAL.MP_USUARIO mapper = new DAL.MP_USUARIO();
 
         public bool Login(BE.USUARIO usuario)
         {
-            bool ok = dal.Login(usuario);
+            bool ok = mapper.Login(usuario);
             if (ok)
             {
-                BITACORA.Registrar(usuario.ID, BITACORA.INICIO_SESION, "Inicio de sesión de " + usuario.Nombre);
+                BITACORA.Registrar(usuario.ID, BE.LOG.INICIO_SESION, "Inicio de sesión de " + usuario.Nombre);
             }
             return ok;
         }
 
         public void Logout(BE.USUARIO usuario)
         {
-            BITACORA.Registrar(usuario.ID, BITACORA.CIERRE_SESION, "Cierre de sesión de " + usuario.Nombre);
+            BITACORA.Registrar(usuario.ID, BE.LOG.CIERRE_SESION, "Cierre de sesión de " + usuario.Nombre);
         }
 
+        // Devuelve false si el nombre de usuario ya existe.
+        // Si falla la base de datos tira una excepción con el motivo.
         public bool Insertar(BE.USUARIO usuario)
         {
-            int id = dal.Insertar(usuario);
-            if (id <= 0)
+            int id = mapper.Insertar(usuario);
+            if (id == -1)
+            {
+                throw new Exception("No se pudo registrar el usuario en la base de datos.");
+            }
+            if (id == 0)
             {
                 return false;
             }
@@ -32,7 +40,7 @@ namespace BLL
 
         public BE.USUARIO BuscarPorId(int id)
         {
-            return dal.BuscarPorId(id);
+            return mapper.BuscarPorId(id);
         }
     }
 }

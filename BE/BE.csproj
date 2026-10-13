@@ -40,6 +40,8 @@
     <Compile Include="FILAPUNTAJE.cs" />
     <Compile Include="FILAHISTORIAL.cs" />
     <Compile Include="MOVIMIENTO.cs" />
+    <Compile Include="LOG.cs" />
+    <Compile Include="ESTADISTICA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

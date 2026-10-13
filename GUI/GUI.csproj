@@ -83,6 +83,12 @@
     <Compile Include="FormReglas.Designer.cs">
       <DependentUpon>FormReglas.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucDado.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucDado.Designer.cs">
+      <DependentUpon>ucDado.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormEstadisticas.resx">
