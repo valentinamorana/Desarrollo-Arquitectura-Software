@@ -1,7 +1,6 @@
 # Reglas de negocio — TP Generala
 
-Fecha: 02/09/2026
-Para confirmar con la cátedra antes de la entrega.
+Reglas que implementa la aplicación. Donde la consigna no especifica algo, la decisión tomada y su motivo están en la sección 7.
 
 ## 1. Modalidad de juego
 
@@ -45,8 +44,11 @@ Para confirmar con la cátedra antes de la entrega.
 - Cada movimiento (tirada anotada) de cada partida se graba en un archivo XML propio de esa partida, con jugador, dados, categoría, puntaje y fecha/hora.
 - Las estadísticas por jugador muestran: partidas ganadas / perdidas / empatadas, porcentaje de victorias, y tiempo total acumulado jugado (suma de la duración de todas sus partidas terminadas).
 
-## 7. Puntos a confirmar con el profe
+## 7. Decisiones de diseño
 
-- ¿"2 jugadores" tiene que ser necesariamente pasar-y-jugar en la misma PC, o se espera algún tipo de separación/red entre ambos jugadores? (La consigna no lo aclara explícitamente).
-- ¿Generala Doble (100 puntos, requiere haber anotado Generala antes) y el bonus x2 por tirada servida son una interpretación válida de "combinatoria obtenida (Generala, Full, Póker, etc.)", o la cátedra espera solo las categorías básicas sin extras?
-- ¿Alcanza con que la revancha reutilice al mismo Jugador 2 sin re-loguear, o se espera loguear de nuevo en cada partida?
+La consigna pide "Generala para 2 jugadores" con turnos, puntaje, ganador y la combinatoria de los dados, sin más detalle. Estas son las decisiones tomadas donde no lo especifica:
+
+- **Los 2 jugadores juegan en la misma PC.** La consigna no pide red, y jugar en red agregaría un tema (comunicación entre equipos) que no forma parte de la materia. Cada jugador igual se identifica con su propio usuario, así la bitácora y las estadísticas quedan a nombre de cada uno.
+- **Generala Doble y bonus por tirada servida.** Son reglas habituales de la Generala que se juega en Argentina y forman parte de la "combinatoria obtenida" que pide la consigna. En la versión tradicional, la Generala servida gana la partida en el acto. Acá se eligió que valga el doble (100 puntos), igual que las otras combinaciones servidas, así la partida siempre se juega completa y se decide por puntos.
+- **La revancha reutiliza al Jugador 2.** Mientras el Jugador 2 no cambie, su sesión sigue abierta, igual que la del Jugador 1, y por eso no se le pide el login de nuevo. Si entra otro Jugador 2, al anterior se le registra el cierre de sesión (sección 2).
+- **Usuario y contraseña tienen hasta 50 caracteres**, el mismo largo que las columnas de la tabla USUARIO. Los campos de las pantallas de login y de registro no dejan escribir más.
