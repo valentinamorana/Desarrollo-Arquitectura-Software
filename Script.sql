@@ -82,9 +82,17 @@ BEGIN
 		[PUNTAJE_JUGADOR2] [int] NOT NULL DEFAULT 0,
 		[FECHA_INICIO] [datetime] NOT NULL,
 		[FECHA_FIN] [datetime] NULL,
-		[RUTA_XML] [varchar](200) NULL,
+		[RUTA_XML] [varchar](500) NULL,
 	 CONSTRAINT [PK_PARTIDA] PRIMARY KEY CLUSTERED ([ID] ASC)
 	)
+END
+GO
+
+-- Si la tabla ya existía con RUTA_XML de 200 caracteres, la agranda: la ruta completa del XML
+-- puede ser más larga si la aplicación se ejecuta desde una carpeta con muchos niveles.
+IF EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('PARTIDA') AND name = 'RUTA_XML' AND max_length < 500)
+BEGIN
+	ALTER TABLE [dbo].[PARTIDA] ALTER COLUMN [RUTA_XML] [varchar](500) NULL
 END
 GO
 
@@ -192,7 +200,7 @@ END
 GO
 
 CREATE OR ALTER PROC [dbo].[PARTIDA_INSERTAR]
-@idJugador1 int, @idJugador2 int, @rutaXml varchar(200)
+@idJugador1 int, @idJugador2 int, @rutaXml varchar(500)
 AS
 BEGIN
 	DECLARE @ID int

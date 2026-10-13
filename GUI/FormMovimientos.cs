@@ -18,7 +18,20 @@ namespace GUI
 
         private void FormMovimientos_Load(object sender, EventArgs e)
         {
-            List<MOVIMIENTO> movimientos = BLL.MOVIMIENTOXML.LeerMovimientos(rutaXml);
+            lblArchivo.Text = "Archivo: " + rutaXml;
+
+            // Si el XML se editó a mano o quedó cortado, no se puede leer: se avisa y no se muestra nada.
+            List<MOVIMIENTO> movimientos;
+            try
+            {
+                movimientos = BLL.MOVIMIENTOXML.LeerMovimientos(rutaXml);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo leer el archivo XML de la partida (puede estar dañado):\n" + ex.Message,
+                    "Movimientos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             dgvMovimientos.DataSource = movimientos;
             dgvMovimientos.Columns["Turno"].HeaderText = "Turno";
@@ -27,8 +40,6 @@ namespace GUI
             dgvMovimientos.Columns["Categoria"].HeaderText = "Categoría";
             dgvMovimientos.Columns["Puntaje"].HeaderText = "Puntaje";
             dgvMovimientos.Columns["Fecha"].HeaderText = "Fecha y hora";
-
-            lblArchivo.Text = "Archivo: " + rutaXml;
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

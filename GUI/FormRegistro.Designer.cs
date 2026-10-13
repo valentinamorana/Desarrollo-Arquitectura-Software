@@ -79,6 +79,7 @@ namespace GUI
             //
             this.txtNombre.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtNombre.Location = new System.Drawing.Point(210, 117);
+            this.txtNombre.MaxLength = 50;
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(260, 32);
             this.txtNombre.TabIndex = 2;
@@ -98,6 +99,7 @@ namespace GUI
             //
             this.txtContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtContraseña.Location = new System.Drawing.Point(210, 172);
+            this.txtContraseña.MaxLength = 50;
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.PasswordChar = '●';
             this.txtContraseña.Size = new System.Drawing.Size(260, 32);
@@ -118,6 +120,7 @@ namespace GUI
             //
             this.txtConfirmar.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtConfirmar.Location = new System.Drawing.Point(210, 227);
+            this.txtConfirmar.MaxLength = 50;
             this.txtConfirmar.Name = "txtConfirmar";
             this.txtConfirmar.PasswordChar = '●';
             this.txtConfirmar.Size = new System.Drawing.Size(260, 32);
