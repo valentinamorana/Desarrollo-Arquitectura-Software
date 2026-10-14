@@ -56,6 +56,7 @@ namespace GUI
             this.lblTotalJugador2 = new System.Windows.Forms.Label();
             this.lblTotalJugador1 = new System.Windows.Forms.Label();
             this.dgvPuntajes = new System.Windows.Forms.DataGridView();
+            this.picDecoracion = new System.Windows.Forms.PictureBox();
             this.sfdBackup = new System.Windows.Forms.SaveFileDialog();
             this.ofdRestore = new System.Windows.Forms.OpenFileDialog();
             this.pnlEncabezado.SuspendLayout();
@@ -63,6 +64,7 @@ namespace GUI
             this.pnlJuego.SuspendLayout();
             this.pnlPuntajes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPuntajes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picDecoracion)).BeginInit();
             this.SuspendLayout();
             //
             // pnlEncabezado
@@ -383,6 +385,7 @@ namespace GUI
             //
             this.pnlPuntajes.BackColor = System.Drawing.Color.White;
             this.pnlPuntajes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlPuntajes.Controls.Add(this.picDecoracion);
             this.pnlPuntajes.Controls.Add(this.lblTotalJugador2);
             this.pnlPuntajes.Controls.Add(this.lblTotalJugador1);
             this.pnlPuntajes.Controls.Add(this.dgvPuntajes);
@@ -390,6 +393,17 @@ namespace GUI
             this.pnlPuntajes.Name = "pnlPuntajes";
             this.pnlPuntajes.Size = new System.Drawing.Size(960, 355);
             this.pnlPuntajes.TabIndex = 3;
+            //
+            // picDecoracion
+            //
+            this.picDecoracion.BackColor = System.Drawing.Color.Transparent;
+            this.picDecoracion.Image = global::GUI.Properties.Resources.dados_cubilete;
+            this.picDecoracion.Location = new System.Drawing.Point(600, 105);
+            this.picDecoracion.Name = "picDecoracion";
+            this.picDecoracion.Size = new System.Drawing.Size(340, 235);
+            this.picDecoracion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picDecoracion.TabIndex = 3;
+            this.picDecoracion.TabStop = false;
             //
             // lblTotalJugador2
             //
@@ -473,6 +487,7 @@ namespace GUI
             this.pnlPuntajes.ResumeLayout(false);
             this.pnlPuntajes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPuntajes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picDecoracion)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -507,6 +522,7 @@ namespace GUI
         private System.Windows.Forms.DataGridView dgvPuntajes;
         private System.Windows.Forms.Label lblTotalJugador1;
         private System.Windows.Forms.Label lblTotalJugador2;
+        private System.Windows.Forms.PictureBox picDecoracion;
         private System.Windows.Forms.SaveFileDialog sfdBackup;
         private System.Windows.Forms.OpenFileDialog ofdRestore;
     }
