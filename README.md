@@ -26,8 +26,8 @@ La app se conecta por defecto a la instancia `.\SQLEXPRESS` con autenticación d
 
 ```xml
 <connectionStrings>
-    <add name="GENERALA" connectionString="Data Source=.\SQLEXPRESS; Initial Catalog=GENERALA; Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
-    <add name="MASTER" connectionString="Data Source=.\SQLEXPRESS; Initial Catalog=master; Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
+    <add name="GENERALA" connectionString="Data Source=.\SQLEXPRESS; Initial Catalog=GENERALA; Integrated Security=SSPI; Current Language=Spanish;" providerName="System.Data.SqlClient" />
+    <add name="MASTER" connectionString="Data Source=.\SQLEXPRESS; Initial Catalog=master; Integrated Security=SSPI; Current Language=Spanish;" providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```
 
@@ -38,6 +38,8 @@ Ejemplos de `Data Source`:
 | SQL Server Express (por defecto) | `.\SQLEXPRESS` |
 | SQL Server instancia por defecto (Developer / Standard) | `.` |
 | Instancia con nombre | `.\NOMBRE_INSTANCIA` |
+
+`Current Language=Spanish` hace que los mensajes de error de SQL Server (por ejemplo, si falla un backup) lleguen en español. La parte del mensaje que viene de Windows, como "(Access is denied.)", puede seguir en inglés.
 
 Si ya se compiló, también se puede editar `GUI/bin/Debug/GUI.exe.config` directamente, sin recompilar.
 
@@ -55,7 +57,7 @@ Los carga `Script.sql`:
 | jugador2 | 1234 |
 | jugador3 | 1234 |
 
-También se pueden crear usuarios nuevos con el botón "Registrarme" de la pantalla de login. El usuario y la contraseña admiten hasta 50 caracteres.
+También se pueden crear usuarios nuevos con el botón "Registrarme" de la pantalla de login. El nombre de usuario lleva de 3 a 20 caracteres, sin espacios. La contraseña lleva de 4 a 20 caracteres y al menos un número.
 
 ## Cómo se juega
 

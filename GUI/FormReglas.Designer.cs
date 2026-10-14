@@ -83,9 +83,9 @@ namespace GUI
     "l puntaje de esa categoría se duplica.\r\n\r\nCATEGORÍA TACHADA\r\nSi tus dados no a" +
     "lcanzan para ninguna categoría libre, tenés que elegir una igual: queda anota" +
     "da en 0 y no se puede volver a usar.\r\n\r\nFIN DE LA PARTIDA\r\nTermina cuando ambo" +
-    "s jugadores completaron las 10 (u 11, con Generala Doble) categorías. También" +
-    " se puede abandonar antes con el botón \"Abandonar Partida\", y se registra con" +
-    " el puntaje parcial de ese momento.";
+    "s jugadores completaron las 11 categorías. También se puede abandonar antes co" +
+    "n el botón \"Abandonar Partida\": se elige qué jugador abandona, se registra con" +
+    " el puntaje parcial de ese momento y la gana el otro jugador.";
             //
             // btnCerrar
             //

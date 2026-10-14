@@ -70,7 +70,8 @@ namespace GUI
             lblPerdidas.Text = "Perdidas: " + estadistica.Perdidas;
             lblEmpatadas.Text = "Empatadas: " + estadistica.Empatadas;
             lblPromedio.Text = "Promedio de victorias: " + estadistica.PromedioVictorias.ToString("0.0") + "%";
-            lblTiempoTotal.Text = "Tiempo total jugado: " + (int)estadistica.TiempoTotal.TotalHours + "h " + estadistica.TiempoTotal.Minutes + "m";
+            lblTiempoTotal.Text = "Tiempo total jugado: " + (int)estadistica.TiempoTotal.TotalHours + "h " +
+                estadistica.TiempoTotal.Minutes + "m " + estadistica.TiempoTotal.Seconds + "s";
         }
 
         // Consulta posterior del XML de movimientos de la partida elegida en el historial.

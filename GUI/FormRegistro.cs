@@ -40,6 +40,15 @@ namespace GUI
             usuario.Contraseña = txtContraseña.Text;
 
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
+
+            // Largo del nombre y la contraseña, nombre sin espacios (reglas de la BLL).
+            string error = usuarioBLL.ValidarRegistro(usuario);
+            if (error != "")
+            {
+                lblMensaje.Text = error;
+                return;
+            }
+
             bool creado;
             try
             {
@@ -66,6 +75,11 @@ namespace GUI
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void lblTitulo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
