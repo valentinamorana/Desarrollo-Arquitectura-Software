@@ -44,7 +44,7 @@ namespace GUI
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
             this.pnlTitulo.Name = "pnlTitulo";
-            this.pnlTitulo.Size = new System.Drawing.Size(760, 60);
+            this.pnlTitulo.Size = new System.Drawing.Size(1060, 60);
             this.pnlTitulo.TabIndex = 0;
             //
             // lblTitulo
@@ -54,7 +54,7 @@ namespace GUI
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(0, 0);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(760, 60);
+            this.lblTitulo.Size = new System.Drawing.Size(1060, 60);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Movimientos de la partida";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -67,7 +67,7 @@ namespace GUI
             this.lblArchivo.ForeColor = System.Drawing.Color.DimGray;
             this.lblArchivo.Location = new System.Drawing.Point(20, 70);
             this.lblArchivo.Name = "lblArchivo";
-            this.lblArchivo.Size = new System.Drawing.Size(720, 20);
+            this.lblArchivo.Size = new System.Drawing.Size(1020, 20);
             this.lblArchivo.TabIndex = 1;
             this.lblArchivo.Text = "Archivo:";
             this.lblArchivo.UseMnemonic = false;
@@ -91,8 +91,9 @@ namespace GUI
             this.dgvMovimientos.ReadOnly = true;
             this.dgvMovimientos.RowHeadersVisible = false;
             this.dgvMovimientos.RowTemplate.Height = 26;
-            this.dgvMovimientos.Size = new System.Drawing.Size(720, 400);
+            this.dgvMovimientos.Size = new System.Drawing.Size(1020, 400);
             this.dgvMovimientos.TabIndex = 2;
+            this.dgvMovimientos.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMovimientos_CellFormatting);
             //
             // btnCerrar
             //
@@ -100,7 +101,7 @@ namespace GUI
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCerrar.ForeColor = System.Drawing.Color.White;
-            this.btnCerrar.Location = new System.Drawing.Point(630, 505);
+            this.btnCerrar.Location = new System.Drawing.Point(930, 505);
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(110, 36);
             this.btnCerrar.TabIndex = 3;
@@ -112,7 +113,7 @@ namespace GUI
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
-            this.ClientSize = new System.Drawing.Size(760, 560);
+            this.ClientSize = new System.Drawing.Size(1060, 560);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.dgvMovimientos);
             this.Controls.Add(this.lblArchivo);

@@ -64,7 +64,7 @@ También se pueden crear usuarios nuevos con el botón "Registrarme" de la panta
 1. Ingresar con el Jugador 1 (pantalla inicial).
 2. En la pantalla principal, "Ingresar Jugador 2" con **otro** usuario.
 3. "Comenzar Partida". Cada turno: hasta 3 tiradas, tildar los dados a guardar después de cada tirada y elegir la categoría a anotar.
-4. La partida termina cuando los dos completan las 11 categorías. También se puede abandonar: la gana el rival.
+4. La partida termina cuando los dos completan las 11 categorías. También se puede abandonar con "Abandonar Partida": la app pregunta qué jugador abandona y la partida la gana el otro.
 
 Las reglas completas están en el botón "Reglas" de la app y en `Documentacion/Reglas_de_Negocio_Generala.md`. En ese archivo, la sección 7 explica las decisiones tomadas donde la consigna no especifica (juego en la misma PC, Generala Doble, tirada servida, revancha).
 
@@ -75,7 +75,7 @@ Las reglas completas están en el botón "Reglas" de la app y en `Documentacion/
 | Registro / Login / Logout | Pantalla de login → "Registrarme"; botón "Salir" (o cerrar la ventana) |
 | Bitácora | Tabla `LOG` de la base (tipos en `TIPO_LOG`). El inicio y el fin de partida se graban en la misma transacción que la partida |
 | Estadísticas, promedio de victorias, tiempo jugado | Botón "Estadísticas" |
-| XML de movimientos | Se guardan en `GUI/bin/Debug/Partidas/`. Se consultan desde Estadísticas → elegir partida → "Ver movimientos" |
+| XML de movimientos | Un archivo por partida en `GUI/bin/Debug/Partidas/`, con cada tirada (dados que salieron y dados guardados), cada anotación y el cierre (puntajes, ganador y si fue abandono). Se consultan desde Estadísticas → elegir partida → "Ver movimientos" |
 | Backup / Restore | Botones "Backup" y "Restore" (deshabilitados durante una partida) |
 
 **Nota sobre el backup:** `BACKUP DATABASE` lo ejecuta el servicio de SQL Server, no el usuario de Windows, así que en carpetas personales (Escritorio, Documentos) suele fallar por permisos. Por eso el diálogo arranca en la carpeta de backups de SQL Server, que es donde conviene guardarlo.

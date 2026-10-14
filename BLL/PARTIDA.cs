@@ -75,7 +75,7 @@ namespace BLL
                     "Si se restauró un backup, puede que alguno de los jugadores ya no exista: volvé a ingresar.");
             }
 
-            MOVIMIENTOXML.CrearArchivo(nueva.RutaXml);
+            MOVIMIENTOXML.CrearArchivo(nueva.RutaXml, j1.Nombre, j2.Nombre);
 
             partida = nueva;
             jugador1 = j1;
@@ -154,7 +154,13 @@ namespace BLL
                 guardar = new bool[5];
             }
 
-            dados = GENERALA.Tirar(dados, guardar);
+            int[] nuevos = GENERALA.Tirar(dados, guardar);
+            int numeroTirada = TIRADAS_POR_TURNO - tirosRestantes + 1;
+
+            // Primero el XML: si no se puede escribir, la tirada no cuenta y los dados quedan como estaban.
+            MOVIMIENTOXML.RegistrarTirada(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, numeroTirada, nuevos, guardar);
+
+            dados = nuevos;
             tirosRestantes--;
         }
 
@@ -332,7 +338,7 @@ namespace BLL
                 partida.IdGanador = 0;
             }
 
-            Cerrar(false, "Fin de partida");
+            Cerrar(null);
         }
 
         // Abandona el jugador indicado (puede ser cualquiera de los 2, le toque o no el turno):
@@ -363,21 +369,49 @@ namespace BLL
             partida.PuntajeJugador2 = CalcularTotal(2);
             partida.IdGanador = ganador.ID;
 
-            Cerrar(true, "Partida abandonada por " + quienAbandona.Nombre);
+            Cerrar(quienAbandona);
         }
 
-        private void Cerrar(bool abandonada, string descripcion)
+        // quienAbandona = null cuando la partida terminó completa.
+        private void Cerrar(BE.USUARIO quienAbandona)
         {
             // La partida termina en pantalla aunque falle la base: no se puede seguir jugando
             // con la planilla completa. Si falla, se avisa con la excepción.
             enCurso = false;
             tirosRestantes = 0;
 
+            bool abandonada = quienAbandona != null;
+            string descripcion;
+            string nombreAbandono;
+            if (abandonada)
+            {
+                descripcion = "Partida abandonada por " + quienAbandona.Nombre;
+                nombreAbandono = quienAbandona.Nombre;
+            }
+            else
+            {
+                descripcion = "Fin de partida";
+                nombreAbandono = "";
+            }
+
             // Resultado + fin de partida en la bitácora, en una sola transacción.
             if (!mapper.Finalizar(partida, descripcion))
             {
                 throw new Exception("La partida terminó, pero no se pudo guardar el resultado en la base de datos.");
             }
+
+            // Cierre en el XML: puntajes, ganador ("" si es empate) y quién abandonó.
+            string nombreGanador = "";
+            if (partida.IdGanador == jugador1.ID)
+            {
+                nombreGanador = jugador1.Nombre;
+            }
+            else if (partida.IdGanador == jugador2.ID)
+            {
+                nombreGanador = jugador2.Nombre;
+            }
+            MOVIMIENTOXML.RegistrarFin(partida.RutaXml, turno, jugador1.Nombre, partida.PuntajeJugador1,
+                jugador2.Nombre, partida.PuntajeJugador2, nombreGanador, nombreAbandono);
 
             if (PartidaFinalizada != null)
             {
