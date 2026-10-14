@@ -13,11 +13,68 @@ namespace DAL
         private SqlConnection conexion;
         private SqlTransaction transaccion;
 
+        // Instancias de SQL Server que se prueban si la del App.config no responde:
+        // con nombre (SQL Express) o la instancia por defecto (como en las compus de la facu).
+        private static readonly string[] servidoresAlternativos = { @".\SQLEXPRESS", "." };
+
+        // Servidor que respondió la primera vez; se reutiliza para no volver a probar.
+        private static string servidorResuelto;
+
         // La cadena de conexión se lee del App.config de la GUI (connectionStrings "GENERALA"),
         // así se puede apuntar a otra instancia de SQL Server sin recompilar.
+        // El Data Source se reemplaza por el servidor que efectivamente respondió.
         public static string CadenaConexion(string nombre)
         {
-            return ConfigurationManager.ConnectionStrings[nombre].ConnectionString;
+            SqlConnectionStringBuilder cadena = new SqlConnectionStringBuilder(
+                ConfigurationManager.ConnectionStrings[nombre].ConnectionString);
+            cadena.DataSource = ResolverServidor();
+            return cadena.ConnectionString;
+        }
+
+        // Prueba primero el Data Source del App.config y después las alternativas,
+        // y se queda con el primero donde se pueda abrir la base GENERALA.
+        private static string ResolverServidor()
+        {
+            if (servidorResuelto != null)
+            {
+                return servidorResuelto;
+            }
+
+            SqlConnectionStringBuilder cadena = new SqlConnectionStringBuilder(
+                ConfigurationManager.ConnectionStrings["GENERALA"].ConnectionString);
+            string configurado = cadena.DataSource;
+
+            List<string> candidatos = new List<string>();
+            candidatos.Add(configurado);
+            foreach (string servidor in servidoresAlternativos)
+            {
+                if (!candidatos.Contains(servidor))
+                {
+                    candidatos.Add(servidor);
+                }
+            }
+
+            cadena.ConnectTimeout = 5;
+            foreach (string servidor in candidatos)
+            {
+                cadena.DataSource = servidor;
+                try
+                {
+                    using (SqlConnection prueba = new SqlConnection(cadena.ConnectionString))
+                    {
+                        prueba.Open();
+                    }
+                    servidorResuelto = servidor;
+                    return servidorResuelto;
+                }
+                catch (SqlException)
+                {
+                    // No responde o no tiene la base: se prueba el siguiente.
+                }
+            }
+
+            // Ninguno respondió: se usa el configurado, así el error que ve el usuario es el original.
+            return configurado;
         }
 
         public void Abrir()
