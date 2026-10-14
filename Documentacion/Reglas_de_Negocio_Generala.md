@@ -42,7 +42,7 @@ Reglas que implementa la aplicación. Donde la consigna no especifica algo, la d
 ## 6. Bitácora y estadísticas
 
 - Se registra en la bitácora: inicio de sesión, cierre de sesión, inicio de partida y fin de partida (de ambos jugadores en cada evento de partida).
-- Cada movimiento (tirada anotada) de cada partida se graba en un archivo XML propio de esa partida, con jugador, dados, categoría, puntaje y fecha/hora.
+- Todos los movimientos de cada partida se graban en un archivo XML propio de esa partida: cada **tirada** (jugador, número de tirada del turno, dados que salieron y cuáles se guardaron), cada **anotación** (jugador, dados, categoría y puntaje) y el **cierre** (puntajes, ganador o empate, y quién abandonó si fue un abandono), todos con fecha y hora. Se consultan desde Estadísticas → "Ver movimientos".
 - Las estadísticas por jugador muestran: partidas ganadas / perdidas / empatadas, porcentaje de victorias, y tiempo total acumulado jugado (suma de la duración de todas sus partidas terminadas).
 
 ## 7. Decisiones de diseño
