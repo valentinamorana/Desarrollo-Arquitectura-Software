@@ -118,15 +118,6 @@ namespace BLL
             return jugador2;
         }
 
-        public BE.USUARIO RivalDelTurno()
-        {
-            if (jugadorActual == 1)
-            {
-                return jugador2;
-            }
-            return jugador1;
-        }
-
         // Ya hubo al menos una tirada en este turno.
         private bool YaTiro()
         {
@@ -341,41 +332,46 @@ namespace BLL
                 partida.IdGanador = 0;
             }
 
-            Cerrar(false);
+            Cerrar(false, "Fin de partida");
         }
 
-        // Abandona el jugador del turno: se guardan los puntajes parciales, pero la
-        // partida la gana siempre el rival, sin importar cómo venían los puntos.
-        public void Abandonar()
+        // Abandona el jugador indicado (puede ser cualquiera de los 2, le toque o no el turno):
+        // se guardan los puntajes parciales, pero la partida la gana siempre el otro
+        // jugador, sin importar cómo venían los puntos.
+        public void Abandonar(BE.USUARIO quienAbandona)
         {
             if (!enCurso)
             {
                 return;
             }
 
+            BE.USUARIO ganador;
+            if (quienAbandona.ID == jugador1.ID)
+            {
+                ganador = jugador2;
+            }
+            else if (quienAbandona.ID == jugador2.ID)
+            {
+                ganador = jugador1;
+            }
+            else
+            {
+                throw new Exception("Solo puede abandonar uno de los 2 jugadores de la partida.");
+            }
+
             partida.PuntajeJugador1 = CalcularTotal(1);
             partida.PuntajeJugador2 = CalcularTotal(2);
-            partida.IdGanador = RivalDelTurno().ID;
+            partida.IdGanador = ganador.ID;
 
-            Cerrar(true);
+            Cerrar(true, "Partida abandonada por " + quienAbandona.Nombre);
         }
 
-        private void Cerrar(bool abandonada)
+        private void Cerrar(bool abandonada, string descripcion)
         {
             // La partida termina en pantalla aunque falle la base: no se puede seguir jugando
             // con la planilla completa. Si falla, se avisa con la excepción.
             enCurso = false;
             tirosRestantes = 0;
-
-            string descripcion;
-            if (abandonada)
-            {
-                descripcion = "Partida abandonada";
-            }
-            else
-            {
-                descripcion = "Fin de partida";
-            }
 
             // Resultado + fin de partida en la bitácora, en una sola transacción.
             if (!mapper.Finalizar(partida, descripcion))

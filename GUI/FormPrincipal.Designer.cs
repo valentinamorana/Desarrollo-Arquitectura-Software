@@ -82,11 +82,15 @@ namespace GUI
             //
             // btnCerrarSesion
             //
-            this.btnCerrarSesion.BackColor = System.Drawing.Color.White;
-            this.btnCerrarSesion.FlatAppearance.BorderSize = 0;
+            this.btnCerrarSesion.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnCerrarSesion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCerrarSesion.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnCerrarSesion.FlatAppearance.BorderSize = 2;
+            this.btnCerrarSesion.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(110, 10, 55);
+            this.btnCerrarSesion.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(140, 15, 70);
             this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnCerrarSesion.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
             this.btnCerrarSesion.Location = new System.Drawing.Point(890, 15);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(95, 40);
@@ -229,12 +233,12 @@ namespace GUI
             //
             // lblJugador2
             //
-            this.lblJugador2.AutoSize = true;
+            this.lblJugador2.AutoEllipsis = true;
             this.lblJugador2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblJugador2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.lblJugador2.Location = new System.Drawing.Point(310, 18);
             this.lblJugador2.Name = "lblJugador2";
-            this.lblJugador2.Size = new System.Drawing.Size(240, 20);
+            this.lblJugador2.Size = new System.Drawing.Size(270, 22);
             this.lblJugador2.TabIndex = 1;
             this.lblJugador2.Text = "Jugador 2: (sin ingresar)";
             this.lblJugador2.UseMnemonic = false;

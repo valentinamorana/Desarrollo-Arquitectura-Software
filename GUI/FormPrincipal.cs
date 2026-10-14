@@ -27,7 +27,6 @@ namespace GUI
             partidaBLL.PartidaFinalizada += PartidaBLL_PartidaFinalizada;
 
             lblJugador1.Text = "Jugador 1: " + jugador1.Nombre;
-            lblJugador2.Text = "Jugador 2: (sin ingresar)";
             RefrescarGrilla();
             ActualizarTotales();
             ActualizarPantalla();
@@ -79,9 +78,19 @@ namespace GUI
                 mensaje = "La partida terminó empatada!";
             }
 
+            // Cuando se abandona, el que abandonó es el que no ganó.
             if (abandonada)
             {
-                mensaje = "Partida abandonada. " + mensaje;
+                string quienAbandono;
+                if (partida.IdGanador == jugador1.ID)
+                {
+                    quienAbandono = jugador2.Nombre;
+                }
+                else
+                {
+                    quienAbandono = jugador1.Nombre;
+                }
+                mensaje = quienAbandono + " abandonó la partida. " + mensaje;
             }
 
             MessageBox.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -132,6 +141,20 @@ namespace GUI
             btnComenzarPartida.Visible = !enCurso;
             btnComenzarPartida.Enabled = !enCurso && jugador2 != null;
             btnLoginJugador2.Enabled = !enCurso;
+
+            // Que se note si el Jugador 2 ya ingresó: nombre con ✓ y el botón pasa a "Cambiar".
+            if (jugador2 == null)
+            {
+                lblJugador2.Text = "Jugador 2: (sin ingresar)";
+                lblJugador2.ForeColor = System.Drawing.Color.FromArgb(150, 120, 135);
+                btnLoginJugador2.Text = "Ingresar Jugador 2";
+            }
+            else
+            {
+                lblJugador2.Text = "Jugador 2: " + jugador2.Nombre + "  ✓";
+                lblJugador2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+                btnLoginJugador2.Text = "Cambiar Jugador 2";
+            }
             btnAbandonar.Visible = enCurso;
 
             // Durante la partida no se puede hacer backup ni restore: un restore a mitad
@@ -242,10 +265,12 @@ namespace GUI
             }
 
             jugador2 = formLogin.UsuarioLogueado;
-            lblJugador2.Text = "Jugador 2: " + jugador2.Nombre;
             RefrescarGrilla();
             ActualizarTotales();
             ActualizarPantalla();
+
+            // Listo para jugar: con Enter o un clic arranca la partida.
+            btnComenzarPartida.Focus();
         }
 
         private void btnComenzarPartida_Click(object sender, EventArgs e)
@@ -306,18 +331,28 @@ namespace GUI
             {
                 // Los avisos se muestran antes de anotar: si con esta anotación termina la
                 // partida, después aparece el mensaje con el ganador.
+                // Si la categoría va a quedar tachada (0 puntos), se pide confirmación:
+                // con "No" no se anota nada y el jugador puede elegir otra categoría.
                 int puntaje = partidaBLL.CalcularPuntaje(categoria);
+                string avisoTachada = "";
                 if (partidaBLL.GeneralaDobleSoloTachable(categoria))
                 {
-                    MessageBox.Show(
-                        "Como tu Generala quedó tachada, la Generala Doble no suma: se anota 0 y queda tachada.",
-                        "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    avisoTachada = "Como tu Generala quedó tachada, la Generala Doble no suma: se anota 0 y queda tachada.";
                 }
                 else if (puntaje == 0)
                 {
-                    MessageBox.Show(
-                        "Los dados no alcanzan para puntuar en \"" + categoria + "\". Se anota 0 y la categoría queda tachada.",
-                        "Categoría tachada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    avisoTachada = "Los dados no alcanzan para puntuar en \"" + categoria + "\": se anota 0 y la categoría queda tachada.";
+                }
+
+                if (avisoTachada != "")
+                {
+                    DialogResult confirmar = MessageBox.Show(
+                        avisoTachada + "\n\n¿Estás seguro?",
+                        "Tachar categoría", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                    if (confirmar != DialogResult.Yes)
+                    {
+                        return;
+                    }
                 }
                 else if (partidaBLL.AplicaBonusServida(categoria))
                 {
@@ -340,26 +375,31 @@ namespace GUI
             ActualizarPantalla();
         }
 
-        // Abandona el jugador al que le toca el turno; el rival gana la partida.
+        // Pregunta qué jugador abandona y abandona la partida; el otro la gana.
+        // Devuelve false si se canceló (la partida sigue en curso).
+        private bool PreguntarYAbandonar(string mensaje)
+        {
+            FormAbandonar formAbandonar = new FormAbandonar(jugador1, jugador2, mensaje);
+            if (formAbandonar.ShowDialog(this) != DialogResult.OK)
+            {
+                return false;
+            }
+
+            try
+            {
+                partidaBLL.Abandonar(formAbandonar.UsuarioQueAbandona);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+            ActualizarPantalla();
+            return true;
+        }
+
         private void btnAbandonar_Click(object sender, EventArgs e)
         {
-            DialogResult confirmar = MessageBox.Show(
-                "¿Seguro que " + partidaBLL.JugadorDelTurno().Nombre + " quiere abandonar la partida? " +
-                "Se registra con el puntaje actual y la gana " + partidaBLL.RivalDelTurno().Nombre + ".",
-                "Abandonar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (confirmar == DialogResult.Yes)
-            {
-                try
-                {
-                    partidaBLL.Abandonar();
-                }
-                catch (Exception ex)
-                {
-                    MostrarError(ex);
-                }
-                ActualizarPantalla();
-            }
+            PreguntarYAbandonar("La partida se registra con el puntaje actual y la gana el otro jugador.");
         }
 
         // -------------------- Menú superior --------------------
@@ -374,26 +414,29 @@ namespace GUI
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Para salir con una partida en curso, alguno de los 2 tiene que abandonarla.
+            // Si se cancela, no se cierra la aplicación.
             if (partidaBLL.EnCurso)
             {
-                DialogResult confirmar = MessageBox.Show(
-                    "Hay una partida en curso. Si salís, " + partidaBLL.JugadorDelTurno().Nombre + " la abandona " +
-                    "y la gana " + partidaBLL.RivalDelTurno().Nombre + ". ¿Salir igual?",
-                    "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                if (confirmar != DialogResult.Yes)
+                bool abandono = PreguntarYAbandonar(
+                    "Hay una partida en curso. Para salir, uno de los 2 jugadores tiene que abandonarla: la gana el otro.");
+                if (!abandono)
                 {
                     e.Cancel = true;
                     return;
                 }
-
-                try
+            }
+            // Sin partida en curso, se confirma la salida (solo si la cierra el usuario,
+            // no si se está apagando Windows).
+            else if (e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult confirmar = MessageBox.Show(
+                    "¿Estás seguro de que querés salir?",
+                    "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if (confirmar != DialogResult.Yes)
                 {
-                    partidaBLL.Abandonar();
-                }
-                catch (Exception ex)
-                {
-                    MostrarError(ex);
+                    e.Cancel = true;
+                    return;
                 }
             }
 

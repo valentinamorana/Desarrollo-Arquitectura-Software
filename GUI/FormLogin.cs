@@ -26,11 +26,35 @@ namespace GUI
         public FormLogin(string usuarioNoPermitido) : this()
         {
             this.usuarioNoPermitido = usuarioNoPermitido;
+            this.Text = "Generala - Ingresar Jugador 2";
+            lblTitulo.Text = "Jugador 2";
+            lblSubtitulo.Text = "Ingresá con un usuario distinto a " + usuarioNoPermitido + ".";
+        }
+
+        // El campo que tiene el foco se marca con la línea de abajo en bordó.
+        private void txtCampo_Enter(object sender, EventArgs e)
+        {
+            LineaDe(sender).BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+        }
+
+        private void txtCampo_Leave(object sender, EventArgs e)
+        {
+            LineaDe(sender).BackColor = System.Drawing.Color.FromArgb(230, 200, 212);
+        }
+
+        private Panel LineaDe(object campo)
+        {
+            if (campo == txtUsuario)
+            {
+                return pnlLineaUsuario;
+            }
+            return pnlLineaContraseña;
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             lblMensaje.Text = "";
+            lblMensaje.ForeColor = System.Drawing.Color.Crimson;
 
             if (txtUsuario.Text == "" || txtContraseña.Text == "")
             {
@@ -74,13 +98,15 @@ namespace GUI
             }
         }
 
-        private void btnRegistrarme_Click(object sender, EventArgs e)
+        private void lnkRegistrarme_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             FormRegistro formRegistro = new FormRegistro();
             if (formRegistro.ShowDialog() == DialogResult.OK)
             {
                 txtUsuario.Text = formRegistro.NombreRegistrado;
+                lblMensaje.ForeColor = System.Drawing.Color.SeaGreen;
                 lblMensaje.Text = "Usuario creado. Ya podés ingresar.";
+                txtContraseña.Focus();
             }
         }
     }
