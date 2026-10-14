@@ -135,11 +135,12 @@ namespace BLL
             return enCurso && YaTiro();
         }
 
-        // Los dados se pueden guardar después de la primera tirada y mientras queden tiradas:
-        // antes de tirar no hay ningún dado para conservar.
+        // Los dados se pueden marcar para guardar desde la primera tirada hasta que se anota:
+        // antes de tirar no hay ningún dado para conservar. Después del último tiro marcarlos
+        // no cambia nada (Tirar ya no se permite), pero no se bloquean.
         public bool PuedeGuardarDados()
         {
-            return enCurso && YaTiro() && tirosRestantes > 0;
+            return enCurso && YaTiro();
         }
 
         public void Tirar(bool[] guardar)
