@@ -135,11 +135,12 @@ namespace BLL
             return enCurso && YaTiro();
         }
 
-        // Los dados se pueden guardar después de la primera tirada y mientras queden tiradas:
-        // antes de tirar no hay ningún dado para conservar.
+        // Los dados se pueden marcar para guardar desde la primera tirada hasta que se anota:
+        // antes de tirar no hay ningún dado para conservar. Después del último tiro marcarlos
+        // no cambia nada (Tirar ya no se permite), pero no se bloquean.
         public bool PuedeGuardarDados()
         {
-            return enCurso && YaTiro() && tirosRestantes > 0;
+            return enCurso && YaTiro();
         }
 
         public void Tirar(bool[] guardar)
@@ -281,6 +282,35 @@ namespace BLL
                 }
             }
             return total;
+        }
+
+        // Quién va ganando según los puntos anotados hasta ahora: 1, 2, o 0 si van empatados.
+        public int JugadorQueVaGanando()
+        {
+            int total1 = CalcularTotal(1);
+            int total2 = CalcularTotal(2);
+            if (total1 > total2)
+            {
+                return 1;
+            }
+            if (total2 > total1)
+            {
+                return 2;
+            }
+            return 0;
+        }
+
+        // Los 2 jugadores anotaron al menos una categoría: recién ahí tiene sentido decir quién va ganando.
+        public bool AmbosAnotaron()
+        {
+            bool anotoJugador1 = false;
+            bool anotoJugador2 = false;
+            foreach (BE.FILAPUNTAJE fila in tabla)
+            {
+                if (fila.PuntajeJugador1 != BE.FILAPUNTAJE.SIN_ANOTAR) anotoJugador1 = true;
+                if (fila.PuntajeJugador2 != BE.FILAPUNTAJE.SIN_ANOTAR) anotoJugador2 = true;
+            }
+            return anotoJugador1 && anotoJugador2;
         }
 
         // La partida termina cuando los 2 jugadores anotaron las 11 categorías.

@@ -106,14 +106,16 @@ namespace GUI
 
             if (enCurso)
             {
-                lblTurno.Text = "Turno de: " + partidaBLL.JugadorDelTurno().Nombre;
+                lblTurnoNombre.Text = partidaBLL.JugadorDelTurno().Nombre;
                 lblTirosRestantes.Text = "Tiros restantes: " + partidaBLL.TirosRestantes;
             }
             else
             {
-                lblTurno.Text = "Turno de: -";
+                lblTurnoNombre.Text = "-";
                 lblTirosRestantes.Text = "Tiros restantes: -";
             }
+            // "Turno de:" va en negro y el nombre en rosa: son dos labels, el nombre pegado al primero.
+            lblTurnoNombre.Left = lblTurno.Right;
 
             // Turno nuevo (o sin partida): todavía no se tiró, no hay dados para mostrar ni guardar.
             bool turnoNuevo = !partidaBLL.PuedeAnotar();
@@ -212,6 +214,13 @@ namespace GUI
             dgvPuntajes.Columns["Categoria"].HeaderText = "Categoría";
             dgvPuntajes.Columns["PuntajeJugador1"].HeaderText = jugador1.Nombre;
             dgvPuntajes.Columns["PuntajeJugador2"].HeaderText = nombreColumna2;
+
+            // Anchos fijos que entran en la grilla sin barra horizontal; los puntajes, centrados.
+            dgvPuntajes.Columns["Categoria"].Width = 155;
+            dgvPuntajes.Columns["PuntajeJugador1"].Width = 113;
+            dgvPuntajes.Columns["PuntajeJugador2"].Width = 113;
+            dgvPuntajes.Columns["PuntajeJugador1"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvPuntajes.Columns["PuntajeJugador2"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void dgvPuntajes_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -237,6 +246,27 @@ namespace GUI
 
             lblTotalJugador1.Text = "Total " + jugador1.Nombre + ": " + partidaBLL.CalcularTotal(1);
             lblTotalJugador2.Text = "Total " + nombreJugador2 + ": " + partidaBLL.CalcularTotal(2);
+
+            // Se recalcula cada vez que cambian los totales (después de cada anotación).
+            // Hasta que los 2 jugadores anotaron al menos una vez no se muestra nada.
+            int diferencia = Math.Abs(partidaBLL.CalcularTotal(1) - partidaBLL.CalcularTotal(2));
+            int lider = partidaBLL.JugadorQueVaGanando();
+            if (!partidaBLL.EnCurso || !partidaBLL.AmbosAnotaron())
+            {
+                lblVaGanando.Text = "";
+            }
+            else if (lider == 1)
+            {
+                lblVaGanando.Text = jugador1.Nombre + " va ganando por " + diferencia;
+            }
+            else if (lider == 2)
+            {
+                lblVaGanando.Text = nombreJugador2 + " va ganando por " + diferencia;
+            }
+            else
+            {
+                lblVaGanando.Text = "Van empatados";
+            }
         }
 
         // -------------------- Alta de jugador 2 / inicio de partida --------------------

@@ -52,10 +52,13 @@ namespace GUI
             this.ucDado5 = new GUI.ucDado();
             this.lblTirosRestantes = new System.Windows.Forms.Label();
             this.lblTurno = new System.Windows.Forms.Label();
+            this.lblTurnoNombre = new System.Windows.Forms.Label();
             this.pnlPuntajes = new System.Windows.Forms.Panel();
             this.lblTotalJugador2 = new System.Windows.Forms.Label();
+            this.lblVaGanando = new System.Windows.Forms.Label();
             this.lblTotalJugador1 = new System.Windows.Forms.Label();
             this.dgvPuntajes = new System.Windows.Forms.DataGridView();
+            this.picDecoracion = new System.Windows.Forms.PictureBox();
             this.sfdBackup = new System.Windows.Forms.SaveFileDialog();
             this.ofdRestore = new System.Windows.Forms.OpenFileDialog();
             this.pnlEncabezado.SuspendLayout();
@@ -63,6 +66,7 @@ namespace GUI
             this.pnlJuego.SuspendLayout();
             this.pnlPuntajes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPuntajes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picDecoracion)).BeginInit();
             this.SuspendLayout();
             //
             // pnlEncabezado
@@ -146,16 +150,19 @@ namespace GUI
             //
             // btnReglas
             //
-            this.btnReglas.BackColor = System.Drawing.Color.White;
+            this.btnReglas.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
+            this.btnReglas.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnReglas.FlatAppearance.BorderSize = 0;
+            this.btnReglas.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(230, 180, 200);
+            this.btnReglas.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnReglas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReglas.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnReglas.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnReglas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
-            this.btnReglas.Location = new System.Drawing.Point(440, 15);
+            this.btnReglas.Location = new System.Drawing.Point(235, 20);
             this.btnReglas.Name = "btnReglas";
-            this.btnReglas.Size = new System.Drawing.Size(100, 40);
+            this.btnReglas.Size = new System.Drawing.Size(125, 30);
             this.btnReglas.TabIndex = 5;
-            this.btnReglas.Text = "Reglas";
+            this.btnReglas.Text = "¿Cómo jugar?";
             this.btnReglas.UseVisualStyleBackColor = false;
             this.btnReglas.Click += new System.EventHandler(this.btnReglas_Click);
             //
@@ -268,6 +275,7 @@ namespace GUI
             this.pnlJuego.Controls.Add(this.ucDado2);
             this.pnlJuego.Controls.Add(this.ucDado1);
             this.pnlJuego.Controls.Add(this.lblTirosRestantes);
+            this.pnlJuego.Controls.Add(this.lblTurnoNombre);
             this.pnlJuego.Controls.Add(this.lblTurno);
             this.pnlJuego.Location = new System.Drawing.Point(20, 160);
             this.pnlJuego.Name = "pnlJuego";
@@ -371,18 +379,32 @@ namespace GUI
             //
             this.lblTurno.AutoSize = true;
             this.lblTurno.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
-            this.lblTurno.ForeColor = System.Drawing.Color.Crimson;
+            this.lblTurno.ForeColor = System.Drawing.Color.Black;
             this.lblTurno.Location = new System.Drawing.Point(15, 12);
             this.lblTurno.Name = "lblTurno";
-            this.lblTurno.Size = new System.Drawing.Size(120, 25);
+            this.lblTurno.Size = new System.Drawing.Size(95, 25);
             this.lblTurno.TabIndex = 0;
-            this.lblTurno.Text = "Turno de: -";
+            this.lblTurno.Text = "Turno de:";
             this.lblTurno.UseMnemonic = false;
+            //
+            // lblTurnoNombre
+            //
+            this.lblTurnoNombre.AutoSize = true;
+            this.lblTurnoNombre.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.lblTurnoNombre.ForeColor = System.Drawing.Color.FromArgb(233, 30, 99);
+            this.lblTurnoNombre.Location = new System.Drawing.Point(110, 12);
+            this.lblTurnoNombre.Name = "lblTurnoNombre";
+            this.lblTurnoNombre.Size = new System.Drawing.Size(20, 25);
+            this.lblTurnoNombre.TabIndex = 11;
+            this.lblTurnoNombre.Text = "-";
+            this.lblTurnoNombre.UseMnemonic = false;
             //
             // pnlPuntajes
             //
             this.pnlPuntajes.BackColor = System.Drawing.Color.White;
             this.pnlPuntajes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlPuntajes.Controls.Add(this.picDecoracion);
+            this.pnlPuntajes.Controls.Add(this.lblVaGanando);
             this.pnlPuntajes.Controls.Add(this.lblTotalJugador2);
             this.pnlPuntajes.Controls.Add(this.lblTotalJugador1);
             this.pnlPuntajes.Controls.Add(this.dgvPuntajes);
@@ -390,6 +412,28 @@ namespace GUI
             this.pnlPuntajes.Name = "pnlPuntajes";
             this.pnlPuntajes.Size = new System.Drawing.Size(960, 355);
             this.pnlPuntajes.TabIndex = 3;
+            //
+            // picDecoracion
+            //
+            this.picDecoracion.BackColor = System.Drawing.Color.Transparent;
+            this.picDecoracion.Image = global::GUI.Properties.Resources.dados_cubilete;
+            this.picDecoracion.Location = new System.Drawing.Point(415, 135);
+            this.picDecoracion.Name = "picDecoracion";
+            this.picDecoracion.Size = new System.Drawing.Size(530, 210);
+            this.picDecoracion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picDecoracion.TabIndex = 3;
+            this.picDecoracion.TabStop = false;
+            //
+            // lblVaGanando
+            //
+            this.lblVaGanando.AutoSize = true;
+            this.lblVaGanando.Font = new System.Drawing.Font("Sitka Banner", 12F, System.Drawing.FontStyle.Bold);
+            this.lblVaGanando.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblVaGanando.Location = new System.Drawing.Point(600, 100);
+            this.lblVaGanando.Name = "lblVaGanando";
+            this.lblVaGanando.Size = new System.Drawing.Size(0, 30);
+            this.lblVaGanando.TabIndex = 4;
+            this.lblVaGanando.UseMnemonic = false;
             //
             // lblTotalJugador2
             //
@@ -422,8 +466,9 @@ namespace GUI
             this.dgvPuntajes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvPuntajes.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
             this.dgvPuntajes.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.dgvPuntajes.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.dgvPuntajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPuntajes.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10.5F);
             this.dgvPuntajes.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.dgvPuntajes.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(90, 10, 45);
             this.dgvPuntajes.EnableHeadersVisualStyles = false;
@@ -432,8 +477,8 @@ namespace GUI
             this.dgvPuntajes.Name = "dgvPuntajes";
             this.dgvPuntajes.ReadOnly = true;
             this.dgvPuntajes.RowHeadersVisible = false;
-            this.dgvPuntajes.RowTemplate.Height = 26;
-            this.dgvPuntajes.Size = new System.Drawing.Size(560, 325);
+            this.dgvPuntajes.RowTemplate.Height = 27;
+            this.dgvPuntajes.Size = new System.Drawing.Size(385, 330);
             this.dgvPuntajes.TabIndex = 0;
             this.dgvPuntajes.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPuntajes_CellFormatting);
             //
@@ -473,6 +518,7 @@ namespace GUI
             this.pnlPuntajes.ResumeLayout(false);
             this.pnlPuntajes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPuntajes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picDecoracion)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -494,6 +540,7 @@ namespace GUI
         private System.Windows.Forms.Button btnAbandonar;
         private System.Windows.Forms.Panel pnlJuego;
         private System.Windows.Forms.Label lblTurno;
+        private System.Windows.Forms.Label lblTurnoNombre;
         private System.Windows.Forms.Label lblTirosRestantes;
         private GUI.ucDado ucDado1;
         private GUI.ucDado ucDado2;
@@ -507,6 +554,8 @@ namespace GUI
         private System.Windows.Forms.DataGridView dgvPuntajes;
         private System.Windows.Forms.Label lblTotalJugador1;
         private System.Windows.Forms.Label lblTotalJugador2;
+        private System.Windows.Forms.Label lblVaGanando;
+        private System.Windows.Forms.PictureBox picDecoracion;
         private System.Windows.Forms.SaveFileDialog sfdBackup;
         private System.Windows.Forms.OpenFileDialog ofdRestore;
     }
