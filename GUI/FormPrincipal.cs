@@ -15,6 +15,14 @@ namespace GUI
 
         private ucDado[] ucDados;
 
+        // true cuando el form se cierra por un restore: Program vuelve a mostrar el login.
+        private bool volverAlLogin = false;
+
+        public bool VolverAlLogin
+        {
+            get { return volverAlLogin; }
+        }
+
         public FormPrincipal(USUARIO jugadorLogueado)
         {
             InitializeComponent();
@@ -186,13 +194,14 @@ namespace GUI
                 cmbCategoria.Items.Add(categoria);
             }
 
+            // En un turno nuevo el combo arranca sin categoría elegida, así no se anota "Unos" por error.
             if (!turnoNuevo && seleccionada != null && cmbCategoria.Items.Contains(seleccionada))
             {
                 cmbCategoria.SelectedItem = seleccionada;
             }
-            else if (cmbCategoria.Items.Count > 0)
+            else
             {
-                cmbCategoria.SelectedIndex = 0;
+                cmbCategoria.SelectedIndex = -1;
             }
         }
 
@@ -444,6 +453,14 @@ namespace GUI
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Cierre por un restore: no hay partida en curso (el restore está deshabilitado durante
+            // la partida) y no se pide confirmación. Tampoco se registra el cierre de sesión: los
+            // jugadores en memoria pueden no existir en la base restaurada (o tener otro ID).
+            if (volverAlLogin)
+            {
+                return;
+            }
+
             // Para salir con una partida en curso, alguno de los 2 tiene que abandonarla.
             // Si se cancela, no se cierra la aplicación.
             if (partidaBLL.EnCurso)
@@ -533,10 +550,30 @@ namespace GUI
 
                 if (confirmar == DialogResult.Yes)
                 {
-                    string error = BLL.BACKUPRESTORE.HacerRestore(ofdRestore.FileName);
-                    if (error == "")
+                    bool restaurada;
+                    string error = BLL.BACKUPRESTORE.HacerRestore(ofdRestore.FileName, out restaurada);
+                    if (restaurada)
                     {
-                        MessageBox.Show("Restore realizado correctamente");
+                        // Los usuarios logueados se cargaron de la base anterior: en la restaurada
+                        // pueden no existir o tener otro ID, y todo lo que se grabe con esos IDs
+                        // (bitácora, partidas) fallaría. Por eso se vuelve a pedir el login.
+                        if (error == "")
+                        {
+                            MessageBox.Show(
+                                "Restore realizado correctamente.\n\nComo los datos de la base cambiaron, " +
+                                "hay que volver a iniciar sesión.",
+                                "Restaurar backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "Los datos del backup se restauraron, pero después ocurrió un error:\n" + error +
+                                "\n\nHay que volver a iniciar sesión. Si la aplicación no puede conectarse, " +
+                                "ejecutá en SSMS: ALTER DATABASE GENERALA SET MULTI_USER",
+                                "Restaurar backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        volverAlLogin = true;
+                        this.Close();
                     }
                     else
                     {

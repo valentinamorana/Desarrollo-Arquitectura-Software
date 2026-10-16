@@ -14,9 +14,10 @@ namespace BLL
         }
 
         // Devuelve "" si salió bien, o el mensaje de error si falló.
-        public static string HacerRestore(string ruta)
+        // "restaurada" indica si los datos de la base ya se reemplazaron (puede ser true aunque haya error).
+        public static string HacerRestore(string ruta, out bool restaurada)
         {
-            return DAL.BACKUPRESTORE.HacerRestore(ruta);
+            return DAL.BACKUPRESTORE.HacerRestore(ruta, out restaurada);
         }
     }
 }

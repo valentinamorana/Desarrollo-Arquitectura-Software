@@ -34,6 +34,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACCESO.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="MP_PARTIDA.cs" />
     <Compile Include="MP_LOG.cs" />
     <Compile Include="BACKUPRESTORE.cs" />
+    <Compile Include="MOVIMIENTOXML.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

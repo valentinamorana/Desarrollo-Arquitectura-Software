@@ -80,13 +80,15 @@ Las reglas completas están en el botón "Reglas" de la app y en `Documentacion/
 
 **Nota sobre el backup:** `BACKUP DATABASE` lo ejecuta el servicio de SQL Server, no el usuario de Windows, así que en carpetas personales (Escritorio, Documentos) suele fallar por permisos. Por eso el diálogo arranca en la carpeta de backups de SQL Server, que es donde conviene guardarlo.
 
+**Nota sobre el restore:** después de restaurar, la aplicación vuelve a pedir el inicio de sesión, porque los usuarios de la base restaurada pueden ser otros. El restore también reemplaza los stored procedures: si el `.bak` es de una versión anterior del TP, hay que volver a correr `Script.sql` para que queden actualizados (por ejemplo, la comparación de contraseñas que distingue mayúsculas).
+
 ## Estructura
 
 ```
 TP_Generala/
 ├── BE/             entidades (USUARIO, PARTIDA, MOVIMIENTO, LOG, ESTADISTICA, filas de grillas)
-├── DAL/            acceso a SQL Server (ACCESO, MAPPER<T> y un mapper por tabla, backup/restore)
-├── BLL/            reglas del juego, partida, estadísticas, bitácora, XML de movimientos
+├── DAL/            acceso a SQL Server (ACCESO, MAPPER<T> y un mapper por tabla, backup/restore) y archivos XML de movimientos
+├── BLL/            reglas del juego, partida, estadísticas, bitácora, qué se registra en el XML
 ├── GUI/            Windows Forms (ejecutable) y el control de usuario ucDado
 ├── Documentacion/  documento del TP (.docx), reglas, diagramas
 ├── Script.sql      creación de la base, stored procedures y datos de prueba

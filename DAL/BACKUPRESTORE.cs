@@ -78,9 +78,12 @@ namespace DAL
         }
 
         // Devuelve "" si salió bien, o el mensaje de error de SQL Server si falló.
-        public static string HacerRestore(string ruta)
+        // "restaurada" indica si los datos se reemplazaron, aunque haya fallado algo después
+        // (por ejemplo volver a MULTI_USER): en ese caso hay error, pero la base ya cambió.
+        public static string HacerRestore(string ruta, out bool restaurada)
         {
             string error = "";
+            restaurada = false;
             SqlConnection conexion = new SqlConnection(ConexionMaster());
             try
             {
@@ -89,11 +92,13 @@ namespace DAL
                 cmd.Connection = conexion;
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "ALTER DATABASE GENERALA SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
+                // En un solo comando, para que entre el SINGLE_USER y el RESTORE no pueda
+                // meterse otra sesión (por ejemplo SSMS) y quedarse con la única conexión.
+                cmd.CommandText =
+                    "ALTER DATABASE GENERALA SET SINGLE_USER WITH ROLLBACK IMMEDIATE; " +
+                    "RESTORE DATABASE GENERALA FROM DISK = '" + EscaparRuta(ruta) + "' WITH REPLACE";
                 cmd.ExecuteNonQuery();
-
-                cmd.CommandText = "RESTORE DATABASE GENERALA FROM DISK = '" + EscaparRuta(ruta) + "' WITH REPLACE";
-                cmd.ExecuteNonQuery();
+                restaurada = true;
             }
             catch (Exception ex)
             {
@@ -120,6 +125,11 @@ namespace DAL
                     }
                 }
                 conexion.Close();
+
+                // El ROLLBACK IMMEDIATE cortó las conexiones a GENERALA que estaban guardadas en el
+                // pool de ADO.NET. Si no se vacía, la próxima consulta de la app agarra una conexión
+                // muerta y falla con "A transport-level error has occurred".
+                SqlConnection.ClearAllPools();
             }
             return error;
         }

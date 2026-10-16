@@ -22,8 +22,8 @@ IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'USUARIO')
 BEGIN
 	CREATE TABLE [dbo].[USUARIO](
 		[ID] [int] NOT NULL,
-		[Nombre] [varchar](50) NOT NULL,
-		[Contraseña] [varchar](50) NOT NULL,
+		[Nombre] [nvarchar](50) NOT NULL,
+		[Contraseña] [nvarchar](50) NOT NULL,
 	 CONSTRAINT [PK_USUARIO] PRIMARY KEY CLUSTERED ([ID] ASC),
 	 CONSTRAINT [UQ_USUARIO_NOMBRE] UNIQUE ([Nombre])
 	)
@@ -34,6 +34,23 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.key_constraints WHERE name = 'UQ_USUARIO_NOMBRE')
 BEGIN
 	ALTER TABLE [dbo].[USUARIO] ADD CONSTRAINT [UQ_USUARIO_NOMBRE] UNIQUE ([Nombre])
+END
+GO
+
+-- Si la tabla ya existía con varchar, pasa a nvarchar. Con varchar, los caracteres que no
+-- son del alfabeto latino (chino, cirílico, emoji) se guardaban como "?", y dos contraseñas
+-- distintas del mismo largo quedaban iguales. El UNIQUE de Nombre hay que sacarlo y volver
+-- a ponerlo, porque SQL Server no deja cambiar el tipo de una columna con un constraint.
+IF EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('dbo.USUARIO') AND name = 'Nombre' AND TYPE_NAME(user_type_id) = 'varchar')
+BEGIN
+	ALTER TABLE [dbo].[USUARIO] DROP CONSTRAINT [UQ_USUARIO_NOMBRE]
+	ALTER TABLE [dbo].[USUARIO] ALTER COLUMN [Nombre] [nvarchar](50) NOT NULL
+	ALTER TABLE [dbo].[USUARIO] ADD CONSTRAINT [UQ_USUARIO_NOMBRE] UNIQUE ([Nombre])
+END
+GO
+IF EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('dbo.USUARIO') AND name = 'Contraseña' AND TYPE_NAME(user_type_id) = 'varchar')
+BEGIN
+	ALTER TABLE [dbo].[USUARIO] ALTER COLUMN [Contraseña] [nvarchar](50) NOT NULL
 END
 GO
 
@@ -51,12 +68,19 @@ IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LOG')
 BEGIN
 	CREATE TABLE [dbo].[LOG](
 		[ID_LOG] [int] NOT NULL,
-		[Descripcion] [varchar](100) NOT NULL,
+		[Descripcion] [nvarchar](100) NOT NULL,
 		[ID_Usuario] [int] NOT NULL,
 		[ID_TIPO] [int] NOT NULL,
 		[Fecha] [datetime] NOT NULL,
 	 CONSTRAINT [PK_LOG] PRIMARY KEY CLUSTERED ([ID_LOG] ASC)
 	)
+END
+GO
+
+-- La descripción incluye el nombre del usuario, así que también pasa a nvarchar.
+IF EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('dbo.LOG') AND name = 'Descripcion' AND TYPE_NAME(user_type_id) = 'varchar')
+BEGIN
+	ALTER TABLE [dbo].[LOG] ALTER COLUMN [Descripcion] [nvarchar](100) NOT NULL
 END
 GO
 
@@ -82,17 +106,20 @@ BEGIN
 		[PUNTAJE_JUGADOR2] [int] NOT NULL DEFAULT 0,
 		[FECHA_INICIO] [datetime] NOT NULL,
 		[FECHA_FIN] [datetime] NULL,
-		[RUTA_XML] [varchar](500) NULL,
+		[RUTA_XML] [nvarchar](500) NULL,
 	 CONSTRAINT [PK_PARTIDA] PRIMARY KEY CLUSTERED ([ID] ASC)
 	)
 END
 GO
 
--- Si la tabla ya existía con RUTA_XML de 200 caracteres, la agranda: la ruta completa del XML
--- puede ser más larga si la aplicación se ejecuta desde una carpeta con muchos niveles.
-IF EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('PARTIDA') AND name = 'RUTA_XML' AND max_length < 500)
+-- Si la tabla ya existía con RUTA_XML más chica o en varchar, pasa a nvarchar(500): la ruta
+-- completa del XML puede ser larga si la aplicación se ejecuta desde una carpeta con muchos
+-- niveles, y puede tener caracteres no latinos (por ejemplo en el nombre del usuario de Windows).
+-- max_length está en bytes: nvarchar(500) ocupa 1000.
+IF EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('dbo.PARTIDA') AND name = 'RUTA_XML'
+           AND (TYPE_NAME(user_type_id) = 'varchar' OR max_length < 1000))
 BEGIN
-	ALTER TABLE [dbo].[PARTIDA] ALTER COLUMN [RUTA_XML] [varchar](500) NULL
+	ALTER TABLE [dbo].[PARTIDA] ALTER COLUMN [RUTA_XML] [nvarchar](500) NULL
 END
 GO
 
@@ -150,32 +177,50 @@ GO
 -- volver a correr el script sin errores de "ya existe")
 -- =========================================================
 
+-- Los SP que insertan calculan el ID con MAX(ID)+1. Para que dos inserciones simultáneas
+-- no saquen el mismo ID, el MAX se lee con UPDLOCK, HOLDLOCK dentro de una transacción:
+-- la segunda espera a que termine la primera. XACT_ABORT ON hace que cualquier error
+-- deshaga la transacción y corte el SP, sin dejarla abierta. Si el SP se llama dentro de
+-- una transacción de la DAL (MP_PARTIDA), el BEGIN TRAN/COMMIT de acá queda anidado en ella.
+
 CREATE OR ALTER PROC [dbo].[USUARIO_INSERTAR]
-@usu varchar(50), @pass varchar(50)
+@usu nvarchar(50), @pass nvarchar(50)
 AS
 BEGIN
+	SET XACT_ABORT ON
+	BEGIN TRAN
+
 	-- Nombre repetido: devuelve 0 (y no -1, que la app usa para "error de base de datos").
-	IF EXISTS (SELECT 1 FROM USUARIO WHERE Nombre = @usu)
+	-- El bloqueo también cubre esta consulta, así dos altas del mismo nombre no pasan las dos.
+	IF EXISTS (SELECT 1 FROM USUARIO WITH (UPDLOCK, HOLDLOCK) WHERE Nombre = @usu)
 	BEGIN
+		COMMIT
 		SELECT 0 AS ID
 		RETURN
 	END
 
 	DECLARE @ID int
-	SET @ID = (SELECT ISNULL(MAX(ID),0)+1 FROM USUARIO)
+	SET @ID = (SELECT ISNULL(MAX(ID),0)+1 FROM USUARIO WITH (UPDLOCK, HOLDLOCK))
 
 	INSERT INTO USUARIO (ID, Nombre, Contraseña)
 	VALUES (@ID, @usu, @pass)
 
+	COMMIT
 	SELECT @ID AS ID
 END
 GO
 
 CREATE OR ALTER PROC [dbo].[USUARIO_LOGIN]
-@usu varchar(50), @pass varchar(50)
+@usu nvarchar(50), @pass nvarchar(50)
 AS
 BEGIN
-	SELECT ID, Nombre, Contraseña FROM USUARIO WHERE Nombre = @usu AND Contraseña = @pass
+	-- La collation por defecto de la base es case-insensitive ("Hola" = "hola"), así que la
+	-- contraseña se compara con una collation CS (case-sensitive). El "=" de SQL Server además
+	-- ignora los espacios al final, por eso también se compara el largo con DATALENGTH.
+	SELECT ID, Nombre, Contraseña FROM USUARIO
+	WHERE Nombre = @usu
+	  AND Contraseña = @pass COLLATE Latin1_General_CS_AS
+	  AND DATALENGTH(Contraseña) = DATALENGTH(@pass)
 END
 GO
 
@@ -188,27 +233,36 @@ END
 GO
 
 CREATE OR ALTER PROC [dbo].[LOG_INSERTAR]
-@descripcion varchar(100), @idUsuario int, @idTipo int
+@descripcion nvarchar(100), @idUsuario int, @idTipo int
 AS
 BEGIN
+	SET XACT_ABORT ON
+	BEGIN TRAN
+
 	DECLARE @ID int
-	SET @ID = (SELECT ISNULL(MAX(ID_LOG),0)+1 FROM LOG)
+	SET @ID = (SELECT ISNULL(MAX(ID_LOG),0)+1 FROM LOG WITH (UPDLOCK, HOLDLOCK))
 
 	INSERT INTO LOG (ID_LOG, Descripcion, ID_Usuario, ID_TIPO, Fecha)
 	VALUES (@ID, @descripcion, @idUsuario, @idTipo, GETDATE())
+
+	COMMIT
 END
 GO
 
 CREATE OR ALTER PROC [dbo].[PARTIDA_INSERTAR]
-@idJugador1 int, @idJugador2 int, @rutaXml varchar(500)
+@idJugador1 int, @idJugador2 int, @rutaXml nvarchar(500)
 AS
 BEGIN
+	SET XACT_ABORT ON
+	BEGIN TRAN
+
 	DECLARE @ID int
-	SET @ID = (SELECT ISNULL(MAX(ID),0)+1 FROM PARTIDA)
+	SET @ID = (SELECT ISNULL(MAX(ID),0)+1 FROM PARTIDA WITH (UPDLOCK, HOLDLOCK))
 
 	INSERT INTO PARTIDA (ID, ID_JUGADOR1, ID_JUGADOR2, PUNTAJE_JUGADOR1, PUNTAJE_JUGADOR2, FECHA_INICIO, RUTA_XML)
 	VALUES (@ID, @idJugador1, @idJugador2, 0, 0, GETDATE(), @rutaXml)
 
+	COMMIT
 	SELECT @ID AS ID
 END
 GO
@@ -222,7 +276,8 @@ BEGIN
 	    PUNTAJE_JUGADOR2 = @puntajeJugador2,
 	    ID_GANADOR = @idGanador,
 	    FECHA_FIN = GETDATE()
-	WHERE ID = @id
+	-- Una partida ya cerrada no se vuelve a tocar: así no se le puede cambiar el resultado.
+	WHERE ID = @id AND FECHA_FIN IS NULL
 END
 GO
 

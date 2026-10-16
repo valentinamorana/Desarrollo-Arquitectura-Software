@@ -141,7 +141,6 @@ namespace DAL
             conexion.Close();
             conexion = null;
             transaccion = null;
-            GC.Collect();
         }
 
         // -------------------- Transacciones --------------------

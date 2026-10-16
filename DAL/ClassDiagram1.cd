@@ -42,5 +42,12 @@
       <FileName>BACKUPRESTORE.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="DAL.MOVIMIENTOXML">
+    <Position X="13.5" Y="3.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MOVIMIENTOXML.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
