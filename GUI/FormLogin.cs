@@ -34,7 +34,7 @@ namespace GUI
         // El campo que tiene el foco se marca con la línea de abajo en bordó.
         private void txtCampo_Enter(object sender, EventArgs e)
         {
-            LineaDe(sender).BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            LineaDe(sender).BackColor = Tema.Rosa;
         }
 
         private void txtCampo_Leave(object sender, EventArgs e)
@@ -82,7 +82,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudo ingresar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Mensaje.Show("No se pudo ingresar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

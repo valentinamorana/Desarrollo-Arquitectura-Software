@@ -6,6 +6,33 @@ namespace BLL
     // Estadísticas de un jugador a partir de sus partidas terminadas.
     public class ESTADISTICA
     {
+        // Opciones del filtro del historial. El orden coincide con el combo de FormEstadisticas.
+        public enum FILTRO_RESULTADO
+        {
+            Todas = 0,
+            Ganadas = 1,
+            Perdidas = 2,
+            Empates = 3
+        }
+
+        // Devuelve solo las partidas del historial que corresponden al filtro elegido.
+        // Los contadores (ganadas, perdidas, empatadas) no cambian con el filtro.
+        public static List<BE.FILAHISTORIAL> Filtrar(List<BE.FILAHISTORIAL> historial, FILTRO_RESULTADO filtro)
+        {
+            List<BE.FILAHISTORIAL> visibles = new List<BE.FILAHISTORIAL>();
+            foreach (BE.FILAHISTORIAL fila in historial)
+            {
+                if (filtro == FILTRO_RESULTADO.Todas
+                    || (filtro == FILTRO_RESULTADO.Ganadas && fila.Resultado == "Ganada")
+                    || (filtro == FILTRO_RESULTADO.Perdidas && fila.Resultado == "Perdida")
+                    || (filtro == FILTRO_RESULTADO.Empates && fila.Resultado == "Empate"))
+                {
+                    visibles.Add(fila);
+                }
+            }
+            return visibles;
+        }
+
         private DAL.MP_PARTIDA mapperPartida = new DAL.MP_PARTIDA();
         private DAL.MP_USUARIO mapperUsuario = new DAL.MP_USUARIO();
 

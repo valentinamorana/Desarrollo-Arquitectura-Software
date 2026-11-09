@@ -37,7 +37,7 @@ namespace GUI
             this.lblValor.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.lblValor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblValor.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblValor.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblValor.ForeColor = Tema.Rosa;
             this.lblValor.Location = new System.Drawing.Point(0, 0);
             this.lblValor.Name = "lblValor";
             this.lblValor.Size = new System.Drawing.Size(80, 80);

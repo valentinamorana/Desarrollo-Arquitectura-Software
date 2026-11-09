@@ -21,7 +21,8 @@ Reglas que implementa la aplicación. Donde la consigna no especifica algo, la d
 1. El jugador tiene **hasta 3 tiradas** de los 5 dados.
 2. Después de cada tirada puede elegir, con un checkbox por dado, cuáles conservar para la próxima tirada (los no marcados se vuelven a tirar). *Los checkboxes de "guardar" solo se pueden usar después de la primera tirada del turno* — no se puede "guardar" un dado que todavía no salió.
 3. En cualquier momento después de la primera tirada, el jugador elige una categoría **todavía no anotada** (de las suyas — cada jugador anota sus propias 11 categorías de forma independiente) y anota el puntaje que corresponde según los dados que tiene en ese momento.
-4. Si los dados no alcanzan para puntuar en la categoría elegida, se anota **0** igual y esa categoría queda tachada para ese jugador (no se puede volver a usar).
+4. Si los dados no alcanzan para puntuar en la categoría elegida, se anota **0** igual y esa categoría queda tachada para ese jugador (no se puede volver a usar). Se pide confirmación antes de anotar ese 0.
+4bis. **Tachar a voluntad:** el jugador también puede tachar cualquier categoría disponible aunque los dados den puntos (botón "Tachar"). Se anota 0 y la categoría no se puede volver a usar. Es lo que permite descartar una categoría que no conviene jugar, como en la Generala tradicional. Se pide confirmación.
 5. **Generala Doble** solo aparece como opción para anotar después de que ese mismo jugador ya anotó "Generala" (no antes).
 
 ## 4. Cálculo de puntaje por categoría

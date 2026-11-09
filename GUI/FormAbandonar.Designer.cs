@@ -40,7 +40,7 @@ namespace GUI
             //
             // pnlTitulo
             //
-            this.pnlTitulo.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.pnlTitulo.BackColor = Tema.Rosa;
             this.pnlTitulo.Controls.Add(this.lblTitulo);
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
@@ -73,7 +73,7 @@ namespace GUI
             // lblPregunta
             //
             this.lblPregunta.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPregunta.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblPregunta.ForeColor = Tema.Rosa;
             this.lblPregunta.Location = new System.Drawing.Point(40, 160);
             this.lblPregunta.Name = "lblPregunta";
             this.lblPregunta.Size = new System.Drawing.Size(440, 28);
@@ -84,7 +84,7 @@ namespace GUI
             // btnJugador1
             //
             this.btnJugador1.AutoEllipsis = true;
-            this.btnJugador1.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnJugador1.BackColor = Tema.Rosa;
             this.btnJugador1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJugador1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnJugador1.ForeColor = System.Drawing.Color.White;
@@ -99,7 +99,7 @@ namespace GUI
             // btnJugador2
             //
             this.btnJugador2.AutoEllipsis = true;
-            this.btnJugador2.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnJugador2.BackColor = Tema.Rosa;
             this.btnJugador2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJugador2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnJugador2.ForeColor = System.Drawing.Color.White;
@@ -114,11 +114,11 @@ namespace GUI
             // btnCancelar
             //
             this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(253, 235, 242);
-            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnCancelar.FlatAppearance.BorderColor = Tema.Rosa;
             this.btnCancelar.FlatAppearance.BorderSize = 2;
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnCancelar.ForeColor = Tema.Rosa;
             this.btnCancelar.Location = new System.Drawing.Point(175, 272);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(170, 45);

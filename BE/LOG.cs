@@ -32,5 +32,30 @@ namespace BE
             get { return descripcion; }
             set { descripcion = value; }
         }
+
+        // Datos que se leen para mostrar la bitácora (no se usan al grabar).
+        private System.DateTime fecha;
+
+        public System.DateTime Fecha
+        {
+            get { return fecha; }
+            set { fecha = value; }
+        }
+
+        private string nombreUsuario;
+
+        public string NombreUsuario
+        {
+            get { return nombreUsuario; }
+            set { nombreUsuario = value; }
+        }
+
+        private string nombreTipo;
+
+        public string NombreTipo
+        {
+            get { return nombreTipo; }
+            set { nombreTipo = value; }
+        }
     }
 }

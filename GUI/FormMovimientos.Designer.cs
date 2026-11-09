@@ -33,13 +33,14 @@ namespace GUI
             this.lblArchivo = new System.Windows.Forms.Label();
             this.dgvMovimientos = new System.Windows.Forms.DataGridView();
             this.btnCerrar = new System.Windows.Forms.Button();
+            this.btnDescargarXml = new System.Windows.Forms.Button();
             this.pnlTitulo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMovimientos)).BeginInit();
             this.SuspendLayout();
             //
             // pnlTitulo
             //
-            this.pnlTitulo.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.pnlTitulo.BackColor = Tema.Rosa;
             this.pnlTitulo.Controls.Add(this.lblTitulo);
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
@@ -80,7 +81,7 @@ namespace GUI
             this.dgvMovimientos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMovimientos.BackgroundColor = System.Drawing.Color.White;
             this.dgvMovimientos.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvMovimientos.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.dgvMovimientos.ColumnHeadersDefaultCellStyle.BackColor = Tema.Rosa;
             this.dgvMovimientos.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
             this.dgvMovimientos.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.dgvMovimientos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -97,7 +98,7 @@ namespace GUI
             //
             // btnCerrar
             //
-            this.btnCerrar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnCerrar.BackColor = Tema.Rosa;
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCerrar.ForeColor = System.Drawing.Color.White;
@@ -108,6 +109,20 @@ namespace GUI
             this.btnCerrar.Text = "Cerrar";
             this.btnCerrar.UseVisualStyleBackColor = false;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
+            // 
+            // btnDescargarXml
+            // 
+            this.btnDescargarXml.BackColor = Tema.Rosa;
+            this.btnDescargarXml.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDescargarXml.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnDescargarXml.ForeColor = System.Drawing.Color.White;
+            this.btnDescargarXml.Location = new System.Drawing.Point(790, 505);
+            this.btnDescargarXml.Name = "btnDescargarXml";
+            this.btnDescargarXml.Size = new System.Drawing.Size(130, 36);
+            this.btnDescargarXml.TabIndex = 10;
+            this.btnDescargarXml.Text = "Descargar XML";
+            this.btnDescargarXml.UseVisualStyleBackColor = false;
+            this.btnDescargarXml.Click += new System.EventHandler(this.btnDescargarXml_Click);
             //
             // FormMovimientos
             //
@@ -115,6 +130,7 @@ namespace GUI
             this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
             this.ClientSize = new System.Drawing.Size(1060, 560);
             this.Controls.Add(this.btnCerrar);
+            this.Controls.Add(this.btnDescargarXml);
             this.Controls.Add(this.dgvMovimientos);
             this.Controls.Add(this.lblArchivo);
             this.Controls.Add(this.pnlTitulo);
@@ -138,5 +154,6 @@ namespace GUI
         private System.Windows.Forms.Label lblArchivo;
         private System.Windows.Forms.DataGridView dgvMovimientos;
         private System.Windows.Forms.Button btnCerrar;
+        private System.Windows.Forms.Button btnDescargarXml;
     }
 }

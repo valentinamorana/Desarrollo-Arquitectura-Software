@@ -43,6 +43,23 @@ namespace BLL
             get { return tirosRestantes; }
         }
 
+        // Número del turno del jugador que está jugando (1 a 11): categorías que ya anotó + 1.
+        public int TurnoDelJugador
+        {
+            get
+            {
+                int anotadas = 0;
+                foreach (BE.FILAPUNTAJE fila in tabla)
+                {
+                    if (PuntajeDe(fila, jugadorActual) != BE.FILAPUNTAJE.SIN_ANOTAR)
+                    {
+                        anotadas++;
+                    }
+                }
+                return Math.Min(anotadas + 1, GENERALA.CATEGORIAS.Length);
+            }
+        }
+
         public int[] Dados
         {
             get { return dados; }
@@ -225,6 +242,19 @@ namespace BLL
         // Si con esto se completó la planilla, cierra la partida (dispara PartidaFinalizada).
         public int Anotar(string categoria)
         {
+            return RegistrarAnotacion(categoria, false);
+        }
+
+        // Tachar: la categoría queda con 0 aunque los dados den puntos (decisión voluntaria del jugador).
+        // Sirve para descartar una categoría que no conviene jugar. Vale para cualquier categoría
+        // disponible, incluida la Generala Doble (aunque la Generala haya salido con puntos).
+        public int Tachar(string categoria)
+        {
+            return RegistrarAnotacion(categoria, true);
+        }
+
+        private int RegistrarAnotacion(string categoria, bool tachar)
+        {
             if (!PuedeAnotar())
             {
                 throw new Exception("Primero hay que tirar los dados.");
@@ -234,7 +264,11 @@ namespace BLL
                 throw new Exception("La categoría \"" + categoria + "\" no se puede anotar.");
             }
 
-            int puntaje = CalcularPuntaje(categoria);
+            int puntaje = 0;
+            if (!tachar)
+            {
+                puntaje = CalcularPuntaje(categoria);
+            }
 
             // Primero el XML: si no se puede escribir, la planilla queda como estaba.
             MOVIMIENTOXML.RegistrarMovimiento(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, dados, categoria, puntaje);
@@ -282,6 +316,76 @@ namespace BLL
                 }
             }
             return total;
+        }
+
+        // Texto que muestra la GUI al terminar la partida (ganador, empate y abandono).
+        public string MensajeFinal(bool abandonada)
+        {
+            string mensaje;
+            if (partida.IdGanador == jugador1.ID)
+            {
+                mensaje = jugador1.Nombre + " ganó la partida!";
+            }
+            else if (partida.IdGanador == jugador2.ID)
+            {
+                mensaje = jugador2.Nombre + " ganó la partida!";
+            }
+            else
+            {
+                mensaje = "La partida terminó empatada!";
+            }
+
+            // Cuando se abandona, el que abandonó es el que no ganó.
+            if (abandonada)
+            {
+                string quienAbandono;
+                if (partida.IdGanador == jugador1.ID)
+                {
+                    quienAbandono = jugador2.Nombre;
+                }
+                else
+                {
+                    quienAbandono = jugador1.Nombre;
+                }
+                mensaje = quienAbandono + " abandonó la partida. " + mensaje;
+            }
+            return mensaje;
+        }
+
+        // Aviso que se muestra antes de anotar una categoría que va a quedar tachada (0 puntos).
+        // Devuelve "" si no hace falta aviso.
+        public string AvisoAntesDeAnotar(string categoria)
+        {
+            if (GeneralaDobleSoloTachable(categoria))
+            {
+                return "Como tu Generala quedó tachada, la Generala Doble no suma: se anota 0 y queda tachada.";
+            }
+            if (CalcularPuntaje(categoria) == 0)
+            {
+                return "Los dados no alcanzan para puntuar en \"" + categoria + "\": se anota 0 y la categoría queda tachada.";
+            }
+            return "";
+        }
+
+        // Texto de quién va ganando y por cuánto. Vacío hasta que los dos anotaron algo.
+        public string MensajeVaGanando()
+        {
+            if (!EnCurso || !AmbosAnotaron())
+            {
+                return "";
+            }
+
+            int lider = JugadorQueVaGanando();
+            int diferencia = Math.Abs(CalcularTotal(1) - CalcularTotal(2));
+            if (lider == 1)
+            {
+                return jugador1.Nombre + " va ganando por " + diferencia;
+            }
+            if (lider == 2)
+            {
+                return jugador2.Nombre + " va ganando por " + diferencia;
+            }
+            return "Van empatados";
         }
 
         // Quién va ganando según los puntos anotados hasta ahora: 1, 2, o 0 si van empatados.

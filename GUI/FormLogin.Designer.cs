@@ -54,7 +54,7 @@ namespace GUI
             //
             // pnlMarca
             //
-            this.pnlMarca.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.pnlMarca.BackColor = Tema.Rosa;
             this.pnlMarca.Controls.Add(this.lblPie);
             this.pnlMarca.Controls.Add(this.lblMarca);
             this.pnlMarca.Controls.Add(this.picLogo);
@@ -216,7 +216,7 @@ namespace GUI
             //
             // btnIngresar
             //
-            this.btnIngresar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnIngresar.BackColor = Tema.Rosa;
             this.btnIngresar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnIngresar.FlatAppearance.BorderSize = 0;
             this.btnIngresar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(110, 10, 55);
@@ -249,14 +249,14 @@ namespace GUI
             this.lnkRegistrarme.AutoSize = true;
             this.lnkRegistrarme.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lnkRegistrarme.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lnkRegistrarme.LinkColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lnkRegistrarme.LinkColor = Tema.Rosa;
             this.lnkRegistrarme.Location = new System.Drawing.Point(618, 432);
             this.lnkRegistrarme.Name = "lnkRegistrarme";
             this.lnkRegistrarme.Size = new System.Drawing.Size(76, 19);
             this.lnkRegistrarme.TabIndex = 10;
             this.lnkRegistrarme.TabStop = true;
             this.lnkRegistrarme.Text = "Registrate";
-            this.lnkRegistrarme.VisitedLinkColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lnkRegistrarme.VisitedLinkColor = Tema.Rosa;
             this.lnkRegistrarme.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRegistrarme_LinkClicked);
             //
             // FormLogin
