@@ -291,3 +291,14 @@ BEGIN
 	ORDER BY FECHA_INICIO DESC
 END
 GO
+
+CREATE OR ALTER PROC [dbo].[BITACORA_LISTAR]
+AS
+BEGIN
+	SELECT l.ID_LOG, l.Fecha, l.ID_Usuario, u.Nombre AS NombreUsuario, l.ID_TIPO, t.Tipo AS NombreTipo, l.Descripcion
+	FROM LOG l
+	JOIN USUARIO u ON u.ID = l.ID_Usuario
+	JOIN TIPO_LOG t ON t.ID_TIPO = l.ID_TIPO
+	ORDER BY l.Fecha DESC, l.ID_LOG DESC
+END
+GO

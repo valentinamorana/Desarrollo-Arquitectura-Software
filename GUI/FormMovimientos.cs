@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using BE;
 
@@ -29,7 +30,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudo leer el archivo XML de la partida (puede estar dañado):\n" + ex.Message,
+                Mensaje.Show("No se pudo leer el archivo XML de la partida (puede estar dañado):\n" + ex.Message,
                     "Movimientos", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -69,7 +70,41 @@ namespace GUI
             {
                 e.CellStyle.Font = fuenteNegrita;
                 e.CellStyle.BackColor = System.Drawing.Color.FromArgb(248, 214, 227);
-                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+                e.CellStyle.ForeColor = Tema.Rosa;
+            }
+        }
+
+        // Copia el XML original de la partida a la carpeta que elija el usuario, sin cambiarle nada.
+        private void btnDescargarXml_Click(object sender, EventArgs e)
+        {
+            if (!BLL.MOVIMIENTOXML.Existe(rutaXml))
+            {
+                Mensaje.Show("No se encontró el archivo XML de esta partida.",
+                    "Descargar XML", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (SaveFileDialog dialogo = new SaveFileDialog())
+            {
+                dialogo.Title = "Guardar XML de la partida";
+                dialogo.Filter = "Archivo XML (*.xml)|*.xml";
+                dialogo.FileName = Path.GetFileName(rutaXml);
+                if (dialogo.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                try
+                {
+                    File.Copy(rutaXml, dialogo.FileName, true);
+                    Mensaje.Show("XML guardado en:\n" + dialogo.FileName,
+                        "Descargar XML", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    Mensaje.Show("No se pudo guardar el XML:\n" + ex.Message,
+                        "Descargar XML", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

@@ -20,5 +20,42 @@ namespace BLL
                 throw new Exception("No se pudo registrar en la bitácora: " + descripcion);
             }
         }
+
+        // Todos los eventos de la bitácora, del más nuevo al más viejo (para mostrarlos en la app).
+        public static System.Collections.Generic.List<BE.LOG> Listar()
+        {
+            DAL.MP_LOG mapper = new DAL.MP_LOG();
+            return mapper.Listar();
+        }
+
+        // Filtra los registros de la bitácora. Un filtro vacío ("" o null) o sin fecha no se aplica.
+        // desde es inclusivo; hasta es exclusivo (el día siguiente al último que se quiere ver).
+        public static System.Collections.Generic.List<BE.LOG> Filtrar(
+            System.Collections.Generic.List<BE.LOG> registros, string nombreUsuario, string nombreTipo,
+            DateTime? desde, DateTime? hasta)
+        {
+            System.Collections.Generic.List<BE.LOG> resultado = new System.Collections.Generic.List<BE.LOG>();
+            foreach (BE.LOG registro in registros)
+            {
+                if (!string.IsNullOrEmpty(nombreUsuario) && registro.NombreUsuario != nombreUsuario)
+                {
+                    continue;
+                }
+                if (!string.IsNullOrEmpty(nombreTipo) && registro.NombreTipo != nombreTipo)
+                {
+                    continue;
+                }
+                if (desde.HasValue && registro.Fecha < desde.Value)
+                {
+                    continue;
+                }
+                if (hasta.HasValue && registro.Fecha >= hasta.Value)
+                {
+                    continue;
+                }
+                resultado.Add(registro);
+            }
+            return resultado;
+        }
     }
 }

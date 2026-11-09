@@ -37,7 +37,7 @@ namespace GUI
             //
             // pnlTitulo
             //
-            this.pnlTitulo.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.pnlTitulo.BackColor = Tema.Rosa;
             this.pnlTitulo.Controls.Add(this.lblTitulo);
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
@@ -89,7 +89,7 @@ namespace GUI
             //
             // btnCerrar
             //
-            this.btnCerrar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnCerrar.BackColor = Tema.Rosa;
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCerrar.ForeColor = System.Drawing.Color.White;

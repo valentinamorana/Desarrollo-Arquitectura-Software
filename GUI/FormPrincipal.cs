@@ -23,10 +23,18 @@ namespace GUI
             get { return volverAlLogin; }
         }
 
-        public FormPrincipal(USUARIO jugadorLogueado)
+        // Jugador 2 logueado, para que el menú lo recuerde en la próxima partida (revancha).
+        public USUARIO Jugador2
+        {
+            get { return jugador2; }
+        }
+
+        // Jugador 2 es opcional: si el menú ya tiene un jugador 2 logueado (revancha), se reutiliza.
+        public FormPrincipal(USUARIO jugadorLogueado, USUARIO jugador2Logueado)
         {
             InitializeComponent();
             jugador1 = jugadorLogueado;
+            jugador2 = jugador2Logueado;
             ucDados = new ucDado[] { ucDado1, ucDado2, ucDado3, ucDado4, ucDado5 };
         }
 
@@ -45,6 +53,73 @@ namespace GUI
             btnPrincipal_EnabledChanged(btnTirarDados, EventArgs.Empty);
         }
 
+        // Atajos: T tira los dados y Enter anota la categoría elegida (solo si el botón está habilitado).
+        private void FormPrincipal_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.T && btnTirarDados.Enabled)
+            {
+                btnTirarDados.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+            else if (e.KeyCode == Keys.Enter && btnAnotar.Enabled && cmbCategoria.SelectedItem != null)
+            {
+                btnAnotar.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        // Dibuja la categoría a la izquierda y, a la derecha, el puntaje que daría ahora
+        // (solo después de la primera tirada, cuando ya hay dados para evaluar).
+        private void cmbCategoria_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+
+            string categoria;
+            if (e.Index >= 0)
+            {
+                categoria = cmbCategoria.Items[e.Index].ToString();
+            }
+            else if (cmbCategoria.SelectedItem != null)
+            {
+                categoria = cmbCategoria.SelectedItem.ToString();
+            }
+            else
+            {
+                return;
+            }
+
+            bool seleccionado = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+            System.Drawing.Color colorTexto = seleccionado ? System.Drawing.SystemColors.HighlightText : cmbCategoria.ForeColor;
+
+            using (System.Drawing.Brush pincel = new System.Drawing.SolidBrush(colorTexto))
+            {
+                e.Graphics.DrawString(categoria, e.Font, pincel, e.Bounds.Left + 4, e.Bounds.Top + 3);
+
+                if (partidaBLL.PuedeAnotar())
+                {
+                    int puntaje = partidaBLL.CalcularPuntaje(categoria);
+                    string texto;
+                    if (puntaje > 0)
+                    {
+                        texto = puntaje + " pts";
+                        if (partidaBLL.AplicaBonusServida(categoria))
+                        {
+                            texto += " (servida)";
+                        }
+                    }
+                    else
+                    {
+                        texto = "0 (tachar)";
+                    }
+
+                    System.Drawing.SizeF medida = e.Graphics.MeasureString(texto, e.Font);
+                    e.Graphics.DrawString(texto, e.Font, pincel, e.Bounds.Right - medida.Width - 6, e.Bounds.Top + 3);
+                }
+            }
+
+            e.DrawFocusRectangle();
+        }
+
         // Windows Forms pinta en gris el texto de un botón deshabilitado sin importar
         // su ForeColor. Sobre el fondo bordó no se lee, así que deshabilitado pasa a rosa claro.
         private void btnPrincipal_EnabledChanged(object sender, EventArgs e)
@@ -52,7 +127,7 @@ namespace GUI
             Button boton = (Button)sender;
             if (boton.Enabled)
             {
-                boton.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+                boton.BackColor = Tema.Rosa;
             }
             else
             {
@@ -62,7 +137,7 @@ namespace GUI
 
         private void MostrarError(Exception ex)
         {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Mensaje.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         // La BLL avisa con este evento que la partida terminó (completa o abandonada).
@@ -72,36 +147,9 @@ namespace GUI
             ActualizarTotales();
             ActualizarPantalla();
 
-            string mensaje;
-            if (partida.IdGanador == jugador1.ID)
-            {
-                mensaje = jugador1.Nombre + " ganó la partida!";
-            }
-            else if (partida.IdGanador == jugador2.ID)
-            {
-                mensaje = jugador2.Nombre + " ganó la partida!";
-            }
-            else
-            {
-                mensaje = "La partida terminó empatada!";
-            }
+            string mensaje = partidaBLL.MensajeFinal(abandonada);
 
-            // Cuando se abandona, el que abandonó es el que no ganó.
-            if (abandonada)
-            {
-                string quienAbandono;
-                if (partida.IdGanador == jugador1.ID)
-                {
-                    quienAbandono = jugador2.Nombre;
-                }
-                else
-                {
-                    quienAbandono = jugador1.Nombre;
-                }
-                mensaje = quienAbandono + " abandonó la partida. " + mensaje;
-            }
-
-            MessageBox.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Mensaje.Show(mensaje, "Partida finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // -------------------- Pantalla --------------------
@@ -116,11 +164,13 @@ namespace GUI
             {
                 lblTurnoNombre.Text = partidaBLL.JugadorDelTurno().Nombre;
                 lblTirosRestantes.Text = "Tiros restantes: " + partidaBLL.TirosRestantes;
+                lblProgreso.Text = "Turno " + partidaBLL.TurnoDelJugador + " de 11";
             }
             else
             {
                 lblTurnoNombre.Text = "-";
                 lblTirosRestantes.Text = "Tiros restantes: -";
+                lblProgreso.Text = "Partida sin iniciar";
             }
             // "Turno de:" va en negro y el nombre en rosa: son dos labels, el nombre pegado al primero.
             lblTurnoNombre.Left = lblTurno.Right;
@@ -146,6 +196,7 @@ namespace GUI
 
             btnTirarDados.Enabled = partidaBLL.PuedeTirar();
             btnAnotar.Enabled = partidaBLL.PuedeAnotar();
+            btnTachar.Enabled = partidaBLL.PuedeAnotar();
             cmbCategoria.Enabled = enCurso;
 
             btnComenzarPartida.Visible = !enCurso;
@@ -162,7 +213,7 @@ namespace GUI
             else
             {
                 lblJugador2.Text = "Jugador 2: " + jugador2.Nombre + "  ✓";
-                lblJugador2.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+                lblJugador2.ForeColor = Tema.Rosa;
                 btnLoginJugador2.Text = "Cambiar Jugador 2";
             }
             btnAbandonar.Visible = enCurso;
@@ -241,6 +292,14 @@ namespace GUI
             }
         }
 
+        // El líder se muestra en rosa y el otro en bordó. Si van empatados o todavía no anotaron, los dos quedan iguales.
+        private void ResaltarLider(int lider)
+        {
+            bool hayLider = partidaBLL.EnCurso && partidaBLL.AmbosAnotaron() && lider != 0;
+            lblTotalJugador1.ForeColor = (hayLider && lider == 1) ? Tema.Rosa : Tema.Vino;
+            lblTotalJugador2.ForeColor = (hayLider && lider == 2) ? Tema.Rosa : Tema.Vino;
+        }
+
         private void ActualizarTotales()
         {
             string nombreJugador2;
@@ -256,26 +315,10 @@ namespace GUI
             lblTotalJugador1.Text = "Total " + jugador1.Nombre + ": " + partidaBLL.CalcularTotal(1);
             lblTotalJugador2.Text = "Total " + nombreJugador2 + ": " + partidaBLL.CalcularTotal(2);
 
-            // Se recalcula cada vez que cambian los totales (después de cada anotación).
-            // Hasta que los 2 jugadores anotaron al menos una vez no se muestra nada.
-            int diferencia = Math.Abs(partidaBLL.CalcularTotal(1) - partidaBLL.CalcularTotal(2));
+            // La BLL decide quién va ganando y el texto; acá solo se pinta.
             int lider = partidaBLL.JugadorQueVaGanando();
-            if (!partidaBLL.EnCurso || !partidaBLL.AmbosAnotaron())
-            {
-                lblVaGanando.Text = "";
-            }
-            else if (lider == 1)
-            {
-                lblVaGanando.Text = jugador1.Nombre + " va ganando por " + diferencia;
-            }
-            else if (lider == 2)
-            {
-                lblVaGanando.Text = nombreJugador2 + " va ganando por " + diferencia;
-            }
-            else
-            {
-                lblVaGanando.Text = "Van empatados";
-            }
+            ResaltarLider(lider);
+            lblVaGanando.Text = partidaBLL.MensajeVaGanando();
         }
 
         // -------------------- Alta de jugador 2 / inicio de partida --------------------
@@ -316,7 +359,7 @@ namespace GUI
         {
             if (jugador2 == null)
             {
-                MessageBox.Show("Primero tiene que ingresar el Jugador 2");
+                Mensaje.Show("Primero tiene que ingresar el Jugador 2");
                 return;
             }
 
@@ -340,9 +383,27 @@ namespace GUI
         private void btnTirarDados_Click(object sender, EventArgs e)
         {
             bool[] guardar = new bool[ucDados.Length];
+            bool hayDadosGuardados = false;
             for (int i = 0; i < ucDados.Length; i++)
             {
                 guardar[i] = ucDados[i].Guardado;
+                if (guardar[i])
+                {
+                    hayDadosGuardados = true;
+                }
+            }
+
+            // Desde la segunda tirada del turno: si no se guardó ningún dado, se tiran los 5 de nuevo.
+            // Se pide confirmación para no hacerlo por error.
+            if (partidaBLL.PuedeAnotar() && !hayDadosGuardados)
+            {
+                DialogResult confirmar = Mensaje.Show(
+                    "No guardaste ningún dado: se vuelven a tirar los 5.\n\n¿Querés tirar de nuevo?",
+                    "Tirar dados", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if (confirmar != DialogResult.Yes)
+                {
+                    return;
+                }
             }
 
             try
@@ -356,11 +417,43 @@ namespace GUI
             ActualizarPantalla();
         }
 
+        // Tachar a voluntad: anota 0 en la categoría elegida aunque los dados den puntos.
+        private void btnTachar_Click(object sender, EventArgs e)
+        {
+            if (cmbCategoria.SelectedItem == null)
+            {
+                Mensaje.Show("Elegí una categoría para tachar");
+                return;
+            }
+
+            string categoria = cmbCategoria.SelectedItem.ToString();
+            DialogResult confirmar = Mensaje.Show(
+                "¿Tachar \"" + categoria + "\"?\n\nSe anota 0 y no vas a poder usarla después, aunque los dados den puntos.",
+                "Tachar categoría", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if (confirmar != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                partidaBLL.Tachar(categoria);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+
+            RefrescarGrilla();
+            ActualizarTotales();
+            ActualizarPantalla();
+        }
+
         private void btnAnotar_Click(object sender, EventArgs e)
         {
             if (cmbCategoria.SelectedItem == null)
             {
-                MessageBox.Show("Elegí una categoría para anotar");
+                Mensaje.Show("Elegí una categoría para anotar");
                 return;
             }
 
@@ -372,20 +465,11 @@ namespace GUI
                 // partida, después aparece el mensaje con el ganador.
                 // Si la categoría va a quedar tachada (0 puntos), se pide confirmación:
                 // con "No" no se anota nada y el jugador puede elegir otra categoría.
-                int puntaje = partidaBLL.CalcularPuntaje(categoria);
-                string avisoTachada = "";
-                if (partidaBLL.GeneralaDobleSoloTachable(categoria))
-                {
-                    avisoTachada = "Como tu Generala quedó tachada, la Generala Doble no suma: se anota 0 y queda tachada.";
-                }
-                else if (puntaje == 0)
-                {
-                    avisoTachada = "Los dados no alcanzan para puntuar en \"" + categoria + "\": se anota 0 y la categoría queda tachada.";
-                }
+                string avisoTachada = partidaBLL.AvisoAntesDeAnotar(categoria);
 
                 if (avisoTachada != "")
                 {
-                    DialogResult confirmar = MessageBox.Show(
+                    DialogResult confirmar = Mensaje.Show(
                         avisoTachada + "\n\n¿Estás seguro?",
                         "Tachar categoría", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                     if (confirmar != DialogResult.Yes)
@@ -395,7 +479,8 @@ namespace GUI
                 }
                 else if (partidaBLL.AplicaBonusServida(categoria))
                 {
-                    MessageBox.Show(
+                    int puntaje = partidaBLL.CalcularPuntaje(categoria);
+                    Mensaje.Show(
                         "¡Tirada servida! Lograste \"" + categoria + "\" en el primer tiro: puntaje doble (" + puntaje + ").",
                         "Servido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -446,7 +531,7 @@ namespace GUI
         // El botón "Salir" solo cierra el form: el logout (y el abandono de una partida
         // en curso) los hace FormPrincipal_FormClosing, así también se registran si
         // la ventana se cierra con la X.
-        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        private void btnVolverMenu_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -466,41 +551,15 @@ namespace GUI
             if (partidaBLL.EnCurso)
             {
                 bool abandono = PreguntarYAbandonar(
-                    "Hay una partida en curso. Para salir, uno de los 2 jugadores tiene que abandonarla: la gana el otro.");
+                    "Hay una partida en curso. Para volver al menú, uno de los 2 jugadores tiene que abandonarla: la gana el otro.");
                 if (!abandono)
                 {
                     e.Cancel = true;
                     return;
                 }
             }
-            // Sin partida en curso, se confirma la salida (solo si la cierra el usuario,
-            // no si se está apagando Windows).
-            else if (e.CloseReason == CloseReason.UserClosing)
-            {
-                DialogResult confirmar = MessageBox.Show(
-                    "¿Estás seguro de que querés salir?",
-                    "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-                if (confirmar != DialogResult.Yes)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-            }
-
-            // Si falla la bitácora se avisa, pero la aplicación se cierra igual.
-            try
-            {
-                BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-                usuarioBLL.Logout(jugador1);
-                if (jugador2 != null)
-                {
-                    usuarioBLL.Logout(jugador2);
-                }
-            }
-            catch (Exception ex)
-            {
-                MostrarError(ex);
-            }
+            // Sin partida en curso, cerrar esta ventana solo vuelve al menú: el cierre de sesión
+            // y la salida de la aplicación los maneja FormMenu.
         }
 
         // BACKUP/RESTORE los ejecuta el servicio de SQL Server, que no suele tener permiso
@@ -526,11 +585,11 @@ namespace GUI
                 string error = BLL.BACKUPRESTORE.HacerBackup(sfdBackup.FileName);
                 if (error == "")
                 {
-                    MessageBox.Show("Backup realizado correctamente en:\n" + sfdBackup.FileName);
+                    Mensaje.Show("Backup realizado correctamente en:\n" + sfdBackup.FileName);
                 }
                 else
                 {
-                    MessageBox.Show(
+                    Mensaje.Show(
                         "Ocurrió un error al hacer el backup:\n" + error +
                         "\n\nSi es un problema de permisos, probá guardarlo en la carpeta de backups de SQL Server.",
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -544,7 +603,7 @@ namespace GUI
 
             if (ofdRestore.ShowDialog() == DialogResult.OK)
             {
-                DialogResult confirmar = MessageBox.Show(
+                DialogResult confirmar = Mensaje.Show(
                     "Esto va a reemplazar los datos actuales de la base por los del backup. ¿Confirmás?",
                     "Restaurar backup", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -559,14 +618,14 @@ namespace GUI
                         // (bitácora, partidas) fallaría. Por eso se vuelve a pedir el login.
                         if (error == "")
                         {
-                            MessageBox.Show(
+                            Mensaje.Show(
                                 "Restore realizado correctamente.\n\nComo los datos de la base cambiaron, " +
                                 "hay que volver a iniciar sesión.",
                                 "Restaurar backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
                         {
-                            MessageBox.Show(
+                            Mensaje.Show(
                                 "Los datos del backup se restauraron, pero después ocurrió un error:\n" + error +
                                 "\n\nHay que volver a iniciar sesión. Si la aplicación no puede conectarse, " +
                                 "ejecutá en SSMS: ALTER DATABASE GENERALA SET MULTI_USER",
@@ -577,7 +636,7 @@ namespace GUI
                     }
                     else
                     {
-                        MessageBox.Show(
+                        Mensaje.Show(
                             "Ocurrió un error al restaurar el backup:\n" + error,
                             "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -595,6 +654,16 @@ namespace GUI
         {
             FormReglas formReglas = new FormReglas();
             formReglas.ShowDialog();
+        }
+
+        private void lblProgreso_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblTitulo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

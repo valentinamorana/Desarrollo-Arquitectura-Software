@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using BE;
 
@@ -9,11 +10,42 @@ namespace GUI
         private USUARIO jugador1;
         private USUARIO jugador2;
 
+        // Historial completo del jugador elegido; el filtro muestra solo una parte de él.
+        private List<FILAHISTORIAL> historialCompleto;
+
         public FormEstadisticas(USUARIO jugador1, USUARIO jugador2)
         {
             InitializeComponent();
             this.jugador1 = jugador1;
             this.jugador2 = jugador2;
+        }
+
+        private void cmbResultado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AplicarFiltro();
+        }
+
+        // Muestra en la grilla solo las partidas del resultado elegido. Los contadores de arriba no cambian.
+        private void AplicarFiltro()
+        {
+            if (historialCompleto == null)
+            {
+                return;
+            }
+
+            // El filtro lo calcula BLL.ESTADISTICA; acá solo se muestra el resultado.
+            BLL.ESTADISTICA.FILTRO_RESULTADO filtro = (BLL.ESTADISTICA.FILTRO_RESULTADO)cmbResultado.SelectedIndex;
+            List<FILAHISTORIAL> visibles = BLL.ESTADISTICA.Filtrar(historialCompleto, filtro);
+
+            dgvHistorial.DataSource = null;
+            dgvHistorial.DataSource = visibles;
+
+            dgvHistorial.Columns["Fecha"].HeaderText = "Fecha";
+            dgvHistorial.Columns["Rival"].HeaderText = "Rival";
+            dgvHistorial.Columns["PuntajePropio"].HeaderText = "Mi Puntaje";
+            dgvHistorial.Columns["PuntajeRival"].HeaderText = "Puntaje Rival";
+            dgvHistorial.Columns["Resultado"].HeaderText = "Resultado";
+            dgvHistorial.Columns["RutaXml"].Visible = false;
         }
 
         private void FormEstadisticas_Load(object sender, EventArgs e)
@@ -51,20 +83,13 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudieron cargar las estadísticas: " + ex.Message,
+                Mensaje.Show("No se pudieron cargar las estadísticas: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            dgvHistorial.DataSource = null;
-            dgvHistorial.DataSource = estadistica.Historial;
-
-            dgvHistorial.Columns["Fecha"].HeaderText = "Fecha";
-            dgvHistorial.Columns["Rival"].HeaderText = "Rival";
-            dgvHistorial.Columns["PuntajePropio"].HeaderText = "Mi Puntaje";
-            dgvHistorial.Columns["PuntajeRival"].HeaderText = "Puntaje Rival";
-            dgvHistorial.Columns["Resultado"].HeaderText = "Resultado";
-            dgvHistorial.Columns["RutaXml"].Visible = false;
+            historialCompleto = estadistica.Historial;
+            AplicarFiltro();
 
             lblGanadas.Text = "Ganadas: " + estadistica.Ganadas;
             lblPerdidas.Text = "Perdidas: " + estadistica.Perdidas;
@@ -79,7 +104,7 @@ namespace GUI
         {
             if (dgvHistorial.CurrentRow == null)
             {
-                MessageBox.Show("Elegí una partida del historial");
+                Mensaje.Show("Elegí una partida del historial");
                 return;
             }
 
@@ -87,7 +112,7 @@ namespace GUI
 
             if (!BLL.MOVIMIENTOXML.Existe(fila.RutaXml))
             {
-                MessageBox.Show(
+                Mensaje.Show(
                     "No se encontró el archivo XML de esa partida:\n" + fila.RutaXml,
                     "Movimientos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

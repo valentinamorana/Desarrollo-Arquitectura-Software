@@ -12,8 +12,8 @@ namespace GUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Se repite solo si FormPrincipal se cerró por un restore de la base,
-            // que obliga a volver a loguearse (ver FormPrincipal.btnRestore_Click).
+            // Se repite si el menú se cerró por cerrar sesión o por un restore de la base
+            // (el restore obliga a volver a loguearse, ver FormPrincipal.btnRestore_Click).
             bool volverAlLogin = true;
             while (volverAlLogin)
             {
@@ -34,15 +34,16 @@ namespace GUI
                     usuarioLogueado = formLogin.UsuarioLogueado;
                 }
 
-                FormPrincipal formPrincipal = new FormPrincipal(usuarioLogueado);
-                Application.Run(formPrincipal);
-                volverAlLogin = formPrincipal.VolverAlLogin;
+                // Después del login va el menú (Jugar, Estadísticas, Bitácora, Reglas, Cerrar sesión).
+                FormMenu menu = new FormMenu(usuarioLogueado);
+                Application.Run(menu);
+                volverAlLogin = menu.VolverAlLogin;
             }
         }
 
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            MessageBox.Show(
+            Mensaje.Show(
                 "Ocurrió un error inesperado: " + e.Exception.Message,
                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

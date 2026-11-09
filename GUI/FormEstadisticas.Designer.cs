@@ -40,13 +40,15 @@ namespace GUI
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnVerMovimientos = new System.Windows.Forms.Button();
+            this.lblResultado = new System.Windows.Forms.Label();
+            this.cmbResultado = new System.Windows.Forms.ComboBox();
             this.pnlTitulo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).BeginInit();
             this.SuspendLayout();
             //
             // pnlTitulo
             //
-            this.pnlTitulo.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.pnlTitulo.BackColor = Tema.Rosa;
             this.pnlTitulo.Controls.Add(this.lblTitulo);
             this.pnlTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitulo.Location = new System.Drawing.Point(0, 0);
@@ -70,7 +72,7 @@ namespace GUI
             //
             this.lblJugador.AutoSize = true;
             this.lblJugador.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblJugador.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblJugador.ForeColor = Tema.Rosa;
             this.lblJugador.Location = new System.Drawing.Point(20, 78);
             this.lblJugador.Name = "lblJugador";
             this.lblJugador.Size = new System.Drawing.Size(70, 19);
@@ -92,7 +94,7 @@ namespace GUI
             //
             this.lblGanadas.AutoSize = true;
             this.lblGanadas.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblGanadas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblGanadas.ForeColor = Tema.Rosa;
             this.lblGanadas.Location = new System.Drawing.Point(20, 120);
             this.lblGanadas.Name = "lblGanadas";
             this.lblGanadas.Size = new System.Drawing.Size(90, 19);
@@ -103,7 +105,7 @@ namespace GUI
             //
             this.lblPerdidas.AutoSize = true;
             this.lblPerdidas.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPerdidas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblPerdidas.ForeColor = Tema.Rosa;
             this.lblPerdidas.Location = new System.Drawing.Point(190, 120);
             this.lblPerdidas.Name = "lblPerdidas";
             this.lblPerdidas.Size = new System.Drawing.Size(87, 19);
@@ -114,7 +116,7 @@ namespace GUI
             //
             this.lblEmpatadas.AutoSize = true;
             this.lblEmpatadas.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblEmpatadas.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblEmpatadas.ForeColor = Tema.Rosa;
             this.lblEmpatadas.Location = new System.Drawing.Point(360, 120);
             this.lblEmpatadas.Name = "lblEmpatadas";
             this.lblEmpatadas.Size = new System.Drawing.Size(103, 19);
@@ -125,7 +127,7 @@ namespace GUI
             //
             this.lblPromedio.AutoSize = true;
             this.lblPromedio.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblPromedio.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblPromedio.ForeColor = Tema.Rosa;
             this.lblPromedio.Location = new System.Drawing.Point(20, 155);
             this.lblPromedio.Name = "lblPromedio";
             this.lblPromedio.Size = new System.Drawing.Size(230, 19);
@@ -136,7 +138,7 @@ namespace GUI
             //
             this.lblTiempoTotal.AutoSize = true;
             this.lblTiempoTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTiempoTotal.ForeColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.lblTiempoTotal.ForeColor = Tema.Rosa;
             this.lblTiempoTotal.Location = new System.Drawing.Point(360, 155);
             this.lblTiempoTotal.Name = "lblTiempoTotal";
             this.lblTiempoTotal.Size = new System.Drawing.Size(210, 19);
@@ -148,7 +150,7 @@ namespace GUI
             this.dgvHistorial.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(252, 240, 245);
             this.dgvHistorial.BackgroundColor = System.Drawing.Color.White;
             this.dgvHistorial.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvHistorial.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.dgvHistorial.ColumnHeadersDefaultCellStyle.BackColor = Tema.Rosa;
             this.dgvHistorial.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
             this.dgvHistorial.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.dgvHistorial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -166,7 +168,7 @@ namespace GUI
             //
             // btnCerrar
             //
-            this.btnCerrar.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnCerrar.BackColor = Tema.Rosa;
             this.btnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCerrar.ForeColor = System.Drawing.Color.White;
@@ -180,7 +182,7 @@ namespace GUI
             //
             // btnVerMovimientos
             //
-            this.btnVerMovimientos.BackColor = System.Drawing.Color.FromArgb(173, 20, 87);
+            this.btnVerMovimientos.BackColor = Tema.Rosa;
             this.btnVerMovimientos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVerMovimientos.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnVerMovimientos.ForeColor = System.Drawing.Color.White;
@@ -192,11 +194,40 @@ namespace GUI
             this.btnVerMovimientos.UseVisualStyleBackColor = false;
             this.btnVerMovimientos.Click += new System.EventHandler(this.btnVerMovimientos_Click);
             //
+            // lblResultado
+            //
+            this.lblResultado.AutoSize = true;
+            this.lblResultado.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblResultado.Location = new System.Drawing.Point(410, 78);
+            this.lblResultado.Name = "lblResultado";
+            this.lblResultado.Size = new System.Drawing.Size(80, 19);
+            this.lblResultado.TabIndex = 3;
+            this.lblResultado.Text = "Resultado:";
+            //
+            // cmbResultado
+            //
+            this.cmbResultado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbResultado.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbResultado.FormattingEnabled = true;
+            this.cmbResultado.Items.AddRange(new object[] {
+            "Todas",
+            "Ganadas",
+            "Perdidas",
+            "Empates"});
+            this.cmbResultado.Location = new System.Drawing.Point(500, 74);
+            this.cmbResultado.Name = "cmbResultado";
+            this.cmbResultado.Size = new System.Drawing.Size(170, 28);
+            this.cmbResultado.TabIndex = 4;
+            this.cmbResultado.SelectedIndex = 0;
+            this.cmbResultado.SelectedIndexChanged += new System.EventHandler(this.cmbResultado_SelectedIndexChanged);
+            //
             // FormEstadisticas
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(253, 245, 247);
             this.ClientSize = new System.Drawing.Size(700, 560);
+            this.Controls.Add(this.cmbResultado);
+            this.Controls.Add(this.lblResultado);
             this.Controls.Add(this.btnVerMovimientos);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.dgvHistorial);
@@ -236,5 +267,7 @@ namespace GUI
         private System.Windows.Forms.DataGridView dgvHistorial;
         private System.Windows.Forms.Button btnCerrar;
         private System.Windows.Forms.Button btnVerMovimientos;
+        private System.Windows.Forms.Label lblResultado;
+        private System.Windows.Forms.ComboBox cmbResultado;
     }
 }

@@ -74,5 +74,15 @@
       <FileName>ucDado.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GUI.FormAbandonar">
+    <Position X="3.75" Y="4" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FormAbandonar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

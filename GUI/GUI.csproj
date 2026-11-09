@@ -89,6 +89,26 @@
     <Compile Include="FormReglas.Designer.cs">
       <DependentUpon>FormReglas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mensaje.cs" />
+    <Compile Include="FormMensaje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMensaje.Designer.cs">
+      <DependentUpon>FormMensaje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMenu.Designer.cs">
+      <DependentUpon>FormMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormBitacora.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBitacora.Designer.cs">
+      <DependentUpon>FormBitacora.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tema.cs" />
     <Compile Include="ucDado.cs">
       <SubType>UserControl</SubType>
     </Compile>
