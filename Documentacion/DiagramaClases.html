@@ -59,6 +59,7 @@ classDiagram
     class DAL_ACCESO["ACCESO"] {
         &lt;&lt;DAL internal&gt;&gt;
         +CadenaConexion(nombre)$ string
+        -ResolverServidor()$ string
         +Abrir()
         +Cerrar()
         +IniciarTx()
@@ -90,7 +91,17 @@ classDiagram
         &lt;&lt;static&gt;&gt;
         +CarpetaBackupPorDefecto()$ string
         +HacerBackup(ruta)$ string
-        +HacerRestore(ruta)$ string
+        +HacerRestore(ruta, out restaurada)$ string
+    }
+    class DAL_MOVIMIENTOXML["MOVIMIENTOXML"] {
+        &lt;&lt;static&gt;&gt;
+        +GenerarRuta()$ string
+        +CrearArchivo(ruta, fecha, jugador1, jugador2)$
+        +InsertarTirada(...)$
+        +InsertarMovimiento(...)$
+        +InsertarFin(...)$
+        +Existe(ruta)$ bool
+        +Listar(ruta)$ List
     }
 
     class BLL_PARTIDA["PARTIDA"] {
@@ -102,7 +113,9 @@ classDiagram
         +CalcularPuntaje(categoria) int
         +Anotar(categoria) int
         +CalcularTotal(numeroJugador) int
-        +Abandonar()
+        +JugadorQueVaGanando() int
+        +AmbosAnotaron() bool
+        +Abandonar(quienAbandona)
     }
     class BLL_ESTADISTICA["ESTADISTICA"] {
         &lt;&lt;BLL&gt;&gt;
@@ -110,6 +123,7 @@ classDiagram
     }
     class BLL_USUARIO["USUARIO"] {
         &lt;&lt;BLL&gt;&gt;
+        +ValidarRegistro(usuario) string
         +Login(usuario) bool
         +Logout(usuario)
         +Insertar(usuario) bool
@@ -128,14 +142,20 @@ classDiagram
     class BLL_MOVIMIENTOXML["MOVIMIENTOXML"] {
         &lt;&lt;static&gt;&gt;
         +GenerarRuta()$ string
-        +CrearArchivo(ruta)$
+        +CrearArchivo(ruta, jugador1, jugador2)$
+        +RegistrarTirada(...)$
         +RegistrarMovimiento(...)$
+        +RegistrarFin(...)$
         +LeerMovimientos(ruta)$ List
     }
     class BLL_BACKUPRESTORE["BACKUPRESTORE"] { &lt;&lt;static&gt;&gt; }
     class BLL_delPartidaFinalizada["delPartidaFinalizada"] { &lt;&lt;delegate&gt;&gt; }
 
-    class GUI_FormPrincipal["FormPrincipal"] { &lt;&lt;GUI&gt;&gt; }
+    class GUI_FormPrincipal["FormPrincipal"] {
+        &lt;&lt;GUI&gt;&gt;
+        +bool VolverAlLogin
+    }
+    class GUI_FormAbandonar["FormAbandonar"] { &lt;&lt;GUI&gt;&gt; }
     class GUI_ucDado["ucDado"] {
         &lt;&lt;UserControl&gt;&gt;
         +int Valor
@@ -171,6 +191,8 @@ classDiagram
     BLL_ESTADISTICA --&gt; DAL_MP_USUARIO : mapperUsuario
     BLL_ESTADISTICA ..&gt; BE_ESTADISTICA : crea
     BLL_MOVIMIENTOXML ..&gt; BE_MOVIMIENTO
+    BLL_MOVIMIENTOXML ..&gt; DAL_MOVIMIENTOXML : usa
+    DAL_MOVIMIENTOXML ..&gt; BE_MOVIMIENTO
     BLL_BACKUPRESTORE ..&gt; DAL_BACKUPRESTORE : usa
 
     GUI_FormPrincipal --&gt; BLL_PARTIDA : partidaBLL
@@ -180,6 +202,7 @@ classDiagram
     GUI_FormPrincipal ..&gt; GUI_FormLogin : abre
     GUI_FormPrincipal ..&gt; GUI_FormEstadisticas : abre
     GUI_FormPrincipal ..&gt; GUI_FormReglas : abre
+    GUI_FormPrincipal ..&gt; GUI_FormAbandonar : abre
     GUI_FormLogin ..&gt; BLL_USUARIO : usa
     GUI_FormLogin ..&gt; GUI_FormRegistro : abre
     GUI_FormRegistro ..&gt; BLL_USUARIO : usa

@@ -12,7 +12,8 @@ Reglas que implementa la aplicación. Donde la consigna no especifica algo, la d
 
 - Cada partida tiene **11 categorías** para anotar, una sola vez cada una por jugador: Unos, Doses, Treses, Cuatros, Cincos, Seises, Escalera, Full, Póker, Generala y Generala Doble.
 - La partida termina cuando **ambos jugadores anotaron las 11 categorías**. Gana quien tenga más puntos sumados; si empatan, es empate. También se puede abandonar la partida en curso: la app pregunta **qué jugador abandona** (cualquiera de los 2, le toque o no el turno), la partida se registra con el puntaje parcial acumulado y **la gana siempre el otro jugador**, sin importar cómo venían los puntos. En la bitácora queda "Partida abandonada por" y el nombre de quien abandonó.
-- Si se cierra la aplicación (botón "Salir" o la X) con una partida en curso, se pide lo mismo: elegir qué jugador abandona. Si se cancela, la aplicación no se cierra.
+- Al volver al menú desde la pantalla de juego (botón "Volver al menú" o la X de la ventana) con una partida en curso, se pide lo mismo: elegir qué jugador abandona, y la partida la gana el otro. Si se cancela, la partida sigue y no se vuelve al menú. Sin partida en curso, se vuelve directo al menú.
+- El cierre de sesión se hace solo desde el menú ("Cerrar sesión") y registra el cierre de los dos jugadores. La X de la ventana del menú pide confirmación para salir de la aplicación, y también registra el cierre de sesión.
 - Si después de una partida se loguea un Jugador 2 distinto, al Jugador 2 anterior se le registra el cierre de sesión en la bitácora.
 - El orden de turnos alterna estrictamente entre Jugador 1 y Jugador 2 después de cada anotación.
 

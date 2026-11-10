@@ -509,6 +509,9 @@ namespace GUI
                 return false;
             }
 
+            // Si el abandono no se pudo guardar, la partida sigue en curso: devuelve false para que
+            // la ventana no se cierre y el jugador pueda reintentar.
+            bool abandonoOk = true;
             try
             {
                 partidaBLL.Abandonar(formAbandonar.UsuarioQueAbandona);
@@ -516,9 +519,10 @@ namespace GUI
             catch (Exception ex)
             {
                 MostrarError(ex);
+                abandonoOk = false;
             }
             ActualizarPantalla();
-            return true;
+            return abandonoOk;
         }
 
         private void btnAbandonar_Click(object sender, EventArgs e)
