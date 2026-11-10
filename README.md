@@ -32,7 +32,7 @@ Juego de la Generala para 2 jugadores en la misma PC, desarrollado en C# (Window
 
 ### 1. Crear la base de datos
 
-Abrir `Script.sql` en SSMS, conectado a la instancia de SQL Server, y ejecutarlo completo (F5).
+Abrir `BD/Script.sql` en SSMS, conectado a la instancia de SQL Server, y ejecutarlo completo (F5).
 
 El script crea la base `GENERALA` con sus tablas, stored procedures y usuarios de prueba. Se puede volver a correr sin errores: solo crea lo que falte.
 
@@ -65,7 +65,7 @@ Abrir `TP_Generala.sln` en Visual Studio, dejar `GUI` como proyecto de inicio y 
 
 ## Usuarios de prueba
 
-Los carga `Script.sql`:
+Los carga `BD/Script.sql`:
 
 | Usuario | Contraseña |
 |---|---|
@@ -101,7 +101,7 @@ La partida termina cuando los dos completan las 11 categorías. Las reglas compl
 
 **Nota sobre el backup:** `BACKUP DATABASE` lo ejecuta el servicio de SQL Server, no el usuario de Windows, así que en carpetas personales (Escritorio, Documentos) puede fallar por permisos. El diálogo arranca en la carpeta de backups de SQL Server.
 
-**Nota sobre el restore:** después de restaurar, la aplicación vuelve al login, porque los usuarios de la base restaurada pueden ser otros. Si el `.bak` es de una versión anterior, hay que volver a correr `Script.sql` para actualizar los stored procedures.
+**Nota sobre el restore:** después de restaurar, la aplicación vuelve al login, porque los usuarios de la base restaurada pueden ser otros. Si el `.bak` es de una versión anterior, hay que volver a correr `BD/Script.sql` para actualizar los stored procedures.
 
 **Nota sobre los XML:** la ruta guardada en la base es la de la PC donde se jugó. Si el archivo no existe en esa PC, la app busca el mismo nombre en la carpeta `Partidas` de la aplicación.
 
@@ -151,6 +151,6 @@ TP_Generala/
 ├── GUI/             Windows Forms: login, menú, juego, estadísticas, bitácora, movimientos, reglas, mensajes y Tema (colores)
 ├── Tests.Unitarios/ pruebas unitarias (MSTest)
 ├── Documentacion/   informe del TP (PDF) y diagramas
-├── Script.sql       creación de la base, stored procedures y datos de prueba
+├── BD/              Script.sql: creación de la base, stored procedures y datos de prueba
 └── TP_Generala.sln
 ```
