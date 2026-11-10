@@ -23,8 +23,8 @@ erDiagram
 
     USUARIO {
         int ID PK
-        varchar Nombre
-        varchar Contrasena
+        nvarchar Nombre
+        nvarchar Contrasena
     }
     TIPO_LOG {
         int ID_TIPO PK
@@ -32,7 +32,7 @@ erDiagram
     }
     LOG {
         int ID_LOG PK
-        varchar Descripcion
+        nvarchar Descripcion
         int ID_Usuario FK
         int ID_TIPO FK
         datetime Fecha
@@ -46,7 +46,7 @@ erDiagram
         int PUNTAJE_JUGADOR2
         datetime FECHA_INICIO
         datetime FECHA_FIN
-        varchar RUTA_XML
+        nvarchar RUTA_XML
     }
   </pre>
 </div>
