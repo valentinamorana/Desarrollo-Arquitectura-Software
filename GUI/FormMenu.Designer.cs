@@ -187,7 +187,7 @@ namespace GUI
             this.lblPie.AutoSize = true;
             this.lblPie.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.lblPie.ForeColor = System.Drawing.Color.FromArgb(150, 120, 135);
-            this.lblPie.Location = new System.Drawing.Point(150, 340);
+            this.lblPie.Location = new System.Drawing.Point(150, 400);
             this.lblPie.Name = "lblPie";
             this.lblPie.Size = new System.Drawing.Size(0, 15);
             this.lblPie.TabIndex = 6;

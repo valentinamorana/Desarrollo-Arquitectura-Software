@@ -28,9 +28,9 @@ namespace GUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlEncabezado = new System.Windows.Forms.Panel();
             this.btnRestore = new System.Windows.Forms.Button();
             this.btnBackup = new System.Windows.Forms.Button();
@@ -88,7 +88,6 @@ namespace GUI
             this.pnlEncabezado.Name = "pnlEncabezado";
             this.pnlEncabezado.Size = new System.Drawing.Size(1000, 70);
             this.pnlEncabezado.TabIndex = 0;
-            // 
             // 
             // btnRestore
             // 
@@ -153,23 +152,23 @@ namespace GUI
             this.btnReglas.UseVisualStyleBackColor = false;
             this.btnReglas.Click += new System.EventHandler(this.btnReglas_Click);
             // 
-            // 
             // btnVolverMenu
             // 
-            this.btnVolverMenu.BackColor = Tema.Rosa;
+            this.btnVolverMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
             this.btnVolverMenu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnVolverMenu.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btnVolverMenu.FlatAppearance.BorderSize = 2;
             this.btnVolverMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVolverMenu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnVolverMenu.ForeColor = System.Drawing.Color.White;
-            this.btnVolverMenu.Location = new System.Drawing.Point(830, 15);
+            this.btnVolverMenu.Location = new System.Drawing.Point(886, 15);
             this.btnVolverMenu.Name = "btnVolverMenu";
-            this.btnVolverMenu.Size = new System.Drawing.Size(155, 40);
+            this.btnVolverMenu.Size = new System.Drawing.Size(99, 40);
             this.btnVolverMenu.TabIndex = 4;
-            this.btnVolverMenu.Text = "Volver al menú";
+            this.btnVolverMenu.Text = "Menú";
             this.btnVolverMenu.UseVisualStyleBackColor = false;
             this.btnVolverMenu.Click += new System.EventHandler(this.btnVolverMenu_Click);
+            // 
             // lblTitulo
             // 
             this.lblTitulo.AutoSize = true;
@@ -515,27 +514,27 @@ namespace GUI
             // 
             // dgvPuntajes
             // 
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(240)))), ((int)(((byte)(245)))));
-            this.dgvPuntajes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(240)))), ((int)(((byte)(245)))));
+            this.dgvPuntajes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvPuntajes.BackgroundColor = System.Drawing.Color.White;
             this.dgvPuntajes.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPuntajes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPuntajes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvPuntajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 10.5F);
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(214)))), ((int)(((byte)(227)))));
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(10)))), ((int)(((byte)(45)))));
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPuntajes.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(214)))), ((int)(((byte)(227)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(10)))), ((int)(((byte)(45)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPuntajes.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvPuntajes.EnableHeadersVisualStyles = false;
             this.dgvPuntajes.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(214)))), ((int)(((byte)(227)))));
             this.dgvPuntajes.Location = new System.Drawing.Point(15, 15);

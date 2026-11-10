@@ -9,6 +9,7 @@ namespace GUI
     public partial class FormMovimientos : Form
     {
         private string rutaXml;
+        private readonly ToolTip tooltipArchivo = new ToolTip();
         private System.Drawing.Font fuenteNegrita;
 
         public FormMovimientos(string rutaXml, string titulo)
@@ -20,7 +21,8 @@ namespace GUI
 
         private void FormMovimientos_Load(object sender, EventArgs e)
         {
-            lblArchivo.Text = "Archivo: " + rutaXml;
+            lblArchivo.Text = "Archivo: " + Path.GetFileName(rutaXml);
+            tooltipArchivo.SetToolTip(lblArchivo, rutaXml);
 
             // Si el XML se editó a mano o quedó cortado, no se puede leer: se avisa y no se muestra nada.
             List<MOVIMIENTO> movimientos;

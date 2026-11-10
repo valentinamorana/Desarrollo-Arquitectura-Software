@@ -84,5 +84,40 @@
       <FileName>FormAbandonar.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GUI.FormMenu">
+    <Position X="0" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FormMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.FormBitacora">
+    <Position X="11" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FormBitacora.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.FormMensaje">
+    <Position X="22" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FormMensaje.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.Mensaje">
+    <Position X="33" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mensaje.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI.Tema">
+    <Position X="44" Y="13" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tema.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

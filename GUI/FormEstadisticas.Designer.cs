@@ -154,6 +154,7 @@ namespace GUI
             this.dgvHistorial.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
             this.dgvHistorial.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.dgvHistorial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvHistorial.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHistorial.EnableHeadersVisualStyles = false;
             this.dgvHistorial.GridColor = System.Drawing.Color.FromArgb(248, 214, 227);
             this.dgvHistorial.Location = new System.Drawing.Point(20, 195);
