@@ -509,11 +509,8 @@ namespace BLL
         // quienAbandona = null cuando la partida terminó completa.
         private void Cerrar(BE.USUARIO quienAbandona)
         {
-            // La partida termina en pantalla aunque falle la base: no se puede seguir jugando
-            // con la planilla completa. Si falla, se avisa con la excepción.
-            enCurso = false;
-            tirosRestantes = 0;
-
+            // Si falla la base, la partida queda en curso (no se cierra a medias): se avisa con la
+            // excepción y se puede reintentar. Recién cuando se guardó el resultado se cierra en memoria.
             bool abandonada = quienAbandona != null;
             string descripcion;
             string nombreAbandono;
@@ -531,8 +528,11 @@ namespace BLL
             // Resultado + fin de partida en la bitácora, en una sola transacción.
             if (!mapper.Finalizar(partida, descripcion))
             {
-                throw new Exception("La partida terminó, pero no se pudo guardar el resultado en la base de datos.");
+                throw new Exception("La partida no se pudo guardar en la base de datos. Intentá de nuevo.");
             }
+
+            enCurso = false;
+            tirosRestantes = 0;
 
             // Cierre en el XML: puntajes, ganador ("" si es empate) y quién abandonó.
             string nombreGanador = "";

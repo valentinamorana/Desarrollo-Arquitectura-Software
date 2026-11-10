@@ -104,20 +104,25 @@ namespace GUI
                 }
             }
 
-            // Si falla la bitácora se avisa, pero igual se cierra la sesión.
+            // Si falla la bitácora de un jugador se avisa, pero igual se registra el del otro.
+            BLL.USUARIO usuarioBLL = new BLL.USUARIO();
+            CerrarSesionDe(usuarioBLL, jugador1);
+            if (jugador2 != null)
+            {
+                CerrarSesionDe(usuarioBLL, jugador2);
+            }
+        }
+
+        private void CerrarSesionDe(BLL.USUARIO usuarioBLL, USUARIO usuario)
+        {
             try
             {
-                BLL.USUARIO usuarioBLL = new BLL.USUARIO();
-                usuarioBLL.Logout(jugador1);
-                if (jugador2 != null)
-                {
-                    usuarioBLL.Logout(jugador2);
-                }
+                usuarioBLL.Logout(usuario);
             }
             catch (Exception ex)
             {
-                Mensaje.Show("No se pudo registrar el cierre de sesión:\n" + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Mensaje.Show("No se pudo registrar el cierre de sesión de " + usuario.Nombre + ":\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
