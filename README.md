@@ -134,7 +134,7 @@ Los diagramas UML están en `Documentacion/Diagramas/` (imágenes y modelo de EA
 
 | Documento | Archivo |
 |---|---|
-| Informe del TP (PDF) | [`Documentacion/TP Generala - Desarrollo y Arquitectura de Software - Morana, Valentina.docx.pdf`](<Documentacion/TP Generala - Desarrollo y Arquitectura de Software - Morana, Valentina.docx.pdf>) |
+| Informe del TP (PDF) | [`Documentacion/TP Generala - Desarrollo y Arquitectura de Software - Morana, Valentina.pdf`](<Documentacion/TP Generala - Desarrollo y Arquitectura de Software - Morana, Valentina.pdf>) |
 | Diagramas (JPG) y modelo de EA | [`Documentacion/Diagramas/`](Documentacion/Diagramas/) |
 
 Los diagramas de clases de Visual Studio (`ClassDiagram1.cd`) están dentro de cada proyecto (`BE/`, `BLL/`, `DAL/`, `GUI/`).
