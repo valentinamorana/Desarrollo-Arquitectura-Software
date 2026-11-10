@@ -85,7 +85,7 @@ También se pueden crear usuarios nuevos con "Registrarme" en la pantalla de log
 4. **Volver al menú:** con el botón "Volver al menú" o la X de la ventana. Si hay una partida en curso, primero hay que abandonarla: la app pregunta qué jugador abandona y la partida la gana el otro.
 5. **Cerrar sesión:** solo desde el menú. Registra el cierre de sesión de los dos jugadores.
 
-La partida termina cuando los dos completan las 11 categorías. Las reglas completas están en el botón "¿Cómo jugar?" de la app y en `Documentacion/Reglas_de_Negocio_Generala.md`. La sección 7 de ese archivo explica las decisiones tomadas donde la consigna no especifica (juego en la misma PC, Generala Doble, tirada servida, revancha, tachado voluntario).
+La partida termina cuando los dos completan las 11 categorías. Las reglas completas están en el botón "¿Cómo jugar?" de la app.
 
 ---
 
@@ -126,7 +126,7 @@ Cuatro capas, con dependencias en un solo sentido: la GUI nunca accede a datos y
 | Acceso a datos | `DAL` | SQL Server con stored procedures (`ACCESO`, `MAPPER<T>` y un mapper por tabla, backup/restore) y lectura y escritura de los XML |
 | Entidades | `BE` | Clases planas (`USUARIO`, `PARTIDA`, `LOG`, `ESTADISTICA`, filas de las grillas) |
 
-Los diagramas UML (de EA y de Visual Studio) están en `Documentacion/` y en los `.cd` de cada proyecto.
+Los diagramas UML están en `Documentacion/Diagramas/` (imágenes y modelo de EA) y en los `.cd` de cada proyecto.
 
 ---
 
@@ -134,11 +134,8 @@ Los diagramas UML (de EA y de Visual Studio) están en `Documentacion/` y en los
 
 | Documento | Archivo |
 |---|---|
-| Informe del TP (PDF) | [`Documentacion/TP_Generala_Informe.pdf`](Documentacion/TP_Generala_Informe.pdf) |
-| Documento del TP (Word, fuente del informe) | [`Documentacion/TP_Generala_Documentacion.docx`](Documentacion/TP_Generala_Documentacion.docx) |
-| Reglas de negocio | [`Documentacion/Reglas_de_Negocio_Generala.md`](Documentacion/Reglas_de_Negocio_Generala.md) |
-| Diagrama entidad-relación (EA) | [`DER.png`](Documentacion/DER.png) · [`DER.xmi`](Documentacion/DER.xmi) · [`DER.html`](Documentacion/DER.html) |
-| Diagrama de clases (EA) | [`DiagramaClases.png`](Documentacion/DiagramaClases.png) · [`DiagramaClases.xmi`](Documentacion/DiagramaClases.xmi) · [`DiagramaClases.html`](Documentacion/DiagramaClases.html) |
+| Informe del TP (PDF) | [`Documentacion/TP Generala - Desarrollo y Arquitectura de Software - Morana, Valentina.docx.pdf`](<Documentacion/TP Generala - Desarrollo y Arquitectura de Software - Morana, Valentina.docx.pdf>) |
+| Diagramas (JPG) y modelo de EA | [`Documentacion/Diagramas/`](Documentacion/Diagramas/) |
 
 Los diagramas de clases de Visual Studio (`ClassDiagram1.cd`) están dentro de cada proyecto (`BE/`, `BLL/`, `DAL/`, `GUI/`).
 
@@ -153,7 +150,7 @@ TP_Generala/
 ├── BLL/             reglas del juego, partida, usuarios, estadísticas, bitácora y XML de movimientos
 ├── GUI/             Windows Forms: login, menú, juego, estadísticas, bitácora, movimientos, reglas, mensajes y Tema (colores)
 ├── Tests.Unitarios/ pruebas unitarias (MSTest)
-├── Documentacion/   documento del TP (.docx), reglas de negocio y diagramas
+├── Documentacion/   informe del TP (PDF) y diagramas
 ├── Script.sql       creación de la base, stored procedures y datos de prueba
 └── TP_Generala.sln
 ```
