@@ -40,6 +40,30 @@ namespace BLL
             return DAL.MOVIMIENTOXML.Existe(ruta);
         }
 
+        // La ruta que se guardó en la base es la de la PC donde se jugó. Si no existe acá, se busca
+        // el mismo nombre de archivo en la carpeta Partidas de esta aplicación (así funciona en otra PC).
+        // Devuelve la ruta que se puede abrir, o "" si no se encuentra.
+        public static string Resolver(string ruta)
+        {
+            if (DAL.MOVIMIENTOXML.Existe(ruta))
+            {
+                return ruta;
+            }
+
+            string nombre = System.IO.Path.GetFileName(ruta ?? "");
+            if (nombre == "")
+            {
+                return "";
+            }
+
+            string alternativa = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Partidas", nombre);
+            if (DAL.MOVIMIENTOXML.Existe(alternativa))
+            {
+                return alternativa;
+            }
+            return "";
+        }
+
         // Lee el XML de una partida y devuelve sus movimientos en orden, para consultarlos desde la app.
         public static List<BE.MOVIMIENTO> LeerMovimientos(string ruta)
         {

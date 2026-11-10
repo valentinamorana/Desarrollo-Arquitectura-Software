@@ -110,7 +110,8 @@ namespace GUI
 
             FILAHISTORIAL fila = (FILAHISTORIAL)dgvHistorial.CurrentRow.DataBoundItem;
 
-            if (!BLL.MOVIMIENTOXML.Existe(fila.RutaXml))
+            string rutaResuelta = BLL.MOVIMIENTOXML.Resolver(fila.RutaXml);
+            if (rutaResuelta == "")
             {
                 Mensaje.Show(
                     "No se encontró el archivo XML de esa partida:\n" + fila.RutaXml,
@@ -119,7 +120,7 @@ namespace GUI
             }
 
             string titulo = "Partida del " + fila.Fecha + " vs " + fila.Rival;
-            FormMovimientos formMovimientos = new FormMovimientos(fila.RutaXml, titulo);
+            FormMovimientos formMovimientos = new FormMovimientos(rutaResuelta, titulo);
             formMovimientos.ShowDialog();
         }
 
