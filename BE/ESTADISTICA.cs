@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace BE
 {
-    // Resultado de las estadísticas de un jugador: lo calcula BLL.ESTADISTICA
-    // y FormEstadisticas solo lo muestra.
     public class ESTADISTICA
     {
         private int ganadas;
@@ -31,7 +29,6 @@ namespace BE
             set { empatadas = value; }
         }
 
-        // Porcentaje de partidas ganadas sobre el total (0 a 100).
         private double promedioVictorias;
 
         public double PromedioVictorias

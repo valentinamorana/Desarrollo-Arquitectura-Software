@@ -41,7 +41,6 @@ namespace GUI
 
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
 
-            // Largo del nombre y la contraseña, nombre sin espacios (reglas de la BLL).
             string error = usuarioBLL.ValidarRegistro(usuario);
             if (error != "")
             {

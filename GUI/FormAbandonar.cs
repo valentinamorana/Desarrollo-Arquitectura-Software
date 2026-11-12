@@ -4,8 +4,6 @@ using BE;
 
 namespace GUI
 {
-    // Pregunta qué jugador abandona la partida. No se supone que es el del turno:
-    // justo después de anotar el turno pasa solo al rival y es fácil confundirse.
     public partial class FormAbandonar : Form
     {
         private USUARIO jugador1;

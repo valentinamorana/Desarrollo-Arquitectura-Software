@@ -7,9 +7,6 @@ namespace DAL
 {
     public class MP_PARTIDA : MAPPER<BE.PARTIDA>
     {
-        // Crea la partida y registra el inicio en la bitácora de los 2 jugadores, todo en
-        // una misma transacción: o se graban las 3 cosas o no se graba ninguna.
-        // Devuelve el ID de la partida, o -1 si falló.
         public override int Insertar(BE.PARTIDA partida)
         {
             acceso = new ACCESO();
@@ -47,15 +44,11 @@ namespace DAL
             }
             finally
             {
-                // Si algo tiró una excepción antes del Commit, al cerrar la conexión
-                // SQL Server deshace solo la transacción que quedó abierta.
                 acceso.Cerrar();
             }
             return id;
         }
 
-        // Guarda el resultado de la partida y registra el fin en la bitácora de los 2 jugadores,
-        // en una misma transacción. Devuelve false si no se pudo grabar (no queda nada a medias).
         public bool Finalizar(BE.PARTIDA partida, string descripcion)
         {
             acceso = new ACCESO();
@@ -105,7 +98,6 @@ namespace DAL
             return ok;
         }
 
-        // Inserta en LOG usando la conexión (y la transacción) que ya está abierta.
         private bool RegistrarEnBitacora(int idUsuario, int idTipo, string descripcion)
         {
             List<SqlParameter> parametros = new List<SqlParameter>();
@@ -116,7 +108,6 @@ namespace DAL
             return acceso.Escribir("LOG_INSERTAR", parametros) > 0;
         }
 
-        // Partidas terminadas en las que participó el usuario (como jugador 1 o 2).
         public List<BE.PARTIDA> ListarPorUsuario(int idUsuario)
         {
             acceso = new ACCESO();
@@ -142,7 +133,6 @@ namespace DAL
                 p.IdJugador1 = int.Parse(fila["ID_JUGADOR1"].ToString());
                 p.IdJugador2 = int.Parse(fila["ID_JUGADOR2"].ToString());
 
-                // ID_GANADOR es NULL cuando la partida terminó empatada.
                 if (fila["ID_GANADOR"] == DBNull.Value)
                 {
                     p.IdGanador = 0;

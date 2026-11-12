@@ -4,7 +4,6 @@ namespace BLL
 {
     public class USUARIO
     {
-        // Largos permitidos. Los TextBox de login y registro tienen MaxLength = 20.
         public const int MIN_NOMBRE = 3;
         public const int MAX_NOMBRE = 20;
         public const int MIN_CONTRASEÑA = 4;
@@ -12,8 +11,6 @@ namespace BLL
 
         private DAL.MP_USUARIO mapper = new DAL.MP_USUARIO();
 
-        // Reglas para registrar un usuario nuevo. Devuelve "" si está bien,
-        // o el motivo por el que no se puede registrar.
         public string ValidarRegistro(BE.USUARIO usuario)
         {
             if (usuario.Nombre.Contains(" "))
@@ -62,11 +59,8 @@ namespace BLL
             BITACORA.Registrar(usuario.ID, BE.LOG.CIERRE_SESION, "Cierre de sesión de " + usuario.Nombre);
         }
 
-        // Devuelve false si el nombre de usuario ya existe.
-        // Si falla la base de datos tira una excepción con el motivo.
         public bool Insertar(BE.USUARIO usuario)
         {
-            // Las reglas se controlan acá también, así no se pueden saltear llamando directo a la BLL.
             string error = ValidarRegistro(usuario);
             if (error != "")
             {

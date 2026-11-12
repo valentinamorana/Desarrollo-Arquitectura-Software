@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace BLL
 {
-    // Estadísticas de un jugador a partir de sus partidas terminadas.
     public class ESTADISTICA
     {
-        // Opciones del filtro del historial. El orden coincide con el combo de FormEstadisticas.
         public enum FILTRO_RESULTADO
         {
             Todas = 0,
@@ -15,8 +13,6 @@ namespace BLL
             Empates = 3
         }
 
-        // Devuelve solo las partidas del historial que corresponden al filtro elegido.
-        // Los contadores (ganadas, perdidas, empatadas) no cambian con el filtro.
         public static List<BE.FILAHISTORIAL> Filtrar(List<BE.FILAHISTORIAL> historial, FILTRO_RESULTADO filtro)
         {
             List<BE.FILAHISTORIAL> visibles = new List<BE.FILAHISTORIAL>();
@@ -46,7 +42,6 @@ namespace BLL
 
             foreach (BE.PARTIDA p in partidas)
             {
-                // El usuario pudo haber sido el jugador 1 o el 2 de esa partida.
                 int idRival;
                 int puntajePropio;
                 int puntajeRival;
@@ -63,7 +58,6 @@ namespace BLL
                     puntajeRival = p.PuntajeJugador1;
                 }
 
-                // IdGanador = 0 significa empate.
                 string resultado;
                 if (p.IdGanador == 0)
                 {
@@ -101,7 +95,6 @@ namespace BLL
                 estadistica.Historial.Add(fila);
             }
 
-            // Promedio de victorias: ganadas sobre el total de partidas, en porcentaje.
             if (partidas.Count > 0)
             {
                 estadistica.PromedioVictorias = estadistica.Ganadas * 100.0 / partidas.Count;

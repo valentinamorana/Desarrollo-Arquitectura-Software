@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace BLL
 {
-    // Movimientos de una partida en su archivo XML. El archivo lo lee y escribe
-    // DAL.MOVIMIENTOXML; acá se arma qué datos lleva cada registro (tirada, anotación, fin).
     public static class MOVIMIENTOXML
     {
         public static string GenerarRuta()
@@ -17,7 +15,6 @@ namespace BLL
             DAL.MOVIMIENTOXML.CrearArchivo(ruta, Ahora(), jugador1, jugador2);
         }
 
-        // numeroTirada: 1, 2 o 3 dentro del turno. guardados: qué dados se conservaron de la tirada anterior.
         public static void RegistrarTirada(string ruta, int turno, string jugador, int numeroTirada, int[] dados, bool[] guardados)
         {
             DAL.MOVIMIENTOXML.InsertarTirada(ruta, turno, jugador, numeroTirada, DadosATexto(dados), GuardadosATexto(guardados), Ahora());
@@ -28,7 +25,6 @@ namespace BLL
             DAL.MOVIMIENTOXML.InsertarMovimiento(ruta, turno, jugador, DadosATexto(dados), categoria, puntaje, Ahora());
         }
 
-        // ganador: nombre del ganador, o "" si fue empate. abandono: quién abandonó, o "" si se terminó completa.
         public static void RegistrarFin(string ruta, int turnos, string jugador1, int puntajeJugador1,
             string jugador2, int puntajeJugador2, string ganador, string abandono)
         {
@@ -40,9 +36,6 @@ namespace BLL
             return DAL.MOVIMIENTOXML.Existe(ruta);
         }
 
-        // La ruta que se guardó en la base es la de la PC donde se jugó. Si no existe acá, se busca
-        // el mismo nombre de archivo en la carpeta Partidas de esta aplicación (así funciona en otra PC).
-        // Devuelve la ruta que se puede abrir, o "" si no se encuentra.
         public static string Resolver(string ruta)
         {
             if (DAL.MOVIMIENTOXML.Existe(ruta))
@@ -64,7 +57,6 @@ namespace BLL
             return "";
         }
 
-        // Lee el XML de una partida y devuelve sus movimientos en orden, para consultarlos desde la app.
         public static List<BE.MOVIMIENTO> LeerMovimientos(string ruta)
         {
             return DAL.MOVIMIENTOXML.Listar(ruta);
@@ -75,7 +67,6 @@ namespace BLL
             return DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
-        // {3, 6, 6, 2, 2} -> "3,6,6,2,2"
         private static string DadosATexto(int[] dados)
         {
             string texto = "";
@@ -90,7 +81,6 @@ namespace BLL
             return texto;
         }
 
-        // {true, false, true, false, false} -> "1,3" (posiciones de los dados guardados). "" si no se guardó ninguno.
         private static string GuardadosATexto(bool[] guardados)
         {
             string texto = "";

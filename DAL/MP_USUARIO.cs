@@ -6,7 +6,6 @@ namespace DAL
 {
     public class MP_USUARIO : MAPPER<BE.USUARIO>
     {
-        // Devuelve el ID del usuario nuevo, 0 si el nombre ya existe, o -1 si falló.
         public override int Insertar(BE.USUARIO usuario)
         {
             acceso = new ACCESO();
@@ -27,7 +26,6 @@ namespace DAL
             return id;
         }
 
-        // Si el usuario y la contraseña son correctos, completa el ID y devuelve true.
         public bool Login(BE.USUARIO usuario)
         {
             acceso = new ACCESO();
@@ -58,7 +56,6 @@ namespace DAL
             return true;
         }
 
-        // Devuelve null si no existe un usuario con ese ID.
         public BE.USUARIO BuscarPorId(int id)
         {
             acceso = new ACCESO();

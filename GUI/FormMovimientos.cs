@@ -24,7 +24,6 @@ namespace GUI
             lblArchivo.Text = "Archivo: " + Path.GetFileName(rutaXml);
             tooltipArchivo.SetToolTip(lblArchivo, rutaXml);
 
-            // Si el XML se editó a mano o quedó cortado, no se puede leer: se avisa y no se muestra nada.
             List<MOVIMIENTO> movimientos;
             try
             {
@@ -48,7 +47,6 @@ namespace GUI
             dgvMovimientos.Columns["Puntaje"].HeaderText = "Puntaje";
             dgvMovimientos.Columns["Fecha"].HeaderText = "Fecha y hora";
 
-            // Ancho relativo de cada columna (la grilla reparte el espacio con Fill).
             dgvMovimientos.Columns["Turno"].FillWeight = 45;
             dgvMovimientos.Columns["Jugador"].FillWeight = 90;
             dgvMovimientos.Columns["Accion"].FillWeight = 80;
@@ -59,8 +57,6 @@ namespace GUI
             dgvMovimientos.Columns["Fecha"].FillWeight = 115;
         }
 
-        // Las anotaciones van en negrita y el cierre de la partida resaltado, para
-        // distinguirlos de las tiradas.
         private void dgvMovimientos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             MOVIMIENTO m = (MOVIMIENTO)dgvMovimientos.Rows[e.RowIndex].DataBoundItem;
@@ -76,7 +72,6 @@ namespace GUI
             }
         }
 
-        // Copia el XML original de la partida a la carpeta que elija el usuario, sin cambiarle nada.
         private void btnDescargarXml_Click(object sender, EventArgs e)
         {
             if (!BLL.MOVIMIENTOXML.Existe(rutaXml))

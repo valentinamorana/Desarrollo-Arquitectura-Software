@@ -28,7 +28,6 @@ namespace BE
             set { idJugador2 = value; }
         }
 
-        // 0 = todavía no hay ganador (empate o partida en curso)
         private int idGanador;
 
         public int IdGanador

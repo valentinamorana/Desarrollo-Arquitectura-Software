@@ -3,7 +3,6 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    // Muestra la bitácora de la base. Los datos los trae BLL.BITACORA; acá solo se muestran.
     public partial class FormBitacora : Form
     {
         public FormBitacora()
@@ -30,7 +29,6 @@ namespace GUI
             dgvBitacora.Columns["NombreTipo"].HeaderText = "Evento";
             dgvBitacora.Columns["Descripcion"].HeaderText = "Descripción";
 
-            // Solo se muestran las columnas que tienen sentido para leer la bitácora.
             dgvBitacora.Columns["IdUsuario"].Visible = false;
             dgvBitacora.Columns["IdTipo"].Visible = false;
 

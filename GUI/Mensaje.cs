@@ -3,7 +3,6 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    // Mismas firmas que MessageBox.Show, pero con el formulario propio de la app.
     public static class Mensaje
     {
         public static DialogResult Show(string texto)

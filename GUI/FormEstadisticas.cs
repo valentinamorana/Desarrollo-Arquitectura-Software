@@ -10,7 +10,6 @@ namespace GUI
         private USUARIO jugador1;
         private USUARIO jugador2;
 
-        // Historial completo del jugador elegido; el filtro muestra solo una parte de él.
         private List<FILAHISTORIAL> historialCompleto;
 
         public FormEstadisticas(USUARIO jugador1, USUARIO jugador2)
@@ -25,7 +24,6 @@ namespace GUI
             AplicarFiltro();
         }
 
-        // Muestra en la grilla solo las partidas del resultado elegido. Los contadores de arriba no cambian.
         private void AplicarFiltro()
         {
             if (historialCompleto == null)
@@ -33,7 +31,6 @@ namespace GUI
                 return;
             }
 
-            // El filtro lo calcula BLL.ESTADISTICA; acá solo se muestra el resultado.
             BLL.ESTADISTICA.FILTRO_RESULTADO filtro = (BLL.ESTADISTICA.FILTRO_RESULTADO)cmbResultado.SelectedIndex;
             List<FILAHISTORIAL> visibles = BLL.ESTADISTICA.Filtrar(historialCompleto, filtro);
 
@@ -72,7 +69,6 @@ namespace GUI
             CargarEstadisticas(usuario);
         }
 
-        // Los cálculos los hace BLL.ESTADISTICA; acá solo se muestran.
         private void CargarEstadisticas(USUARIO usuario)
         {
             BLL.ESTADISTICA estadisticaBLL = new BLL.ESTADISTICA();
@@ -99,7 +95,6 @@ namespace GUI
                 estadistica.TiempoTotal.Minutes + "m " + estadistica.TiempoTotal.Seconds + "s";
         }
 
-        // Consulta posterior del XML de movimientos de la partida elegida en el historial.
         private void btnVerMovimientos_Click(object sender, EventArgs e)
         {
             if (dgvHistorial.CurrentRow == null)

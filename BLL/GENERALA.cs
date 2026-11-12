@@ -31,8 +31,6 @@ namespace BLL
             return resultado;
         }
 
-        // "Servido": la combinación salió en la primera tirada, sin repetir dados.
-        // En ese caso Escalera/Full/Poker/Generala valen el doble.
         public static int CalcularPuntaje(string categoria, int[] dados, bool servido = false)
         {
             if (categoria == "Unos")
@@ -95,7 +93,6 @@ namespace BLL
             return puntaje;
         }
 
-        // Categorías a las que les aplica el bonus de "servido" (las combinaciones, no los números sueltos).
         public static bool EsCombinacion(string categoria)
         {
             if (categoria == "Escalera" || categoria == "Full" || categoria == "Poker" || categoria == "Generala")
@@ -118,8 +115,6 @@ namespace BLL
             return total;
         }
 
-        // Cuenta cuántas veces salió cada valor de dado.
-        // conteo[1] = cantidad de unos, conteo[2] = cantidad de doses, etc. (la posición 0 no se usa).
         private static int[] ContarRepeticiones(int[] dados)
         {
             int[] conteo = new int[7];

@@ -4,16 +4,12 @@ using BE;
 
 namespace GUI
 {
-    // Menú que aparece después del login. Desde acá se juega, se ven estadísticas,
-    // la bitácora y las reglas, y se cierra la sesión. El cierre de sesión (logout) se registra acá.
     public partial class FormMenu : Form
     {
         private USUARIO jugador1;
         private USUARIO jugador2;
 
-        // Se vuelve al login (cerrar sesión o restore de la base).
         private bool volverAlLogin = false;
-        // Restore: la base cambió, así que no se registra el logout de los jugadores.
         private bool sinLogout = false;
 
         public FormMenu(USUARIO jugadorLogueado)
@@ -24,7 +20,6 @@ namespace GUI
             lblPie.Text = "Elegí una opción para empezar";
         }
 
-        // True si hay que volver a mostrar el login en vez de cerrar la aplicación.
         public bool VolverAlLogin
         {
             get { return volverAlLogin; }
@@ -83,7 +78,6 @@ namespace GUI
             this.Close();
         }
 
-        // Registra el cierre de sesión de los jugadores cuando se sale del menú (cerrar sesión o cerrar la app).
         private void FormMenu_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (sinLogout)
@@ -91,7 +85,6 @@ namespace GUI
                 return;
             }
 
-            // Si cierra la aplicación desde la X, se confirma. Cerrar sesión ya se confirmó antes.
             if (!volverAlLogin && e.CloseReason == CloseReason.UserClosing)
             {
                 DialogResult confirmar = Mensaje.Show(
@@ -104,7 +97,6 @@ namespace GUI
                 }
             }
 
-            // Si falla la bitácora de un jugador se avisa, pero igual se registra el del otro.
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
             CerrarSesionDe(usuarioBLL, jugador1);
             if (jugador2 != null)
