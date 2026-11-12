@@ -14,8 +14,6 @@ namespace GUI
             private set { usuarioLogueado = value; }
         }
 
-        // Usuario que no puede ingresar en este login (el Jugador 1, cuando se loguea el Jugador 2).
-        // Se rechaza antes de llamar a BLL.USUARIO.Login, así no queda un inicio de sesión en la bitácora.
         private string usuarioNoPermitido = "";
 
         public FormLogin()
@@ -31,7 +29,6 @@ namespace GUI
             lblSubtitulo.Text = "Ingresá con un usuario distinto a " + usuarioNoPermitido + ".";
         }
 
-        // El campo que tiene el foco se marca con la línea de abajo en bordó.
         private void txtCampo_Enter(object sender, EventArgs e)
         {
             LineaDe(sender).BackColor = Tema.Rosa;
@@ -62,8 +59,6 @@ namespace GUI
                 return;
             }
 
-            // SQL Server compara los nombres sin distinguir mayúsculas ni espacios al final,
-            // así que acá se compara igual (todo en minúscula y sin espacios al final).
             if (usuarioNoPermitido != "" && txtUsuario.Text.TrimEnd().ToLower() == usuarioNoPermitido.ToLower())
             {
                 lblMensaje.Text = "Tiene que ser un usuario distinto al Jugador 1";

@@ -7,7 +7,6 @@ namespace DAL
 {
     public class MP_LOG : MAPPER<BE.LOG>
     {
-        // Todos los registros de la bitácora, del más nuevo al más viejo.
         public List<BE.LOG> Listar()
         {
             acceso = new ACCESO();
@@ -37,7 +36,6 @@ namespace DAL
             return registros;
         }
 
-        // Devuelve las filas insertadas (1), o -1 si falló.
         public override int Insertar(BE.LOG log)
         {
             acceso = new ACCESO();

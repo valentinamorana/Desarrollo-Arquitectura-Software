@@ -5,12 +5,6 @@ using System.Xml;
 
 namespace DAL
 {
-    // Persistencia del archivo XML de movimientos de cada partida. Igual que los mappers con
-    // SQL Server, acá solo se lee y escribe: qué datos lleva cada registro lo arma BLL.MOVIMIENTOXML.
-    // Cada partida tiene su archivo, con:
-    //   <Tirada>     cada tirada de dados (qué salió y qué dados se guardaron)
-    //   <Movimiento> cada anotación de una categoría
-    //   <Fin>        el cierre: puntajes, ganador y si fue abandono
     public static class MOVIMIENTOXML
     {
         public static string GenerarRuta()
@@ -69,7 +63,6 @@ namespace DAL
             doc.Save(ruta);
         }
 
-        // ganador: nombre del ganador, o "" si fue empate. abandono: quién abandonó, o "" si se terminó completa.
         public static void InsertarFin(string ruta, int turnos, string jugador1, int puntajeJugador1,
             string jugador2, int puntajeJugador2, string ganador, string abandono, string fecha)
         {
@@ -103,8 +96,6 @@ namespace DAL
             return ruta != null && ruta != "" && File.Exists(ruta);
         }
 
-        // Lee el XML de una partida y devuelve sus registros en orden, como BE.MOVIMIENTO.
-        // Los XML de versiones anteriores (solo con <Movimiento>) también se leen.
         public static List<BE.MOVIMIENTO> Listar(string ruta)
         {
             XmlDocument doc = new XmlDocument();

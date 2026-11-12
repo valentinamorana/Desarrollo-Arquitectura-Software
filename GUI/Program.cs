@@ -12,15 +12,9 @@ namespace GUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Se repite si el menú se cerró por cerrar sesión o por un restore de la base
-            // (el restore obliga a volver a loguearse, ver FormPrincipal.btnRestore_Click).
             bool volverAlLogin = true;
             while (volverAlLogin)
             {
-                // Sin esto, un error de conexión a SQL Server (por ejemplo el servicio parado)
-                // tira la excepción sin atajar hasta el tope y cierra toda la aplicación de golpe.
-                // Se suscribe en cada vuelta porque WinForms descarta el handler cuando termina
-                // un Application.Run; se desuscribe antes para no duplicarlo si no lo descartó.
                 Application.ThreadException -= Application_ThreadException;
                 Application.ThreadException += Application_ThreadException;
 
@@ -34,7 +28,6 @@ namespace GUI
                     usuarioLogueado = formLogin.UsuarioLogueado;
                 }
 
-                // Después del login va el menú (Jugar, Estadísticas, Bitácora, Reglas, Cerrar sesión).
                 FormMenu menu = new FormMenu(usuarioLogueado);
                 Application.Run(menu);
                 volverAlLogin = menu.VolverAlLogin;

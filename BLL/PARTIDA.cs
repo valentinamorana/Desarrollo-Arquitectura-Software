@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace BLL
 {
-    // Maneja una partida de principio a fin: turnos, tiradas, planilla de puntajes,
-    // movimientos en XML, ganador y cierre. La GUI solo muestra este estado y le avisa
-    // a esta clase lo que hace el usuario (tirar, anotar, abandonar).
     public class PARTIDA
     {
         public const int TIRADAS_POR_TURNO = 3;
@@ -16,13 +13,12 @@ namespace BLL
         private BE.USUARIO jugador1;
         private BE.USUARIO jugador2;
 
-        // Planilla: una fila por categoría, con el puntaje de cada jugador.
         private List<BE.FILAPUNTAJE> tabla;
 
-        private int jugadorActual;      // 1 o 2
+        private int jugadorActual;
         private int tirosRestantes;
         private int[] dados;
-        private int turno;              // cuántas categorías se anotaron en total (numera el XML)
+        private int turno;
         private bool enCurso = false;
 
         public event delPartidaFinalizada PartidaFinalizada;
@@ -43,7 +39,6 @@ namespace BLL
             get { return tirosRestantes; }
         }
 
-        // Número del turno del jugador que está jugando (1 a 11): categorías que ya anotó + 1.
         public int TurnoDelJugador
         {
             get
@@ -70,8 +65,6 @@ namespace BLL
             get { return tabla; }
         }
 
-        // -------------------- Inicio --------------------
-
         public void Iniciar(BE.USUARIO j1, BE.USUARIO j2)
         {
             if (j1.ID == j2.ID)
@@ -84,7 +77,6 @@ namespace BLL
             nueva.IdJugador2 = j2.ID;
             nueva.RutaXml = MOVIMIENTOXML.GenerarRuta();
 
-            // Graba la partida y el inicio en la bitácora en una sola transacción.
             nueva.ID = mapper.Insertar(nueva);
             if (nueva.ID == -1)
             {
@@ -124,8 +116,6 @@ namespace BLL
             return nueva;
         }
 
-        // -------------------- Turno --------------------
-
         public BE.USUARIO JugadorDelTurno()
         {
             if (jugadorActual == 1)
@@ -135,7 +125,6 @@ namespace BLL
             return jugador2;
         }
 
-        // Ya hubo al menos una tirada en este turno.
         private bool YaTiro()
         {
             return tirosRestantes < TIRADAS_POR_TURNO;
@@ -146,15 +135,11 @@ namespace BLL
             return enCurso && tirosRestantes > 0;
         }
 
-        // Solo se puede anotar después de la primera tirada del turno.
         public bool PuedeAnotar()
         {
             return enCurso && YaTiro();
         }
 
-        // Los dados se pueden marcar para guardar desde la primera tirada hasta que se anota:
-        // antes de tirar no hay ningún dado para conservar. Después del último tiro marcarlos
-        // no cambia nada (Tirar ya no se permite), pero no se bloquean.
         public bool PuedeGuardarDados()
         {
             return enCurso && YaTiro();
@@ -175,22 +160,17 @@ namespace BLL
             int[] nuevos = GENERALA.Tirar(dados, guardar);
             int numeroTirada = TIRADAS_POR_TURNO - tirosRestantes + 1;
 
-            // Primero el XML: si no se puede escribir, la tirada no cuenta y los dados quedan como estaban.
             MOVIMIENTOXML.RegistrarTirada(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, numeroTirada, nuevos, guardar);
 
             dados = nuevos;
             tirosRestantes--;
         }
 
-        // "Servida": se anota en la primera tirada del turno, sin volver a tirar.
         private bool EsTiradaServida()
         {
             return tirosRestantes == TIRADAS_POR_TURNO - 1;
         }
 
-        // -------------------- Anotación --------------------
-
-        // Categorías que el jugador del turno todavía puede anotar.
         public List<string> CategoriasDisponibles()
         {
             bool generalaYaAnotada = PuntajeDe(BuscarFila("Generala"), jugadorActual) != BE.FILAPUNTAJE.SIN_ANOTAR;
@@ -203,7 +183,6 @@ namespace BLL
                     continue;
                 }
 
-                // "Generala Doble" solo se puede anotar después de haber anotado "Generala".
                 if (fila.Categoria == GENERALA.GENERALA_DOBLE && !generalaYaAnotada)
                 {
                     continue;
@@ -214,8 +193,6 @@ namespace BLL
             return disponibles;
         }
 
-        // Cuánto vale la categoría con los dados actuales, sin anotarla.
-        // La GUI lo usa para avisar antes de anotar (tachada, servida).
         public int CalcularPuntaje(string categoria)
         {
             if (GeneralaDobleSoloTachable(categoria))
@@ -225,29 +202,21 @@ namespace BLL
             return GENERALA.CalcularPuntaje(categoria, dados, EsTiradaServida());
         }
 
-        // La Generala Doble solo vale si la Generala se anotó con puntos.
-        // Si la Generala quedó tachada (0), la Generala Doble solo se puede tachar.
         public bool GeneralaDobleSoloTachable(string categoria)
         {
             return categoria == GENERALA.GENERALA_DOBLE && PuntajeDe(BuscarFila("Generala"), jugadorActual) <= 0;
         }
 
-        // Si se anota ahora, ¿se cobra el doble por tirada servida?
         public bool AplicaBonusServida(string categoria)
         {
             return EsTiradaServida() && GENERALA.EsCombinacion(categoria) && CalcularPuntaje(categoria) > 0;
         }
 
-        // Anota la categoría para el jugador del turno, la registra en el XML y pasa el turno.
-        // Si con esto se completó la planilla, cierra la partida (dispara PartidaFinalizada).
         public int Anotar(string categoria)
         {
             return RegistrarAnotacion(categoria, false);
         }
 
-        // Tachar: la categoría queda con 0 aunque los dados den puntos (decisión voluntaria del jugador).
-        // Sirve para descartar una categoría que no conviene jugar. Vale para cualquier categoría
-        // disponible, incluida la Generala Doble (aunque la Generala haya salido con puntos).
         public int Tachar(string categoria)
         {
             return RegistrarAnotacion(categoria, true);
@@ -270,7 +239,6 @@ namespace BLL
                 puntaje = CalcularPuntaje(categoria);
             }
 
-            // Primero el XML: si no se puede escribir, la planilla queda como estaba.
             MOVIMIENTOXML.RegistrarMovimiento(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, dados, categoria, puntaje);
             turno++;
 
@@ -284,6 +252,7 @@ namespace BLL
                 fila.PuntajeJugador2 = puntaje;
             }
 
+            int jugadorQueAnoto = jugadorActual;
             if (jugadorActual == 1)
             {
                 jugadorActual = 2;
@@ -295,7 +264,27 @@ namespace BLL
 
             if (EstaCompleta())
             {
-                Finalizar();
+                try
+                {
+                    Finalizar();
+                }
+                catch
+                {
+                    if (enCurso)
+                    {
+                        if (jugadorQueAnoto == 1)
+                        {
+                            fila.PuntajeJugador1 = BE.FILAPUNTAJE.SIN_ANOTAR;
+                        }
+                        else
+                        {
+                            fila.PuntajeJugador2 = BE.FILAPUNTAJE.SIN_ANOTAR;
+                        }
+                        jugadorActual = jugadorQueAnoto;
+                        turno--;
+                    }
+                    throw;
+                }
             }
             else
             {
@@ -318,7 +307,6 @@ namespace BLL
             return total;
         }
 
-        // Texto que muestra la GUI al terminar la partida (ganador, empate y abandono).
         public string MensajeFinal(bool abandonada)
         {
             string mensaje;
@@ -335,7 +323,6 @@ namespace BLL
                 mensaje = "La partida terminó empatada!";
             }
 
-            // Cuando se abandona, el que abandonó es el que no ganó.
             if (abandonada)
             {
                 string quienAbandono;
@@ -352,8 +339,6 @@ namespace BLL
             return mensaje;
         }
 
-        // Aviso que se muestra antes de anotar una categoría que va a quedar tachada (0 puntos).
-        // Devuelve "" si no hace falta aviso.
         public string AvisoAntesDeAnotar(string categoria)
         {
             if (GeneralaDobleSoloTachable(categoria))
@@ -367,7 +352,6 @@ namespace BLL
             return "";
         }
 
-        // Texto de quién va ganando y por cuánto. Vacío hasta que los dos anotaron algo.
         public string MensajeVaGanando()
         {
             if (!EnCurso || !AmbosAnotaron())
@@ -388,7 +372,6 @@ namespace BLL
             return "Van empatados";
         }
 
-        // Quién va ganando según los puntos anotados hasta ahora: 1, 2, o 0 si van empatados.
         public int JugadorQueVaGanando()
         {
             int total1 = CalcularTotal(1);
@@ -404,7 +387,6 @@ namespace BLL
             return 0;
         }
 
-        // Los 2 jugadores anotaron al menos una categoría: recién ahí tiene sentido decir quién va ganando.
         public bool AmbosAnotaron()
         {
             bool anotoJugador1 = false;
@@ -417,7 +399,6 @@ namespace BLL
             return anotoJugador1 && anotoJugador2;
         }
 
-        // La partida termina cuando los 2 jugadores anotaron las 11 categorías.
         private bool EstaCompleta()
         {
             foreach (BE.FILAPUNTAJE fila in tabla)
@@ -451,9 +432,6 @@ namespace BLL
             return fila.PuntajeJugador2;
         }
 
-        // -------------------- Fin de partida --------------------
-
-        // Fin normal: se completaron todas las categorías. Gana el de más puntos (o empate).
         private void Finalizar()
         {
             partida.PuntajeJugador1 = CalcularTotal(1);
@@ -475,9 +453,6 @@ namespace BLL
             Cerrar(null);
         }
 
-        // Abandona el jugador indicado (puede ser cualquiera de los 2, le toque o no el turno):
-        // se guardan los puntajes parciales, pero la partida la gana siempre el otro
-        // jugador, sin importar cómo venían los puntos.
         public void Abandonar(BE.USUARIO quienAbandona)
         {
             if (!enCurso)
@@ -506,11 +481,8 @@ namespace BLL
             Cerrar(quienAbandona);
         }
 
-        // quienAbandona = null cuando la partida terminó completa.
         private void Cerrar(BE.USUARIO quienAbandona)
         {
-            // Si falla la base, la partida queda en curso (no se cierra a medias): se avisa con la
-            // excepción y se puede reintentar. Recién cuando se guardó el resultado se cierra en memoria.
             bool abandonada = quienAbandona != null;
             string descripcion;
             string nombreAbandono;
@@ -525,7 +497,6 @@ namespace BLL
                 nombreAbandono = "";
             }
 
-            // Resultado + fin de partida en la bitácora, en una sola transacción.
             if (!mapper.Finalizar(partida, descripcion))
             {
                 throw new Exception("La partida no se pudo guardar en la base de datos. Intentá de nuevo.");
@@ -534,7 +505,6 @@ namespace BLL
             enCurso = false;
             tirosRestantes = 0;
 
-            // Cierre en el XML: puntajes, ganador ("" si es empate) y quién abandonó.
             string nombreGanador = "";
             if (partida.IdGanador == jugador1.ID)
             {

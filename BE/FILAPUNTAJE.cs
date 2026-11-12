@@ -2,7 +2,6 @@ namespace BE
 {
     public class FILAPUNTAJE
     {
-        // -1 = todavía no se anotó
         public const int SIN_ANOTAR = -1;
 
         private string categoria;

@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.Unitarios
 {
-    // Reglas de alta de usuario (BLL.USUARIO.ValidarRegistro). No usa base de datos.
     [TestClass]
     public class UsuarioTests
     {

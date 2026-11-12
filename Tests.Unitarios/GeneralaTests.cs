@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.Unitarios
 {
-    // Puntajes de cada categoría. No usa base de datos.
     [TestClass]
     public class GeneralaTests
     {
