@@ -5,20 +5,30 @@ using System.Xml;
 
 namespace DAL
 {
-    public static class MOVIMIENTOXML
+    public class MOVIMIENTOXML : IMOVIMIENTOXML
     {
-        public static string GenerarRuta()
+        private string carpeta;
+
+        public MOVIMIENTOXML() : this(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Partidas"))
         {
-            string carpeta = AppDomain.CurrentDomain.BaseDirectory + "Partidas\\";
+        }
+
+        public MOVIMIENTOXML(string carpeta)
+        {
+            this.carpeta = carpeta;
+        }
+
+        public string GenerarRuta()
+        {
             if (!Directory.Exists(carpeta))
             {
                 Directory.CreateDirectory(carpeta);
             }
 
-            return carpeta + "Partida_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff") + ".xml";
+            return Path.Combine(carpeta, "Partida_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff") + ".xml");
         }
 
-        public static void CrearArchivo(string ruta, string fecha, string jugador1, string jugador2)
+        public void CrearArchivo(string ruta, string fecha, string jugador1, string jugador2)
         {
             XmlDocument doc = new XmlDocument();
             XmlElement raiz = doc.CreateElement("Partida");
@@ -29,7 +39,7 @@ namespace DAL
             doc.Save(ruta);
         }
 
-        public static void InsertarTirada(string ruta, int turno, string jugador, int numeroTirada, string dados, string guardados, string fecha)
+        public void InsertarTirada(string ruta, int turno, string jugador, int numeroTirada, string dados, string guardados, string fecha)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(ruta);
@@ -46,7 +56,7 @@ namespace DAL
             doc.Save(ruta);
         }
 
-        public static void InsertarMovimiento(string ruta, int turno, string jugador, string dados, string categoria, int puntaje, string fecha)
+        public void InsertarMovimiento(string ruta, int turno, string jugador, string dados, string categoria, int puntaje, string fecha)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(ruta);
@@ -63,7 +73,25 @@ namespace DAL
             doc.Save(ruta);
         }
 
-        public static void InsertarFin(string ruta, int turnos, string jugador1, int puntajeJugador1,
+        public void QuitarUltimoMovimiento(string ruta)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(ruta);
+
+            XmlNode ultimo = doc.DocumentElement.LastChild;
+            while (ultimo != null && !(ultimo is XmlElement))
+            {
+                ultimo = ultimo.PreviousSibling;
+            }
+
+            if (ultimo != null && ultimo.Name == "Movimiento")
+            {
+                doc.DocumentElement.RemoveChild(ultimo);
+                doc.Save(ruta);
+            }
+        }
+
+        public void InsertarFin(string ruta, int turnos, string jugador1, int puntajeJugador1,
             string jugador2, int puntajeJugador2, string ganador, string abandono, string fecha)
         {
             XmlDocument doc = new XmlDocument();
@@ -91,12 +119,46 @@ namespace DAL
             doc.Save(ruta);
         }
 
-        public static bool Existe(string ruta)
+        public void Eliminar(string ruta)
+        {
+            if (Existe(ruta))
+            {
+                File.Delete(ruta);
+            }
+        }
+
+        public bool Existe(string ruta)
         {
             return ruta != null && ruta != "" && File.Exists(ruta);
         }
 
-        public static List<BE.MOVIMIENTO> Listar(string ruta)
+        public string Resolver(string ruta)
+        {
+            if (Existe(ruta))
+            {
+                return ruta;
+            }
+
+            string nombre = Path.GetFileName(ruta ?? "");
+            if (nombre == "")
+            {
+                return "";
+            }
+
+            string alternativa = Path.Combine(carpeta, nombre);
+            if (Existe(alternativa))
+            {
+                return alternativa;
+            }
+            return "";
+        }
+
+        public void Copiar(string origen, string destino)
+        {
+            File.Copy(origen, destino, true);
+        }
+
+        public List<BE.MOVIMIENTO> Listar(string ruta)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(ruta);

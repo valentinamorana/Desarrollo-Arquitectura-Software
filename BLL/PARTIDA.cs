@@ -7,7 +7,9 @@ namespace BLL
     {
         public const int TIRADAS_POR_TURNO = 3;
 
-        private DAL.MP_PARTIDA mapper = new DAL.MP_PARTIDA();
+        private DAL.IMP_PARTIDA mapper;
+        private MOVIMIENTOXML movimientos;
+        private IDADO dado;
 
         private BE.PARTIDA partida;
         private BE.USUARIO jugador1;
@@ -23,8 +25,15 @@ namespace BLL
 
         public event delPartidaFinalizada PartidaFinalizada;
 
-        public PARTIDA()
+        public PARTIDA() : this(new DAL.MP_PARTIDA(), new DAL.MOVIMIENTOXML(), new DADO())
         {
+        }
+
+        public PARTIDA(DAL.IMP_PARTIDA mapper, DAL.IMOVIMIENTOXML archivoMovimientos, IDADO dado)
+        {
+            this.mapper = mapper;
+            this.movimientos = new MOVIMIENTOXML(archivoMovimientos);
+            this.dado = dado;
             tabla = CrearTablaVacia();
             dados = new int[5];
         }
@@ -67,24 +76,39 @@ namespace BLL
 
         public void Iniciar(BE.USUARIO j1, BE.USUARIO j2)
         {
+            if (enCurso)
+            {
+                throw new Exception("Ya hay una partida en curso.");
+            }
             if (j1.ID == j2.ID)
             {
                 throw new Exception("El Jugador 2 tiene que ser un usuario distinto al Jugador 1.");
             }
 
+            string ruta = movimientos.GenerarRuta();
+            movimientos.CrearArchivo(ruta, j1.Nombre, j2.Nombre);
+
             BE.PARTIDA nueva = new BE.PARTIDA();
             nueva.IdJugador1 = j1.ID;
             nueva.IdJugador2 = j2.ID;
-            nueva.RutaXml = MOVIMIENTOXML.GenerarRuta();
+            nueva.RutaXml = ruta;
 
-            nueva.ID = mapper.Insertar(nueva);
+            try
+            {
+                nueva.ID = mapper.Insertar(nueva);
+            }
+            catch
+            {
+                EliminarXmlSinFallar(ruta);
+                throw;
+            }
+
             if (nueva.ID == -1)
             {
+                EliminarXmlSinFallar(ruta);
                 throw new Exception("No se pudo iniciar la partida en la base de datos. " +
                     "Si se restauró un backup, puede que alguno de los jugadores ya no exista: volvé a ingresar.");
             }
-
-            MOVIMIENTOXML.CrearArchivo(nueva.RutaXml, j1.Nombre, j2.Nombre);
 
             partida = nueva;
             jugador1 = j1;
@@ -94,6 +118,17 @@ namespace BLL
             turno = 0;
             enCurso = true;
             IniciarTurno();
+        }
+
+        private void EliminarXmlSinFallar(string ruta)
+        {
+            try
+            {
+                movimientos.Eliminar(ruta);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void IniciarTurno()
@@ -157,10 +192,10 @@ namespace BLL
                 guardar = new bool[5];
             }
 
-            int[] nuevos = GENERALA.Tirar(dados, guardar);
+            int[] nuevos = GENERALA.Tirar(dados, guardar, dado);
             int numeroTirada = TIRADAS_POR_TURNO - tirosRestantes + 1;
 
-            MOVIMIENTOXML.RegistrarTirada(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, numeroTirada, nuevos, guardar);
+            movimientos.RegistrarTirada(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, numeroTirada, nuevos, guardar);
 
             dados = nuevos;
             tirosRestantes--;
@@ -239,7 +274,7 @@ namespace BLL
                 puntaje = CalcularPuntaje(categoria);
             }
 
-            MOVIMIENTOXML.RegistrarMovimiento(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, dados, categoria, puntaje);
+            movimientos.RegistrarMovimiento(partida.RutaXml, turno + 1, JugadorDelTurno().Nombre, dados, categoria, puntaje);
             turno++;
 
             BE.FILAPUNTAJE fila = BuscarFila(categoria);
@@ -282,6 +317,13 @@ namespace BLL
                         }
                         jugadorActual = jugadorQueAnoto;
                         turno--;
+                        try
+                        {
+                            movimientos.QuitarUltimoMovimiento(partida.RutaXml);
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                     throw;
                 }
@@ -514,9 +556,19 @@ namespace BLL
             {
                 nombreGanador = jugador2.Nombre;
             }
-            MOVIMIENTOXML.RegistrarFin(partida.RutaXml, turno, jugador1.Nombre, partida.PuntajeJugador1,
-                jugador2.Nombre, partida.PuntajeJugador2, nombreGanador, nombreAbandono);
+            try
+            {
+                movimientos.RegistrarFin(partida.RutaXml, turno, jugador1.Nombre, partida.PuntajeJugador1,
+                    jugador2.Nombre, partida.PuntajeJugador2, nombreGanador, nombreAbandono);
+            }
+            finally
+            {
+                AvisarFinalizacion(abandonada);
+            }
+        }
 
+        private void AvisarFinalizacion(bool abandonada)
+        {
             if (PartidaFinalizada != null)
             {
                 PartidaFinalizada(partida, abandonada);

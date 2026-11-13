@@ -3,71 +3,81 @@ using System.Collections.Generic;
 
 namespace BLL
 {
-    public static class MOVIMIENTOXML
+    public class MOVIMIENTOXML
     {
-        public static string GenerarRuta()
+        private DAL.IMOVIMIENTOXML archivo;
+
+        public MOVIMIENTOXML() : this(new DAL.MOVIMIENTOXML())
         {
-            return DAL.MOVIMIENTOXML.GenerarRuta();
         }
 
-        public static void CrearArchivo(string ruta, string jugador1, string jugador2)
+        public MOVIMIENTOXML(DAL.IMOVIMIENTOXML archivo)
         {
-            DAL.MOVIMIENTOXML.CrearArchivo(ruta, Ahora(), jugador1, jugador2);
+            this.archivo = archivo;
         }
 
-        public static void RegistrarTirada(string ruta, int turno, string jugador, int numeroTirada, int[] dados, bool[] guardados)
+        public string GenerarRuta()
         {
-            DAL.MOVIMIENTOXML.InsertarTirada(ruta, turno, jugador, numeroTirada, DadosATexto(dados), GuardadosATexto(guardados), Ahora());
+            return archivo.GenerarRuta();
         }
 
-        public static void RegistrarMovimiento(string ruta, int turno, string jugador, int[] dados, string categoria, int puntaje)
+        public void CrearArchivo(string ruta, string jugador1, string jugador2)
         {
-            DAL.MOVIMIENTOXML.InsertarMovimiento(ruta, turno, jugador, DadosATexto(dados), categoria, puntaje, Ahora());
+            archivo.CrearArchivo(ruta, Ahora(), jugador1, jugador2);
         }
 
-        public static void RegistrarFin(string ruta, int turnos, string jugador1, int puntajeJugador1,
+        public void RegistrarTirada(string ruta, int turno, string jugador, int numeroTirada, int[] dados, bool[] guardados)
+        {
+            archivo.InsertarTirada(ruta, turno, jugador, numeroTirada, DadosATexto(dados), GuardadosATexto(guardados), Ahora());
+        }
+
+        public void RegistrarMovimiento(string ruta, int turno, string jugador, int[] dados, string categoria, int puntaje)
+        {
+            archivo.InsertarMovimiento(ruta, turno, jugador, DadosATexto(dados), categoria, puntaje, Ahora());
+        }
+
+        public void QuitarUltimoMovimiento(string ruta)
+        {
+            archivo.QuitarUltimoMovimiento(ruta);
+        }
+
+        public void RegistrarFin(string ruta, int turnos, string jugador1, int puntajeJugador1,
             string jugador2, int puntajeJugador2, string ganador, string abandono)
         {
-            DAL.MOVIMIENTOXML.InsertarFin(ruta, turnos, jugador1, puntajeJugador1, jugador2, puntajeJugador2, ganador, abandono, Ahora());
+            archivo.InsertarFin(ruta, turnos, jugador1, puntajeJugador1, jugador2, puntajeJugador2, ganador, abandono, Ahora());
         }
 
-        public static bool Existe(string ruta)
+        public void Eliminar(string ruta)
         {
-            return DAL.MOVIMIENTOXML.Existe(ruta);
+            archivo.Eliminar(ruta);
         }
 
-        public static string Resolver(string ruta)
+        public bool Existe(string ruta)
         {
-            if (DAL.MOVIMIENTOXML.Existe(ruta))
-            {
-                return ruta;
-            }
-
-            string nombre = System.IO.Path.GetFileName(ruta ?? "");
-            if (nombre == "")
-            {
-                return "";
-            }
-
-            string alternativa = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Partidas", nombre);
-            if (DAL.MOVIMIENTOXML.Existe(alternativa))
-            {
-                return alternativa;
-            }
-            return "";
+            return archivo.Existe(ruta);
         }
 
-        public static List<BE.MOVIMIENTO> LeerMovimientos(string ruta)
+        public string Resolver(string ruta)
         {
-            return DAL.MOVIMIENTOXML.Listar(ruta);
+            return archivo.Resolver(ruta);
         }
 
-        private static string Ahora()
+        public void Copiar(string origen, string destino)
+        {
+            archivo.Copiar(origen, destino);
+        }
+
+        public List<BE.MOVIMIENTO> LeerMovimientos(string ruta)
+        {
+            return archivo.Listar(ruta);
+        }
+
+        private string Ahora()
         {
             return DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
-        private static string DadosATexto(int[] dados)
+        private string DadosATexto(int[] dados)
         {
             string texto = "";
             for (int i = 0; i < dados.Length; i++)
@@ -81,7 +91,7 @@ namespace BLL
             return texto;
         }
 
-        private static string GuardadosATexto(bool[] guardados)
+        private string GuardadosATexto(bool[] guardados)
         {
             string texto = "";
             for (int i = 0; i < guardados.Length; i++)

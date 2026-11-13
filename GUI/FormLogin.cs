@@ -95,13 +95,15 @@ namespace GUI
 
         private void lnkRegistrarme_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            FormRegistro formRegistro = new FormRegistro();
-            if (formRegistro.ShowDialog() == DialogResult.OK)
+            using (FormRegistro formRegistro = new FormRegistro())
             {
-                txtUsuario.Text = formRegistro.NombreRegistrado;
-                lblMensaje.ForeColor = System.Drawing.Color.SeaGreen;
-                lblMensaje.Text = "Usuario creado. Ya podés ingresar.";
-                txtContraseña.Focus();
+                if (formRegistro.ShowDialog(this) == DialogResult.OK)
+                {
+                    txtUsuario.Text = formRegistro.NombreRegistrado;
+                    lblMensaje.ForeColor = System.Drawing.Color.SeaGreen;
+                    lblMensaje.Text = "Usuario creado. Ya podés ingresar.";
+                    txtContraseña.Focus();
+                }
             }
         }
     }
