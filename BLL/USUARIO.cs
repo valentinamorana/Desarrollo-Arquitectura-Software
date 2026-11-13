@@ -9,7 +9,18 @@ namespace BLL
         public const int MIN_CONTRASEÑA = 4;
         public const int MAX_CONTRASEÑA = 20;
 
-        private DAL.MP_USUARIO mapper = new DAL.MP_USUARIO();
+        private DAL.IMP_USUARIO mapper;
+        private BITACORA bitacora;
+
+        public USUARIO() : this(new DAL.MP_USUARIO(), new BITACORA())
+        {
+        }
+
+        public USUARIO(DAL.IMP_USUARIO mapper, BITACORA bitacora)
+        {
+            this.mapper = mapper;
+            this.bitacora = bitacora;
+        }
 
         public string ValidarRegistro(BE.USUARIO usuario)
         {
@@ -49,14 +60,15 @@ namespace BLL
             bool ok = mapper.Login(usuario);
             if (ok)
             {
-                BITACORA.Registrar(usuario.ID, BE.LOG.INICIO_SESION, "Inicio de sesión de " + usuario.Nombre);
+                usuario.Contraseña = "";
+                bitacora.Registrar(usuario.ID, BE.LOG.INICIO_SESION, "Inicio de sesión de " + usuario.Nombre);
             }
             return ok;
         }
 
         public void Logout(BE.USUARIO usuario)
         {
-            BITACORA.Registrar(usuario.ID, BE.LOG.CIERRE_SESION, "Cierre de sesión de " + usuario.Nombre);
+            bitacora.Registrar(usuario.ID, BE.LOG.CIERRE_SESION, "Cierre de sesión de " + usuario.Nombre);
         }
 
         public bool Insertar(BE.USUARIO usuario)

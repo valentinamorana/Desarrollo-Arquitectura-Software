@@ -1,67 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="BLL.USUARIO">
     <Position X="0.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEEAIAAAAAIAAAAAAAAAAIAAIAAAAAAAAASAAAEAIA=</HashCode>
       <FileName>USUARIO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BLL.PARTIDA">
     <Position X="3.75" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAhGAIAgUBAYAJQOSSCAQABECESAAQTgAIAEgFAABIU=</HashCode>
       <FileName>PARTIDA.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Delegate Name="BLL.delPartidaFinalizada">
-    <Position X="7" Y="0.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>delPartidaFinalizada.cs</FileName>
-    </TypeIdentifier>
-  </Delegate>
   <Class Name="BLL.GENERALA">
     <Position X="0.5" Y="6.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAFEAAAAAABAAIAAASABAAAAAAAAAAABAgAgAEAQAAA=</HashCode>
       <FileName>GENERALA.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BLL.MOVIMIENTOXML">
-    <Position X="3.75" Y="6.5" Width="2.75" />
+    <Position X="14.25" Y="6" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AgAAAAAAEgAAEAAAAAFAAAAQAABAAAAAAAAEAAEACAA=</HashCode>
       <FileName>MOVIMIENTOXML.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BLL.BITACORA">
     <Position X="7" Y="6.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAACAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>BITACORA.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BLL.BACKUPRESTORE">
     <Position X="10.25" Y="6.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAIBAA=</HashCode>
       <FileName>BACKUPRESTORE.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BLL.ESTADISTICA">
     <Position X="10.25" Y="0.5" Width="2.75" />
+    <NestedTypes>
+      <Enum Name="BLL.ESTADISTICA.FILTRO_RESULTADO" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ESTADISTICA.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAACAgAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAACA=</HashCode>
       <FileName>ESTADISTICA.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BLL.delPartidaFinalizada">
-    <Position X="13" Y="0.5" Width="2.75" />
+  <Class Name="BE.ESTADISTICA" Collapsed="true">
+    <Position X="13" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BE.FILAHISTORIAL" Collapsed="true">
+    <Position X="14.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BE.FILAPUNTAJE" Collapsed="true">
+    <Position X="16.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BE.LOG" Collapsed="true">
+    <Position X="13" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BE.MOVIMIENTO" Collapsed="true">
+    <Position X="14.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BE.PARTIDA" Collapsed="true">
+    <Position X="16.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="BE.USUARIO" Collapsed="true">
+    <Position X="13" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Delegate Name="BLL.delPartidaFinalizada">
+    <Position X="7" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>delPartidaFinalizada.cs</FileName>
     </TypeIdentifier>
+  </Delegate>
+  <Interface Name="BLL.IDADO">
+    <Position X="17.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IDADO.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Class Name="BLL.DADO">
+    <Position X="17.5" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DADO.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

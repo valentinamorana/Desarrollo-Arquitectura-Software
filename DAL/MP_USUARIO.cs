@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace DAL
 {
-    public class MP_USUARIO : MAPPER<BE.USUARIO>
+    public class MP_USUARIO : MAPPER<BE.USUARIO>, IMP_USUARIO
     {
         public override int Insertar(BE.USUARIO usuario)
         {
@@ -52,7 +52,6 @@ namespace DAL
             DataRow fila = tabla.Rows[0];
             usuario.ID = int.Parse(fila["ID"].ToString());
             usuario.Nombre = fila["Nombre"].ToString();
-            usuario.Contraseña = fila["Contraseña"].ToString();
             return true;
         }
 
@@ -82,7 +81,6 @@ namespace DAL
             BE.USUARIO usuario = new BE.USUARIO();
             usuario.ID = int.Parse(fila["ID"].ToString());
             usuario.Nombre = fila["Nombre"].ToString();
-            usuario.Contraseña = fila["Contraseña"].ToString();
             return usuario;
         }
     }

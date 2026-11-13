@@ -1,22 +1,27 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace DAL
 {
-    public static class BACKUPRESTORE
+    public class BACKUPRESTORE : IBACKUPRESTORE
     {
-        private static string ConexionMaster()
+        private string ConexionMaster()
         {
             return ACCESO.CadenaConexion("MASTER");
         }
 
-        private static string EscaparRuta(string ruta)
+        private SqlParameter ParametroRuta(string ruta)
         {
-            return ruta.Replace("'", "''");
+            SqlParameter parametro = new SqlParameter();
+            parametro.ParameterName = "@ruta";
+            parametro.Value = ruta;
+            parametro.DbType = DbType.String;
+            return parametro;
         }
 
-        public static string CarpetaBackupPorDefecto()
+        public string CarpetaBackupPorDefecto()
         {
             string carpeta = "";
             SqlConnection conexion = new SqlConnection(ConexionMaster());
@@ -38,10 +43,15 @@ namespace DAL
             {
                 conexion.Close();
             }
+
+            if (carpeta != "" && !Directory.Exists(carpeta))
+            {
+                carpeta = "";
+            }
             return carpeta;
         }
 
-        public static string HacerBackup(string ruta)
+        public string HacerBackup(string ruta)
         {
             string error = "";
             SqlConnection conexion = new SqlConnection(ConexionMaster());
@@ -51,7 +61,8 @@ namespace DAL
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = conexion;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "BACKUP DATABASE GENERALA TO DISK = '" + EscaparRuta(ruta) + "' WITH INIT";
+                cmd.CommandText = "BACKUP DATABASE GENERALA TO DISK = @ruta WITH INIT";
+                cmd.Parameters.Add(ParametroRuta(ruta));
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -65,7 +76,7 @@ namespace DAL
             return error;
         }
 
-        public static string HacerRestore(string ruta, out bool restaurada)
+        public string HacerRestore(string ruta, out bool restaurada)
         {
             string error = "";
             restaurada = false;
@@ -76,10 +87,10 @@ namespace DAL
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = conexion;
                 cmd.CommandType = CommandType.Text;
-
                 cmd.CommandText =
                     "ALTER DATABASE GENERALA SET SINGLE_USER WITH ROLLBACK IMMEDIATE; " +
-                    "RESTORE DATABASE GENERALA FROM DISK = '" + EscaparRuta(ruta) + "' WITH REPLACE";
+                    "RESTORE DATABASE GENERALA FROM DISK = @ruta WITH REPLACE";
+                cmd.Parameters.Add(ParametroRuta(ruta));
                 cmd.ExecuteNonQuery();
                 restaurada = true;
             }

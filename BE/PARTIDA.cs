@@ -75,5 +75,21 @@ namespace BE
             get { return rutaXml; }
             set { rutaXml = value; }
         }
+
+        private string nombreJugador1;
+
+        public string NombreJugador1
+        {
+            get { return nombreJugador1; }
+            set { nombreJugador1 = value; }
+        }
+
+        private string nombreJugador2;
+
+        public string NombreJugador2
+        {
+            get { return nombreJugador2; }
+            set { nombreJugador2 = value; }
+        }
     }
 }

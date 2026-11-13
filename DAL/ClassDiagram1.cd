@@ -13,6 +13,7 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MP_USUARIO.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DAL.MP_PARTIDA">
     <Position X="7" Y="3.5" Width="2.75" />
@@ -20,6 +21,7 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MP_PARTIDA.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DAL.MP_LOG">
     <Position X="10.25" Y="3.5" Width="2.75" />
@@ -27,6 +29,7 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MP_LOG.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DAL.ACCESO">
     <Position X="0.5" Y="0.5" Width="2.75" />
@@ -41,6 +44,7 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>BACKUPRESTORE.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DAL.MOVIMIENTOXML">
     <Position X="13.5" Y="3.5" Width="2.75" />
@@ -48,6 +52,42 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MOVIMIENTOXML.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
+  <Interface Name="DAL.IMP_USUARIO">
+    <Position X="3.75" Y="10" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMP_USUARIO.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DAL.IMP_PARTIDA">
+    <Position X="7" Y="10" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMP_PARTIDA.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DAL.IMP_LOG">
+    <Position X="10.25" Y="10" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMP_LOG.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DAL.IMOVIMIENTOXML">
+    <Position X="13.5" Y="10" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMOVIMIENTOXML.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DAL.IBACKUPRESTORE">
+    <Position X="16.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IBACKUPRESTORE.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -70,7 +70,7 @@ namespace GUI
             this.txtReglas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtReglas.Size = new System.Drawing.Size(520, 400);
             this.txtReglas.TabIndex = 1;
-            this.txtReglas.Text = "OBJETIVO\r\nCompletar las 10 categorías de la planilla con el mayor puntaje posible. " +
+            this.txtReglas.Text = "OBJETIVO\r\nCompletar las 11 categorías de la planilla con el mayor puntaje posible. " +
     "Gana quien suma más puntos al final; si empatan, la partida termina en empate." +
     "\r\n\r\nTURNO\r\nCada jugador tiene hasta 3 tiradas por turno. Después de cada tirad" +
     "a podés marcar \"Guardar\" en los dados que querés conservar antes de volver a t" +

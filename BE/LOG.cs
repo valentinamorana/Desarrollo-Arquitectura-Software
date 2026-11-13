@@ -6,6 +6,8 @@ namespace BE
         public const int CIERRE_SESION = 2;
         public const int INICIO_PARTIDA = 3;
         public const int FIN_PARTIDA = 4;
+        public const int BACKUP = 5;
+        public const int RESTORE = 6;
 
         private int idUsuario;
 

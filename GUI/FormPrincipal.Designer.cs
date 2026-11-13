@@ -34,7 +34,6 @@ namespace GUI
             this.pnlEncabezado = new System.Windows.Forms.Panel();
             this.btnRestore = new System.Windows.Forms.Button();
             this.btnBackup = new System.Windows.Forms.Button();
-            this.btnEstadisticas = new System.Windows.Forms.Button();
             this.btnReglas = new System.Windows.Forms.Button();
             this.btnVolverMenu = new System.Windows.Forms.Button();
             this.lblTitulo = new System.Windows.Forms.Label();
@@ -79,7 +78,6 @@ namespace GUI
             this.pnlEncabezado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
             this.pnlEncabezado.Controls.Add(this.btnRestore);
             this.pnlEncabezado.Controls.Add(this.btnBackup);
-            this.pnlEncabezado.Controls.Add(this.btnEstadisticas);
             this.pnlEncabezado.Controls.Add(this.btnReglas);
             this.pnlEncabezado.Controls.Add(this.btnVolverMenu);
             this.pnlEncabezado.Controls.Add(this.lblTitulo);
@@ -118,21 +116,6 @@ namespace GUI
             this.btnBackup.Text = "Backup";
             this.btnBackup.UseVisualStyleBackColor = false;
             this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
-            // 
-            // btnEstadisticas
-            // 
-            this.btnEstadisticas.BackColor = System.Drawing.Color.White;
-            this.btnEstadisticas.FlatAppearance.BorderSize = 0;
-            this.btnEstadisticas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEstadisticas.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnEstadisticas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
-            this.btnEstadisticas.Location = new System.Drawing.Point(560, 15);
-            this.btnEstadisticas.Name = "btnEstadisticas";
-            this.btnEstadisticas.Size = new System.Drawing.Size(120, 40);
-            this.btnEstadisticas.TabIndex = 1;
-            this.btnEstadisticas.Text = "Estadísticas";
-            this.btnEstadisticas.UseVisualStyleBackColor = false;
-            this.btnEstadisticas.Click += new System.EventHandler(this.btnEstadisticas_Click);
             // 
             // btnReglas
             // 
@@ -179,7 +162,6 @@ namespace GUI
             this.lblTitulo.Size = new System.Drawing.Size(131, 37);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Generala";
-            this.lblTitulo.Click += new System.EventHandler(this.lblTitulo_Click);
             // 
             // pnlJugadores
             // 
@@ -450,7 +432,6 @@ namespace GUI
             this.lblProgreso.Size = new System.Drawing.Size(100, 19);
             this.lblProgreso.TabIndex = 30;
             this.lblProgreso.Text = "Turno 1 de 11";
-            this.lblProgreso.Click += new System.EventHandler(this.lblProgreso_Click);
             // 
             // pnlPuntajes
             // 
@@ -594,7 +575,6 @@ namespace GUI
         private System.Windows.Forms.Panel pnlEncabezado;
         private System.Windows.Forms.Button btnVolverMenu;
         private System.Windows.Forms.Label lblTitulo;
-        private System.Windows.Forms.Button btnEstadisticas;
         private System.Windows.Forms.Button btnReglas;
         private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.Button btnRestore;
