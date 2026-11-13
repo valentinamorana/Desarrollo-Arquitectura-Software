@@ -63,7 +63,6 @@ namespace GUI
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Registrarme";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTitulo.Click += new System.EventHandler(this.lblTitulo_Click);
             // 
             // lblNombre
             // 

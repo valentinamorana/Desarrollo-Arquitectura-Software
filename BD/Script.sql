@@ -97,7 +97,7 @@ END
 GO
 
 IF EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('dbo.PARTIDA') AND name = 'RUTA_XML'
-           AND (TYPE_NAME(user_type_id) = 'varchar' OR max_length < 1000))
+           AND (TYPE_NAME(user_type_id) = 'varchar' OR (max_length <> -1 AND max_length < 1000)))
 BEGIN
 	ALTER TABLE [dbo].[PARTIDA] ALTER COLUMN [RUTA_XML] [nvarchar](500) NULL
 END
@@ -131,19 +131,28 @@ GO
 IF NOT EXISTS (SELECT 1 FROM [dbo].[TIPO_LOG] WHERE ID_TIPO = 4)
 	INSERT INTO [dbo].[TIPO_LOG] (ID_TIPO, Tipo) VALUES (4, 'FIN_PARTIDA')
 GO
+IF NOT EXISTS (SELECT 1 FROM [dbo].[TIPO_LOG] WHERE ID_TIPO = 5)
+	INSERT INTO [dbo].[TIPO_LOG] (ID_TIPO, Tipo) VALUES (5, 'BACKUP')
+GO
+IF NOT EXISTS (SELECT 1 FROM [dbo].[TIPO_LOG] WHERE ID_TIPO = 6)
+	INSERT INTO [dbo].[TIPO_LOG] (ID_TIPO, Tipo) VALUES (6, 'RESTORE')
+GO
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'valentina')
-	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (1, 'valentina', '1234')
+	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña)
+	SELECT ISNULL(MAX(ID),0)+1, 'valentina', '1234' FROM [dbo].[USUARIO]
 GO
 IF EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'invitado') AND NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'jugador2')
 	UPDATE [dbo].[USUARIO] SET Nombre = 'jugador2' WHERE Nombre = 'invitado'
 GO
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'jugador2')
-	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (2, 'jugador2', '1234')
+	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña)
+	SELECT ISNULL(MAX(ID),0)+1, 'jugador2', '1234' FROM [dbo].[USUARIO]
 GO
 IF NOT EXISTS (SELECT 1 FROM [dbo].[USUARIO] WHERE Nombre = 'jugador3')
-	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña) VALUES (3, 'jugador3', '1234')
+	INSERT INTO [dbo].[USUARIO] (ID, Nombre, Contraseña)
+	SELECT ISNULL(MAX(ID),0)+1, 'jugador3', '1234' FROM [dbo].[USUARIO]
 GO
 
 CREATE OR ALTER PROC [dbo].[USUARIO_INSERTAR]
@@ -175,7 +184,7 @@ CREATE OR ALTER PROC [dbo].[USUARIO_LOGIN]
 @usu nvarchar(50), @pass nvarchar(50)
 AS
 BEGIN
-	SELECT ID, Nombre, Contraseña FROM USUARIO
+	SELECT ID, Nombre FROM USUARIO
 	WHERE Nombre = @usu
 	  AND Contraseña = @pass COLLATE Latin1_General_CS_AS
 	  AND DATALENGTH(Contraseña) = DATALENGTH(@pass)
@@ -186,7 +195,7 @@ CREATE OR ALTER PROC [dbo].[USUARIO_BUSCAR_POR_ID]
 @id int
 AS
 BEGIN
-	SELECT ID, Nombre, Contraseña FROM USUARIO WHERE ID = @id
+	SELECT ID, Nombre FROM USUARIO WHERE ID = @id
 END
 GO
 
@@ -242,10 +251,14 @@ CREATE OR ALTER PROC [dbo].[PARTIDA_LISTAR_POR_USUARIO]
 @idUsuario int
 AS
 BEGIN
-	SELECT ID, ID_JUGADOR1, ID_JUGADOR2, ID_GANADOR, PUNTAJE_JUGADOR1, PUNTAJE_JUGADOR2, FECHA_INICIO, FECHA_FIN, RUTA_XML
-	FROM PARTIDA
-	WHERE (ID_JUGADOR1 = @idUsuario OR ID_JUGADOR2 = @idUsuario) AND FECHA_FIN IS NOT NULL
-	ORDER BY FECHA_INICIO DESC
+	SELECT p.ID, p.ID_JUGADOR1, p.ID_JUGADOR2, p.ID_GANADOR, p.PUNTAJE_JUGADOR1, p.PUNTAJE_JUGADOR2,
+	       p.FECHA_INICIO, p.FECHA_FIN, p.RUTA_XML,
+	       u1.Nombre AS NOMBRE_JUGADOR1, u2.Nombre AS NOMBRE_JUGADOR2
+	FROM PARTIDA p
+	LEFT JOIN USUARIO u1 ON u1.ID = p.ID_JUGADOR1
+	LEFT JOIN USUARIO u2 ON u2.ID = p.ID_JUGADOR2
+	WHERE (p.ID_JUGADOR1 = @idUsuario OR p.ID_JUGADOR2 = @idUsuario) AND p.FECHA_FIN IS NOT NULL
+	ORDER BY p.FECHA_INICIO DESC, p.ID DESC
 END
 GO
 

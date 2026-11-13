@@ -9,6 +9,7 @@ namespace GUI
     public partial class FormMovimientos : Form
     {
         private string rutaXml;
+        private BLL.MOVIMIENTOXML movimientosBLL = new BLL.MOVIMIENTOXML();
         private readonly ToolTip tooltipArchivo = new ToolTip();
         private System.Drawing.Font fuenteNegrita;
 
@@ -27,7 +28,7 @@ namespace GUI
             List<MOVIMIENTO> movimientos;
             try
             {
-                movimientos = BLL.MOVIMIENTOXML.LeerMovimientos(rutaXml);
+                movimientos = movimientosBLL.LeerMovimientos(rutaXml);
             }
             catch (Exception ex)
             {
@@ -74,7 +75,7 @@ namespace GUI
 
         private void btnDescargarXml_Click(object sender, EventArgs e)
         {
-            if (!BLL.MOVIMIENTOXML.Existe(rutaXml))
+            if (!movimientosBLL.Existe(rutaXml))
             {
                 Mensaje.Show("No se encontró el archivo XML de esta partida.",
                     "Descargar XML", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -93,7 +94,7 @@ namespace GUI
 
                 try
                 {
-                    File.Copy(rutaXml, dialogo.FileName, true);
+                    movimientosBLL.Copiar(rutaXml, dialogo.FileName);
                     Mensaje.Show("XML guardado en:\n" + dialogo.FileName,
                         "Descargar XML", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

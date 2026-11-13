@@ -75,10 +75,5 @@ namespace GUI
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
-        private void lblTitulo_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

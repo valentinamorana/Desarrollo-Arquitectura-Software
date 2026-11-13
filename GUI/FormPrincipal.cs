@@ -147,7 +147,7 @@ namespace GUI
             {
                 lblTurnoNombre.Text = partidaBLL.JugadorDelTurno().Nombre;
                 lblTirosRestantes.Text = "Tiros restantes: " + partidaBLL.TirosRestantes;
-                lblProgreso.Text = "Turno " + partidaBLL.TurnoDelJugador + " de 11";
+                lblProgreso.Text = "Turno " + partidaBLL.TurnoDelJugador + " de " + BLL.GENERALA.CATEGORIAS.Length;
             }
             else
             {
@@ -295,13 +295,17 @@ namespace GUI
 
         private void btnLoginJugador2_Click(object sender, EventArgs e)
         {
-            FormLogin formLogin = new FormLogin(jugador1.Nombre);
-            if (formLogin.ShowDialog() != DialogResult.OK)
+            USUARIO nuevoJugador2;
+            using (FormLogin formLogin = new FormLogin(jugador1.Nombre))
             {
-                return;
+                if (formLogin.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+                nuevoJugador2 = formLogin.UsuarioLogueado;
             }
 
-            if (jugador2 != null && jugador2.ID != formLogin.UsuarioLogueado.ID)
+            if (jugador2 != null)
             {
                 try
                 {
@@ -314,7 +318,7 @@ namespace GUI
                 }
             }
 
-            jugador2 = formLogin.UsuarioLogueado;
+            jugador2 = nuevoJugador2;
             RefrescarGrilla();
             ActualizarTotales();
             ActualizarPantalla();
@@ -457,16 +461,20 @@ namespace GUI
 
         private bool PreguntarYAbandonar(string mensaje)
         {
-            FormAbandonar formAbandonar = new FormAbandonar(jugador1, jugador2, mensaje);
-            if (formAbandonar.ShowDialog(this) != DialogResult.OK)
+            USUARIO quienAbandona;
+            using (FormAbandonar formAbandonar = new FormAbandonar(jugador1, jugador2, mensaje))
             {
-                return false;
+                if (formAbandonar.ShowDialog(this) != DialogResult.OK)
+                {
+                    return false;
+                }
+                quienAbandona = formAbandonar.UsuarioQueAbandona;
             }
 
             bool abandonoOk = true;
             try
             {
-                partidaBLL.Abandonar(formAbandonar.UsuarioQueAbandona);
+                partidaBLL.Abandonar(quienAbandona);
             }
             catch (Exception ex)
             {
@@ -506,24 +514,29 @@ namespace GUI
             }
         }
 
-        private string CarpetaInicialBackups()
-        {
-            string carpeta = BLL.BACKUPRESTORE.CarpetaBackupPorDefecto();
-            if (carpeta != "" && System.IO.Directory.Exists(carpeta))
-            {
-                return carpeta;
-            }
-            return "";
-        }
-
         private void btnBackup_Click(object sender, EventArgs e)
         {
+            BLL.BACKUPRESTORE backupRestore = new BLL.BACKUPRESTORE();
             sfdBackup.FileName = "GENERALA_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".bak";
-            sfdBackup.InitialDirectory = CarpetaInicialBackups();
+            sfdBackup.InitialDirectory = backupRestore.CarpetaBackupPorDefecto();
 
             if (sfdBackup.ShowDialog() == DialogResult.OK)
             {
-                string error = BLL.BACKUPRESTORE.HacerBackup(sfdBackup.FileName);
+                string error;
+                try
+                {
+                    error = backupRestore.HacerBackup(sfdBackup.FileName, jugador1);
+                }
+                catch (Exception ex)
+                {
+                    Mensaje.Show(
+                        "El backup se realizó en:\n" + sfdBackup.FileName +
+                        "\n\nPero no se pudo registrar en la bitácora: " + ex.Message +
+                        "\n\nSi la base es de una versión anterior, volvé a correr BD/Script.sql.",
+                        "Backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (error == "")
                 {
                     Mensaje.Show("Backup realizado correctamente en:\n" + sfdBackup.FileName);
@@ -540,7 +553,8 @@ namespace GUI
 
         private void btnRestore_Click(object sender, EventArgs e)
         {
-            ofdRestore.InitialDirectory = CarpetaInicialBackups();
+            BLL.BACKUPRESTORE backupRestore = new BLL.BACKUPRESTORE();
+            ofdRestore.InitialDirectory = backupRestore.CarpetaBackupPorDefecto();
 
             if (ofdRestore.ShowDialog() == DialogResult.OK)
             {
@@ -551,7 +565,7 @@ namespace GUI
                 if (confirmar == DialogResult.Yes)
                 {
                     bool restaurada;
-                    string error = BLL.BACKUPRESTORE.HacerRestore(ofdRestore.FileName, out restaurada);
+                    string error = backupRestore.HacerRestore(ofdRestore.FileName, jugador1, out restaurada);
                     if (restaurada)
                     {
                         if (error == "")
@@ -582,26 +596,12 @@ namespace GUI
             }
         }
 
-        private void btnEstadisticas_Click(object sender, EventArgs e)
-        {
-            FormEstadisticas formEstadisticas = new FormEstadisticas(jugador1, jugador2);
-            formEstadisticas.ShowDialog();
-        }
-
         private void btnReglas_Click(object sender, EventArgs e)
         {
-            FormReglas formReglas = new FormReglas();
-            formReglas.ShowDialog();
-        }
-
-        private void lblProgreso_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblTitulo_Click(object sender, EventArgs e)
-        {
-
+            using (FormReglas formReglas = new FormReglas())
+            {
+                formReglas.ShowDialog(this);
+            }
         }
     }
 }
