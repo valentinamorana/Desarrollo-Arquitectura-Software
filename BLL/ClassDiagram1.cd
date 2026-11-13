@@ -91,5 +91,20 @@
       <FileName>delPartidaFinalizada.cs</FileName>
     </TypeIdentifier>
   </Delegate>
+  <Interface Name="BLL.IDADO">
+    <Position X="17.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IDADO.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Class Name="BLL.DADO">
+    <Position X="17.5" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DADO.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
