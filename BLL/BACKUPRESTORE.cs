@@ -1,20 +1,52 @@
+using System;
+using System.IO;
+
 namespace BLL
 {
-    public static class BACKUPRESTORE
+    public class BACKUPRESTORE
     {
-        public static string CarpetaBackupPorDefecto()
+        private DAL.IBACKUPRESTORE backupRestore;
+        private BITACORA bitacora;
+
+        public BACKUPRESTORE() : this(new DAL.BACKUPRESTORE(), new BITACORA())
         {
-            return DAL.BACKUPRESTORE.CarpetaBackupPorDefecto();
         }
 
-        public static string HacerBackup(string ruta)
+        public BACKUPRESTORE(DAL.IBACKUPRESTORE backupRestore, BITACORA bitacora)
         {
-            return DAL.BACKUPRESTORE.HacerBackup(ruta);
+            this.backupRestore = backupRestore;
+            this.bitacora = bitacora;
         }
 
-        public static string HacerRestore(string ruta, out bool restaurada)
+        public string CarpetaBackupPorDefecto()
         {
-            return DAL.BACKUPRESTORE.HacerRestore(ruta, out restaurada);
+            return backupRestore.CarpetaBackupPorDefecto();
+        }
+
+        public string HacerBackup(string ruta, BE.USUARIO usuario)
+        {
+            string error = backupRestore.HacerBackup(ruta);
+            if (error == "")
+            {
+                bitacora.Registrar(usuario.ID, BE.LOG.BACKUP, "Backup de la base: " + Path.GetFileName(ruta));
+            }
+            return error;
+        }
+
+        public string HacerRestore(string ruta, BE.USUARIO usuario, out bool restaurada)
+        {
+            string error = backupRestore.HacerRestore(ruta, out restaurada);
+            if (restaurada)
+            {
+                try
+                {
+                    bitacora.Registrar(usuario.ID, BE.LOG.RESTORE, "Restore de la base: " + Path.GetFileName(ruta));
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return error;
         }
     }
 }

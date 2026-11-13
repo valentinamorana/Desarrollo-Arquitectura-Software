@@ -43,6 +43,8 @@
     <Compile Include="GENERALA.cs" />
     <Compile Include="MOVIMIENTOXML.cs" />
     <Compile Include="BACKUPRESTORE.cs" />
+    <Compile Include="IDADO.cs" />
+    <Compile Include="DADO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

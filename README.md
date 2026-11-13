@@ -15,8 +15,8 @@ Juego de la Generala para 2 jugadores en la misma PC, desarrollado en C# (Window
 | **Tachar** | Tachado implícito (si los dados no dan puntos) y voluntario (botón "Tachar", aunque los dados den puntos). Ambos piden confirmación |
 | **Estadísticas** | Ganadas, perdidas, empatadas, promedio de victorias, tiempo total jugado e historial filtrable por resultado |
 | **Movimientos** | Un XML por partida con cada tirada, anotación y cierre. Se consulta desde "Ver movimientos" y se puede descargar con "Descargar XML" |
-| **Bitácora** | Inicios y cierres de sesión, y comienzo y fin de partida, en la tabla `LOG`. Se consulta desde el menú |
-| **Backup / Restore** | De la base `GENERALA` desde la propia aplicación (deshabilitados durante una partida) |
+| **Bitácora** | Inicios y cierres de sesión, comienzo y fin de partida, backups y restores, en la tabla `LOG`. Se consulta desde el menú, con filtros por usuario, evento y rango de fechas |
+| **Backup / Restore** | De la base `GENERALA` desde la propia aplicación (deshabilitados durante una partida). Cada backup y cada restore quedan registrados en la bitácora |
 
 ---
 
@@ -36,7 +36,7 @@ Abrir `BD/Script.sql` en SSMS, conectado a la instancia de SQL Server, y ejecuta
 
 El script crea la base `GENERALA` con sus tablas, stored procedures y usuarios de prueba. Se puede volver a correr sin errores: solo crea lo que falte.
 
-Si la base ya existía de una versión anterior, hay que volver a correr el script: actualiza los stored procedures (por ejemplo `USUARIO_INSERTAR`, que devuelve 0 cuando el nombre ya existe, y `BITACORA_LISTAR`, que usa la pantalla de bitácora) sin borrar datos.
+Si la base ya existía de una versión anterior, hay que volver a correr el script: actualiza los stored procedures (por ejemplo `USUARIO_INSERTAR`, que devuelve 0 cuando el nombre ya existe, `BITACORA_LISTAR`, que usa la pantalla de bitácora, y `PARTIDA_LISTAR_POR_USUARIO`, que ahora trae los nombres de los jugadores) y agrega los tipos de bitácora `BACKUP` y `RESTORE`, sin borrar datos.
 
 ### 2. Configurar la conexión (solo si hace falta)
 
@@ -94,7 +94,7 @@ La partida termina cuando los dos completan las 11 categorías. Las reglas compl
 | Requisito | Dónde |
 |---|---|
 | Registro / Login / Logout | Login → "Registrarme"; logout desde el menú ("Cerrar sesión") |
-| Bitácora (inicios y cierres de sesión, comienzo y fin de partida) | Menú → Bitácora. Los datos están en la tabla `LOG` (tipos en `TIPO_LOG`). El inicio y el fin de partida se graban en la misma transacción que la partida |
+| Bitácora (inicios y cierres de sesión, comienzo y fin de partida) | Menú → Bitácora, con filtros por usuario, evento y fechas. Los datos están en la tabla `LOG` (tipos en `TIPO_LOG`). El inicio y el fin de partida se graban en la misma transacción que la partida. También se registran los backups y restores |
 | Estadísticas, promedio de victorias, tiempo jugado | Menú → Estadísticas |
 | XML de movimientos | Un archivo por partida en `GUI/bin/Debug/Partidas/`, con cada tirada (dados y dados guardados), cada anotación y el cierre. Se consulta desde Estadísticas → elegir partida → "Ver movimientos", y se puede guardar una copia con "Descargar XML" |
 | Backup / Restore | Botones "Backup" y "Restore" en la pantalla de juego (deshabilitados durante una partida) |
@@ -109,7 +109,15 @@ La partida termina cuando los dos completan las 11 categorías. Las reglas compl
 
 ## Pruebas
 
-El proyecto `Tests.Unitarios` (MSTest, .NET Framework 4.7.2) cubre la lógica de la Generala (puntajes de las categorías, escalera, full, póker, generala, tirada servida y dados guardados) y la validación de los datos de registro. No usa la base de datos.
+El proyecto `Tests.Unitarios` (MSTest, .NET Framework 4.7.2) no usa la base de datos. Cubre:
+
+- **Generala:** puntajes de las categorías, escalera, full, póker, generala, tirada servida y dados guardados.
+- **Partida:** turnos que alternan, máximo de 3 tiradas, servida, Generala Doble, tachar, fin con ganador o empate, abandono, y que la base y el XML queden consistentes cuando algo falla.
+- **Bitácora, estadísticas y backup/restore:** filtros, cálculo de ganadas/perdidas/empatadas, promedio y tiempo jugado, y registro de backups y restores en la bitácora.
+- **XML de movimientos:** escritura y lectura con archivos temporales.
+- **Usuarios:** validación de los datos de registro.
+
+La BLL recibe sus dependencias por constructor a través de interfaces (`IMP_PARTIDA`, `IMP_LOG`, `IBACKUPRESTORE`, `IMOVIMIENTOXML` en la DAL e `IDADO` en la BLL). Los tests le pasan objetos falsos (`Tests.Unitarios/Fakes.cs`), y la aplicación usa los reales a través de los constructores sin parámetros.
 
 Para correrlas: en Visual Studio, *Prueba → Ejecutar todas las pruebas*, o con `dotnet test Tests.Unitarios/Tests.Unitarios.csproj`.
 
@@ -122,8 +130,8 @@ Cuatro capas, con dependencias en un solo sentido: la GUI nunca accede a datos y
 | Capa | Proyecto | Responsabilidad |
 |------|----------|----------------|
 | Presentación | `GUI` | Formularios Windows Forms. Solo muestran lo que devuelve la BLL y avisan lo que hace el usuario |
-| Lógica de negocio | `BLL` | Reglas del juego (`PARTIDA`, `GENERALA`), usuarios, bitácora, estadísticas, XML de movimientos y backup/restore |
-| Acceso a datos | `DAL` | SQL Server con stored procedures (`ACCESO`, `MAPPER<T>` y un mapper por tabla, backup/restore) y lectura y escritura de los XML |
+| Lógica de negocio | `BLL` | Reglas del juego (`PARTIDA`, `GENERALA`, `IDADO`/`DADO`), usuarios, bitácora, estadísticas, XML de movimientos y backup/restore. Recibe la DAL por interfaces en el constructor |
+| Acceso a datos | `DAL` | SQL Server con stored procedures (`ACCESO`, `MAPPER<T>` y un mapper por tabla, backup/restore), lectura y escritura de los XML, y las interfaces que usa la BLL |
 | Entidades | `BE` | Clases planas (`USUARIO`, `PARTIDA`, `LOG`, `ESTADISTICA`, filas de las grillas) |
 
 Los diagramas UML están en `Documentacion/Diagramas/` (imágenes y modelo de EA) y en los `.cd` de cada proyecto.

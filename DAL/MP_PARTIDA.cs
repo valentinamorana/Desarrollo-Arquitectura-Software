@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace DAL
 {
-    public class MP_PARTIDA : MAPPER<BE.PARTIDA>
+    public class MP_PARTIDA : MAPPER<BE.PARTIDA>, IMP_PARTIDA
     {
         public override int Insertar(BE.PARTIDA partida)
         {
@@ -147,6 +147,16 @@ namespace DAL
                 p.FechaInicio = Convert.ToDateTime(fila["FECHA_INICIO"]);
                 p.FechaFin = Convert.ToDateTime(fila["FECHA_FIN"]);
                 p.RutaXml = fila["RUTA_XML"].ToString();
+                if (tabla.Columns.Contains("NOMBRE_JUGADOR1"))
+                {
+                    p.NombreJugador1 = fila["NOMBRE_JUGADOR1"].ToString();
+                    p.NombreJugador2 = fila["NOMBRE_JUGADOR2"].ToString();
+                }
+                else
+                {
+                    p.NombreJugador1 = "";
+                    p.NombreJugador2 = "";
+                }
                 partidas.Add(p);
             }
             return partidas;

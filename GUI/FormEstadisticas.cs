@@ -105,7 +105,7 @@ namespace GUI
 
             FILAHISTORIAL fila = (FILAHISTORIAL)dgvHistorial.CurrentRow.DataBoundItem;
 
-            string rutaResuelta = BLL.MOVIMIENTOXML.Resolver(fila.RutaXml);
+            string rutaResuelta = new BLL.MOVIMIENTOXML().Resolver(fila.RutaXml);
             if (rutaResuelta == "")
             {
                 Mensaje.Show(
@@ -115,8 +115,10 @@ namespace GUI
             }
 
             string titulo = "Partida del " + fila.Fecha + " vs " + fila.Rival;
-            FormMovimientos formMovimientos = new FormMovimientos(rutaResuelta, titulo);
-            formMovimientos.ShowDialog();
+            using (FormMovimientos formMovimientos = new FormMovimientos(rutaResuelta, titulo))
+            {
+                formMovimientos.ShowDialog(this);
+            }
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

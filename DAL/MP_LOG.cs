@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace DAL
 {
-    public class MP_LOG : MAPPER<BE.LOG>
+    public class MP_LOG : MAPPER<BE.LOG>, IMP_LOG
     {
         public List<BE.LOG> Listar()
         {

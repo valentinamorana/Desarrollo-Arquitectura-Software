@@ -4,7 +4,7 @@ namespace BLL
 {
     public static class GENERALA
     {
-        private static Random rnd = new Random();
+        private static IDADO dadoAlAzar = new DADO();
 
         public const string GENERALA_DOBLE = "Generala Doble";
 
@@ -16,6 +16,11 @@ namespace BLL
 
         public static int[] Tirar(int[] dadosActuales, bool[] guardar)
         {
+            return Tirar(dadosActuales, guardar, dadoAlAzar);
+        }
+
+        public static int[] Tirar(int[] dadosActuales, bool[] guardar, IDADO dado)
+        {
             int[] resultado = new int[5];
             for (int i = 0; i < 5; i++)
             {
@@ -25,7 +30,7 @@ namespace BLL
                 }
                 else
                 {
-                    resultado[i] = rnd.Next(1, 7);
+                    resultado[i] = dado.Tirar();
                 }
             }
             return resultado;
