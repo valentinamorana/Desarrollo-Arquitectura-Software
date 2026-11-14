@@ -2,7 +2,7 @@
 
 Juego de la Generala para 2 jugadores en la misma PC, desarrollado en C# (Windows Forms, .NET Framework 4.7.2) con SQL Server, en arquitectura de 4 capas (BE / DAL / BLL / GUI).
 
-**Autora:** Valentina Morana · **Materia:** Desarrollo y Arquitectura de Software (UAI, 2026)
+**Autora:** Valentina Morana - **Materia:** Desarrollo y Arquitectura de Software (UAI, 2026)
 
 ---
 
@@ -16,7 +16,7 @@ Juego de la Generala para 2 jugadores en la misma PC, desarrollado en C# (Window
 | **Estadísticas** | Ganadas, perdidas, empatadas, promedio de victorias, tiempo total jugado e historial filtrable por resultado |
 | **Movimientos** | Un XML por partida con cada tirada, anotación y cierre. Se consulta desde "Ver movimientos" y se puede descargar con "Descargar XML" |
 | **Bitácora** | Inicios y cierres de sesión, comienzo y fin de partida, backups y restores, en la tabla `LOG`. Se consulta desde el menú, con filtros por usuario, evento y rango de fechas |
-| **Backup / Restore** | De la base `GENERALA` desde la propia aplicación (deshabilitados durante una partida). Cada backup y cada restore quedan registrados en la bitácora |
+| **Backup / Restore** | De la base `GENERALA` desde el menú principal, en "Administración de la base". Cada backup y cada restore quedan registrados en la bitácora |
 
 ---
 
@@ -34,9 +34,8 @@ Juego de la Generala para 2 jugadores en la misma PC, desarrollado en C# (Window
 
 Abrir `BD/Script.sql` en SSMS, conectado a la instancia de SQL Server, y ejecutarlo completo (F5).
 
-El script crea la base `GENERALA` con sus tablas, stored procedures y usuarios de prueba. Se puede volver a correr sin errores: solo crea lo que falte.
+El script crea la base `GENERALA` con sus tablas, stored procedures, usuarios de prueba y datos de ejemplo. Se corre una sola vez: si ya existe una base `GENERALA` (por ejemplo, de una versión anterior del TP), hay que borrarla antes desde SSMS.
 
-Si la base ya existía de una versión anterior, hay que volver a correr el script: actualiza los stored procedures (por ejemplo `USUARIO_INSERTAR`, que devuelve 0 cuando el nombre ya existe, `BITACORA_LISTAR`, que usa la pantalla de bitácora, y `PARTIDA_LISTAR_POR_USUARIO`, que ahora trae los nombres de los jugadores) y agrega los tipos de bitácora `BACKUP` y `RESTORE`, sin borrar datos.
 
 ### 2. Configurar la conexión (solo si hace falta)
 
@@ -73,7 +72,11 @@ Los carga `BD/Script.sql`:
 | jugador2 | 1234 |
 | jugador3 | 1234 |
 
-También se pueden crear usuarios nuevos con "Registrarme" en la pantalla de login. El nombre de usuario tiene de 3 a 20 caracteres, sin espacios. La contraseña tiene de 4 a 20 caracteres y al menos un número.
+También se pueden crear usuarios nuevos con "Registrate" en la pantalla de login. El nombre de usuario tiene de 3 a 20 caracteres, sin espacios. La contraseña tiene de 4 a 20 caracteres y al menos un número.
+
+### Datos de ejemplo
+
+`BD/Script.sql` también carga 8 partidas terminadas entre los tres usuarios (victorias, derrotas, un empate y una partida abandonada) y sus registros en la bitácora. Así se pueden probar Estadísticas, "Ver movimientos" y Bitácora sin jugar antes. Los XML de esas partidas están en `GUI/DatosDemo` y se copian a `GUI/bin/Debug/Partidas` al compilar.
 
 ---
 
@@ -82,7 +85,7 @@ También se pueden crear usuarios nuevos con "Registrarme" en la pantalla de log
 1. **Login:** ingresar con el Jugador 1.
 2. **Menú:** elegir entre Jugar, Estadísticas, Bitácora, Reglas o Cerrar sesión.
 3. **Jugar:** en la pantalla de juego, "Ingresar Jugador 2" con **otro** usuario, y después "Comenzar Partida". En cada turno: hasta 3 tiradas, tildar los dados a guardar después de cada tirada, y elegir la categoría a anotar (o tachar).
-4. **Volver al menú:** con el botón "Volver al menú" o la X de la ventana. Si hay una partida en curso, primero hay que abandonarla: la app pregunta qué jugador abandona y la partida la gana el otro.
+4. **Volver al menú:** con el botón "Menú" o la X de la ventana. Si hay una partida en curso, primero hay que abandonarla: la app pregunta qué jugador abandona y la partida la gana el otro.
 5. **Cerrar sesión:** solo desde el menú. Registra el cierre de sesión de los dos jugadores.
 
 La partida termina cuando los dos completan las 11 categorías. Las reglas completas están en el botón "¿Cómo jugar?" de la app.
@@ -93,15 +96,15 @@ La partida termina cuando los dos completan las 11 categorías. Las reglas compl
 
 | Requisito | Dónde |
 |---|---|
-| Registro / Login / Logout | Login → "Registrarme"; logout desde el menú ("Cerrar sesión") |
-| Bitácora (inicios y cierres de sesión, comienzo y fin de partida) | Menú → Bitácora, con filtros por usuario, evento y fechas. Los datos están en la tabla `LOG` (tipos en `TIPO_LOG`). El inicio y el fin de partida se graban en la misma transacción que la partida. También se registran los backups y restores |
+| Registro / Login / Logout | Login → "Registrate"; logout desde el menú ("Cerrar sesión") |
+| Bitácora (inicios y cierres de sesión, comienzo y fin de partida) | Menú → Bitácora, con filtros por usuario, evento y fechas. Los datos están en la tabla `LOG` (tipos en `TIPO_LOG`). El inicio de partida se registra al empezar y el fin cuando la partida se guarda en la base. También se registran los backups y restores |
 | Estadísticas, promedio de victorias, tiempo jugado | Menú → Estadísticas |
 | XML de movimientos | Un archivo por partida en `GUI/bin/Debug/Partidas/`, con cada tirada (dados y dados guardados), cada anotación y el cierre. Se consulta desde Estadísticas → elegir partida → "Ver movimientos", y se puede guardar una copia con "Descargar XML" |
-| Backup / Restore | Botones "Backup" y "Restore" en la pantalla de juego (deshabilitados durante una partida) |
+| Backup / Restore | Menú → "Hacer backup" y "Restaurar backup", en la sección "Administración de la base" |
 
 **Nota sobre el backup:** `BACKUP DATABASE` lo ejecuta el servicio de SQL Server, no el usuario de Windows, así que en carpetas personales (Escritorio, Documentos) puede fallar por permisos. El diálogo arranca en la carpeta de backups de SQL Server.
 
-**Nota sobre el restore:** después de restaurar, la aplicación vuelve al login, porque los usuarios de la base restaurada pueden ser otros. Si el `.bak` es de una versión anterior, hay que volver a correr `BD/Script.sql` para actualizar los stored procedures.
+**Nota sobre el restore:** después de restaurar, la aplicación vuelve al login, porque los usuarios de la base restaurada pueden ser otros.
 
 **Nota sobre los XML:** la ruta guardada en la base es la de la PC donde se jugó. Si el archivo no existe en esa PC, la app busca el mismo nombre en la carpeta `Partidas` de la aplicación.
 
@@ -117,7 +120,7 @@ El proyecto `Tests.Unitarios` (MSTest, .NET Framework 4.7.2) no usa la base de d
 - **XML de movimientos:** escritura y lectura con archivos temporales.
 - **Usuarios:** validación de los datos de registro.
 
-La BLL recibe sus dependencias por constructor a través de interfaces (`IMP_PARTIDA`, `IMP_LOG`, `IBACKUPRESTORE`, `IMOVIMIENTOXML` en la DAL e `IDADO` en la BLL). Los tests le pasan objetos falsos (`Tests.Unitarios/Fakes.cs`), y la aplicación usa los reales a través de los constructores sin parámetros.
+La BLL recibe sus dependencias por constructor a través de interfaces (`IMP_USUARIO`, `IMP_PARTIDA`, `IMP_LOG`, `IBACKUPRESTORE` e `IMOVIMIENTOXML` en la DAL e `IDADO` en la BLL). Los tests le pasan objetos falsos (`Tests.Unitarios/Fakes.cs`), y la aplicación usa los reales a través de los constructores sin parámetros.
 
 Para correrlas: en Visual Studio, *Prueba → Ejecutar todas las pruebas*, o con `dotnet test Tests.Unitarios/Tests.Unitarios.csproj`.
 

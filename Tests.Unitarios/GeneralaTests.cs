@@ -45,7 +45,7 @@ namespace Tests.Unitarios
         public void Poker_CuatroIguales_Vale40()
         {
             int[] dados = { 4, 4, 4, 4, 1 };
-            Assert.AreEqual(40, GENERALA.CalcularPuntaje("Poker", dados));
+            Assert.AreEqual(40, GENERALA.CalcularPuntaje("Póker", dados));
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace Tests.Unitarios
         {
             int[] actuales = { 1, 2, 3, 4, 5 };
             bool[] guardar = { true, true, true, true, true };
-            CollectionAssert.AreEqual(actuales, GENERALA.Tirar(actuales, guardar));
+            CollectionAssert.AreEqual(actuales, GENERALA.Tirar(actuales, guardar, new DADO()));
         }
     }
 }

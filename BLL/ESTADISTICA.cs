@@ -30,31 +30,14 @@ namespace BLL
         }
 
         private DAL.IMP_PARTIDA mapperPartida;
-        private DAL.IMP_USUARIO mapperUsuario;
 
-        public ESTADISTICA() : this(new DAL.MP_PARTIDA(), new DAL.MP_USUARIO())
+        public ESTADISTICA() : this(new DAL.MP_PARTIDA())
         {
         }
 
-        public ESTADISTICA(DAL.IMP_PARTIDA mapperPartida, DAL.IMP_USUARIO mapperUsuario)
+        public ESTADISTICA(DAL.IMP_PARTIDA mapperPartida)
         {
             this.mapperPartida = mapperPartida;
-            this.mapperUsuario = mapperUsuario;
-        }
-
-        private string NombreDelRival(string nombre, int idRival)
-        {
-            if (!string.IsNullOrEmpty(nombre))
-            {
-                return nombre;
-            }
-
-            BE.USUARIO rival = mapperUsuario.BuscarPorId(idRival);
-            if (rival != null && !string.IsNullOrEmpty(rival.Nombre))
-            {
-                return rival.Nombre;
-            }
-            return "-";
         }
 
         public BE.ESTADISTICA Calcular(BE.USUARIO usuario)
@@ -68,20 +51,17 @@ namespace BLL
             foreach (BE.PARTIDA p in partidas)
             {
                 string nombreRival;
-                int idRival;
                 int puntajePropio;
                 int puntajeRival;
                 if (p.IdJugador1 == usuario.ID)
                 {
                     nombreRival = p.NombreJugador2;
-                    idRival = p.IdJugador2;
                     puntajePropio = p.PuntajeJugador1;
                     puntajeRival = p.PuntajeJugador2;
                 }
                 else
                 {
                     nombreRival = p.NombreJugador1;
-                    idRival = p.IdJugador1;
                     puntajePropio = p.PuntajeJugador2;
                     puntajeRival = p.PuntajeJugador1;
                 }
@@ -107,7 +87,7 @@ namespace BLL
 
                 BE.FILAHISTORIAL fila = new BE.FILAHISTORIAL();
                 fila.Fecha = p.FechaInicio.ToString("dd/MM/yyyy HH:mm");
-                fila.Rival = NombreDelRival(nombreRival, idRival);
+                fila.Rival = nombreRival;
                 fila.PuntajePropio = puntajePropio;
                 fila.PuntajeRival = puntajeRival;
                 fila.Resultado = resultado;

@@ -11,7 +11,7 @@ namespace DAL
             acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@usu", usuario.Nombre));
-            parametros.Add(acceso.CrearParametro("@pass", usuario.Contraseña));
+            parametros.Add(acceso.CrearParametro("@pass", usuario.Contrasena));
 
             acceso.Abrir();
             int id;
@@ -31,7 +31,7 @@ namespace DAL
             acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@usu", usuario.Nombre));
-            parametros.Add(acceso.CrearParametro("@pass", usuario.Contraseña));
+            parametros.Add(acceso.CrearParametro("@pass", usuario.Contrasena));
 
             acceso.Abrir();
             DataTable tabla;
@@ -53,35 +53,6 @@ namespace DAL
             usuario.ID = int.Parse(fila["ID"].ToString());
             usuario.Nombre = fila["Nombre"].ToString();
             return true;
-        }
-
-        public BE.USUARIO BuscarPorId(int id)
-        {
-            acceso = new ACCESO();
-            List<SqlParameter> parametros = new List<SqlParameter>();
-            parametros.Add(acceso.CrearParametro("@id", id));
-
-            acceso.Abrir();
-            DataTable tabla;
-            try
-            {
-                tabla = acceso.Leer("USUARIO_BUSCAR_POR_ID", parametros);
-            }
-            finally
-            {
-                acceso.Cerrar();
-            }
-
-            if (tabla.Rows.Count == 0)
-            {
-                return null;
-            }
-
-            DataRow fila = tabla.Rows[0];
-            BE.USUARIO usuario = new BE.USUARIO();
-            usuario.ID = int.Parse(fila["ID"].ToString());
-            usuario.Nombre = fila["Nombre"].ToString();
-            return usuario;
         }
     }
 }

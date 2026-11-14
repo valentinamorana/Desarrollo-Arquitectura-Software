@@ -5,7 +5,5 @@ namespace DAL
         int Insertar(BE.USUARIO usuario);
 
         bool Login(BE.USUARIO usuario);
-
-        BE.USUARIO BuscarPorId(int id);
     }
 }

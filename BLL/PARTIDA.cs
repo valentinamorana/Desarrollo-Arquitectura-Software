@@ -10,6 +10,7 @@ namespace BLL
         private DAL.IMP_PARTIDA mapper;
         private MOVIMIENTOXML movimientos;
         private IDADO dado;
+        private BITACORA bitacora;
 
         private BE.PARTIDA partida;
         private BE.USUARIO jugador1;
@@ -25,15 +26,16 @@ namespace BLL
 
         public event delPartidaFinalizada PartidaFinalizada;
 
-        public PARTIDA() : this(new DAL.MP_PARTIDA(), new DAL.MOVIMIENTOXML(), new DADO())
+        public PARTIDA() : this(new DAL.MP_PARTIDA(), new DAL.MOVIMIENTOXML(), new DADO(), new BITACORA())
         {
         }
 
-        public PARTIDA(DAL.IMP_PARTIDA mapper, DAL.IMOVIMIENTOXML archivoMovimientos, IDADO dado)
+        public PARTIDA(DAL.IMP_PARTIDA mapper, DAL.IMOVIMIENTOXML archivoMovimientos, IDADO dado, BITACORA bitacora)
         {
             this.mapper = mapper;
             this.movimientos = new MOVIMIENTOXML(archivoMovimientos);
             this.dado = dado;
+            this.bitacora = bitacora;
             tabla = CrearTablaVacia();
             dados = new int[5];
         }
@@ -88,14 +90,10 @@ namespace BLL
             string ruta = movimientos.GenerarRuta();
             movimientos.CrearArchivo(ruta, j1.Nombre, j2.Nombre);
 
-            BE.PARTIDA nueva = new BE.PARTIDA();
-            nueva.IdJugador1 = j1.ID;
-            nueva.IdJugador2 = j2.ID;
-            nueva.RutaXml = ruta;
-
             try
             {
-                nueva.ID = mapper.Insertar(nueva);
+                bitacora.Registrar(j1.ID, BE.LOG.INICIO_PARTIDA, "Inicio de partida");
+                bitacora.Registrar(j2.ID, BE.LOG.INICIO_PARTIDA, "Inicio de partida");
             }
             catch
             {
@@ -103,12 +101,11 @@ namespace BLL
                 throw;
             }
 
-            if (nueva.ID == -1)
-            {
-                EliminarXmlSinFallar(ruta);
-                throw new Exception("No se pudo iniciar la partida en la base de datos. " +
-                    "Si se restauró un backup, puede que alguno de los jugadores ya no exista: volvé a ingresar.");
-            }
+            BE.PARTIDA nueva = new BE.PARTIDA();
+            nueva.IdJugador1 = j1.ID;
+            nueva.IdJugador2 = j2.ID;
+            nueva.RutaXml = ruta;
+            nueva.FechaInicio = DateTime.Now;
 
             partida = nueva;
             jugador1 = j1;
@@ -177,7 +174,7 @@ namespace BLL
 
         public bool PuedeGuardarDados()
         {
-            return enCurso && YaTiro();
+            return enCurso && YaTiro() && tirosRestantes > 0;
         }
 
         public void Tirar(bool[] guardar)
@@ -539,11 +536,14 @@ namespace BLL
                 nombreAbandono = "";
             }
 
-            if (!mapper.Finalizar(partida, descripcion))
+            partida.FechaFin = DateTime.Now;
+            int id = mapper.Insertar(partida);
+            if (id == -1)
             {
                 throw new Exception("La partida no se pudo guardar en la base de datos. Intentá de nuevo.");
             }
 
+            partida.ID = id;
             enCurso = false;
             tirosRestantes = 0;
 
@@ -556,14 +556,33 @@ namespace BLL
             {
                 nombreGanador = jugador2.Nombre;
             }
+
+            string problemas = "";
+            try
+            {
+                bitacora.Registrar(jugador1.ID, BE.LOG.FIN_PARTIDA, descripcion);
+                bitacora.Registrar(jugador2.ID, BE.LOG.FIN_PARTIDA, descripcion);
+            }
+            catch (Exception ex)
+            {
+                problemas = ex.Message + "\n";
+            }
+
             try
             {
                 movimientos.RegistrarFin(partida.RutaXml, turno, jugador1.Nombre, partida.PuntajeJugador1,
                     jugador2.Nombre, partida.PuntajeJugador2, nombreGanador, nombreAbandono);
             }
-            finally
+            catch (Exception ex)
             {
-                AvisarFinalizacion(abandonada);
+                problemas = problemas + ex.Message;
+            }
+
+            AvisarFinalizacion(abandonada);
+
+            if (problemas != "")
+            {
+                throw new Exception("La partida terminó y quedó guardada, pero hubo un problema:\n" + problemas);
             }
         }
 

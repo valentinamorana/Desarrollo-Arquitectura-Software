@@ -23,13 +23,13 @@ namespace GUI
         {
             lblMensaje.Text = "";
 
-            if (txtNombre.Text == "" || txtContraseña.Text == "" || txtConfirmar.Text == "")
+            if (txtNombre.Text == "" || txtContrasena.Text == "" || txtConfirmar.Text == "")
             {
                 lblMensaje.Text = "Completá todos los campos";
                 return;
             }
 
-            if (txtContraseña.Text != txtConfirmar.Text)
+            if (txtContrasena.Text != txtConfirmar.Text)
             {
                 lblMensaje.Text = "Las contraseñas no coinciden";
                 return;
@@ -37,7 +37,7 @@ namespace GUI
 
             USUARIO usuario = new USUARIO();
             usuario.Nombre = txtNombre.Text;
-            usuario.Contraseña = txtContraseña.Text;
+            usuario.Contrasena = txtContrasena.Text;
 
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
 

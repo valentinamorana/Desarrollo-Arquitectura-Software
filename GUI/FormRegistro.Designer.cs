@@ -32,8 +32,8 @@ namespace GUI
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
-            this.lblContraseña = new System.Windows.Forms.Label();
-            this.txtContraseña = new System.Windows.Forms.TextBox();
+            this.lblContrasena = new System.Windows.Forms.Label();
+            this.txtContrasena = new System.Windows.Forms.TextBox();
             this.lblConfirmar = new System.Windows.Forms.Label();
             this.txtConfirmar = new System.Windows.Forms.TextBox();
             this.lblMensaje = new System.Windows.Forms.Label();
@@ -84,26 +84,26 @@ namespace GUI
             this.txtNombre.Size = new System.Drawing.Size(260, 27);
             this.txtNombre.TabIndex = 2;
             // 
-            // lblContraseña
+            // lblContrasena
             // 
-            this.lblContraseña.AutoSize = true;
-            this.lblContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblContraseña.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
-            this.lblContraseña.Location = new System.Drawing.Point(43, 177);
-            this.lblContraseña.Name = "lblContraseña";
-            this.lblContraseña.Size = new System.Drawing.Size(83, 20);
-            this.lblContraseña.TabIndex = 3;
-            this.lblContraseña.Text = "Contraseña";
+            this.lblContrasena.AutoSize = true;
+            this.lblContrasena.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblContrasena.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
+            this.lblContrasena.Location = new System.Drawing.Point(43, 177);
+            this.lblContrasena.Name = "lblContrasena";
+            this.lblContrasena.Size = new System.Drawing.Size(83, 20);
+            this.lblContrasena.TabIndex = 3;
+            this.lblContrasena.Text = "Contraseña";
             // 
-            // txtContraseña
+            // txtContrasena
             // 
-            this.txtContraseña.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtContraseña.Location = new System.Drawing.Point(210, 172);
-            this.txtContraseña.MaxLength = 20;
-            this.txtContraseña.Name = "txtContraseña";
-            this.txtContraseña.PasswordChar = '●';
-            this.txtContraseña.Size = new System.Drawing.Size(260, 27);
-            this.txtContraseña.TabIndex = 4;
+            this.txtContrasena.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.txtContrasena.Location = new System.Drawing.Point(210, 172);
+            this.txtContrasena.MaxLength = 20;
+            this.txtContrasena.Name = "txtContrasena";
+            this.txtContrasena.PasswordChar = '●';
+            this.txtContrasena.Size = new System.Drawing.Size(260, 27);
+            this.txtContrasena.TabIndex = 4;
             // 
             // lblConfirmar
             // 
@@ -179,8 +179,8 @@ namespace GUI
             this.Controls.Add(this.lblMensaje);
             this.Controls.Add(this.txtConfirmar);
             this.Controls.Add(this.lblConfirmar);
-            this.Controls.Add(this.txtContraseña);
-            this.Controls.Add(this.lblContraseña);
+            this.Controls.Add(this.txtContrasena);
+            this.Controls.Add(this.lblContrasena);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.pnlTitulo);
@@ -202,8 +202,8 @@ namespace GUI
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.Label lblContraseña;
-        private System.Windows.Forms.TextBox txtContraseña;
+        private System.Windows.Forms.Label lblContrasena;
+        private System.Windows.Forms.TextBox txtContrasena;
         private System.Windows.Forms.Label lblConfirmar;
         private System.Windows.Forms.TextBox txtConfirmar;
         private System.Windows.Forms.Label lblMensaje;

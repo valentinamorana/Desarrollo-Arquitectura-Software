@@ -11,6 +11,7 @@ namespace Tests.Unitarios
         private FakeMapperPartida mapper;
         private FakeArchivoMovimientos xml;
         private FakeDado dado;
+        private FakeMapperLog log;
         private PARTIDA partida;
         private BE.USUARIO ana;
         private BE.USUARIO beto;
@@ -24,7 +25,8 @@ namespace Tests.Unitarios
             mapper = new FakeMapperPartida();
             xml = new FakeArchivoMovimientos();
             dado = new FakeDado();
-            partida = new PARTIDA(mapper, xml, dado);
+            log = new FakeMapperLog();
+            partida = new PARTIDA(mapper, xml, dado, new BITACORA(log));
             partida.PartidaFinalizada += Partida_PartidaFinalizada;
 
             ana = new BE.USUARIO();
@@ -42,6 +44,24 @@ namespace Tests.Unitarios
         {
             finalizaciones++;
             ultimaFueAbandonada = abandonada;
+        }
+
+        private string UltimaDescripcionEnBitacora()
+        {
+            return log.Insertados[log.Insertados.Count - 1].Descripcion;
+        }
+
+        private int RegistrosDeTipo(int idTipo)
+        {
+            int cantidad = 0;
+            foreach (BE.LOG registro in log.Insertados)
+            {
+                if (registro.IdTipo == idTipo)
+                {
+                    cantidad++;
+                }
+            }
+            return cantidad;
         }
 
         private void JugarTurno(bool tachar)
@@ -83,13 +103,14 @@ namespace Tests.Unitarios
         }
 
         [TestMethod]
-        public void Iniciar_Correcto_CreaXmlInsertaYEmpiezaElJugador1()
+        public void Iniciar_Correcto_CreaXmlRegistraElInicioYEmpiezaElJugador1()
         {
             partida.Iniciar(ana, beto);
 
             Assert.IsTrue(partida.EnCurso);
             Assert.AreEqual(1, xml.Creados.Count);
-            Assert.AreEqual(1, mapper.Insertadas);
+            Assert.AreEqual(2, RegistrosDeTipo(BE.LOG.INICIO_PARTIDA));
+            Assert.AreEqual(0, mapper.Insertadas);
             Assert.AreEqual("ana", partida.JugadorDelTurno().Nombre);
             Assert.AreEqual(PARTIDA.TIRADAS_POR_TURNO, partida.TirosRestantes);
             Assert.AreEqual(1, partida.TurnoDelJugador);
@@ -101,7 +122,7 @@ namespace Tests.Unitarios
             partida.Iniciar(ana, beto);
 
             Assert.ThrowsException<Exception>(() => partida.Iniciar(ana, beto));
-            Assert.AreEqual(1, mapper.Insertadas);
+            Assert.AreEqual(2, RegistrosDeTipo(BE.LOG.INICIO_PARTIDA));
             Assert.AreEqual(1, xml.Creados.Count);
             Assert.IsTrue(partida.EnCurso);
         }
@@ -115,24 +136,25 @@ namespace Tests.Unitarios
             partida.Iniciar(ana, beto);
 
             Assert.IsTrue(partida.EnCurso);
-            Assert.AreEqual(2, mapper.Insertadas);
+            Assert.AreEqual(1, mapper.Insertadas);
+            Assert.AreEqual(4, RegistrosDeTipo(BE.LOG.INICIO_PARTIDA));
             Assert.AreEqual("ana", partida.JugadorDelTurno().Nombre);
         }
 
         [TestMethod]
-        public void Iniciar_FallaElXml_NoInsertaEnLaBase()
+        public void Iniciar_FallaElXml_NoRegistraNada()
         {
             xml.LanzarAlCrear = true;
 
             Assert.ThrowsException<Exception>(() => partida.Iniciar(ana, beto));
-            Assert.AreEqual(0, mapper.Insertadas);
+            Assert.AreEqual(0, log.Insertados.Count);
             Assert.IsFalse(partida.EnCurso);
         }
 
         [TestMethod]
-        public void Iniciar_LaBaseDevuelveError_EliminaElXml()
+        public void Iniciar_LaBitacoraDevuelveError_EliminaElXml()
         {
-            mapper.IdAInsertar = -1;
+            log.ResultadoInsertar = -1;
 
             Assert.ThrowsException<Exception>(() => partida.Iniciar(ana, beto));
             Assert.AreEqual(1, xml.Eliminados.Count);
@@ -141,9 +163,9 @@ namespace Tests.Unitarios
         }
 
         [TestMethod]
-        public void Iniciar_LaBaseLanzaExcepcion_EliminaElXml()
+        public void Iniciar_LaBitacoraLanzaExcepcion_EliminaElXml()
         {
-            mapper.LanzarAlInsertar = true;
+            log.LanzarAlInsertar = true;
 
             Assert.ThrowsException<Exception>(() => partida.Iniciar(ana, beto));
             Assert.AreEqual(1, xml.Eliminados.Count);
@@ -151,13 +173,13 @@ namespace Tests.Unitarios
         }
 
         [TestMethod]
-        public void Iniciar_FallaLaBaseYTambienBorrarElXml_LanzaElErrorDeLaBase()
+        public void Iniciar_FallaLaBitacoraYTambienBorrarElXml_LanzaElErrorDeLaBitacora()
         {
-            mapper.LanzarAlInsertar = true;
+            log.LanzarAlInsertar = true;
             xml.LanzarAlEliminar = true;
 
             Exception error = Assert.ThrowsException<Exception>(() => partida.Iniciar(ana, beto));
-            Assert.AreEqual("Falla simulada de la base al insertar", error.Message);
+            Assert.AreEqual("Falla simulada de la base al registrar en la bitácora", error.Message);
             Assert.IsFalse(partida.EnCurso);
         }
 
@@ -210,6 +232,21 @@ namespace Tests.Unitarios
 
             Assert.IsFalse(partida.PuedeTirar());
             Assert.ThrowsException<Exception>(() => partida.Tirar(new bool[5]));
+        }
+
+        [TestMethod]
+        public void PuedeGuardarDados_SoloEntreLaPrimeraYLaUltimaTirada()
+        {
+            partida.Iniciar(ana, beto);
+            Assert.IsFalse(partida.PuedeGuardarDados());
+
+            partida.Tirar(new bool[5]);
+            Assert.IsTrue(partida.PuedeGuardarDados());
+
+            partida.Tirar(new bool[5]);
+            partida.Tirar(new bool[5]);
+            Assert.IsFalse(partida.PuedeGuardarDados());
+            Assert.IsTrue(partida.PuedeAnotar());
         }
 
         [TestMethod]
@@ -337,12 +374,13 @@ namespace Tests.Unitarios
             }
 
             Assert.IsFalse(partida.EnCurso);
-            Assert.AreEqual(1, mapper.Finalizadas);
+            Assert.AreEqual(1, mapper.Insertadas);
             Assert.AreEqual(beto.ID, mapper.UltimoGanador);
             Assert.AreEqual(0, mapper.UltimoPuntaje1);
             Assert.AreEqual(partida.CalcularTotal(2), mapper.UltimoPuntaje2);
             Assert.IsTrue(mapper.UltimoPuntaje2 > 0);
-            Assert.AreEqual("Fin de partida", mapper.UltimaDescripcion);
+            Assert.AreEqual("Fin de partida", UltimaDescripcionEnBitacora());
+            Assert.AreEqual(2, RegistrosDeTipo(BE.LOG.FIN_PARTIDA));
             Assert.AreEqual(22, xml.Contar("Movimiento"));
             Assert.AreEqual(1, xml.Contar("Fin"));
             Assert.AreEqual(1, finalizaciones);
@@ -376,7 +414,7 @@ namespace Tests.Unitarios
             }
             JugarTurno(false);
 
-            mapper.ResultadoFinalizar = false;
+            mapper.IdAInsertar = -1;
             partida.Tirar(new bool[5]);
             string ultima = partida.CategoriasDisponibles()[0];
 
@@ -388,13 +426,13 @@ namespace Tests.Unitarios
             Assert.AreEqual(0, xml.Contar("Fin"));
             Assert.AreEqual(0, finalizaciones);
 
-            mapper.ResultadoFinalizar = true;
+            mapper.IdAInsertar = 1;
             partida.Anotar(ultima);
 
             Assert.IsFalse(partida.EnCurso);
             Assert.AreEqual(22, xml.Contar("Movimiento"));
             Assert.AreEqual(1, xml.Contar("Fin"));
-            Assert.AreEqual(1, mapper.Finalizadas);
+            Assert.AreEqual(1, mapper.Insertadas);
             Assert.AreEqual(1, finalizaciones);
         }
 
@@ -409,7 +447,7 @@ namespace Tests.Unitarios
             }
             JugarTurno(false);
 
-            mapper.LanzarAlFinalizar = true;
+            mapper.LanzarAlInsertar = true;
             partida.Tirar(new bool[5]);
             string ultima = partida.CategoriasDisponibles()[0];
 
@@ -436,7 +474,29 @@ namespace Tests.Unitarios
 
             Assert.ThrowsException<Exception>(() => partida.Anotar(ultima));
             Assert.IsFalse(partida.EnCurso);
-            Assert.AreEqual(1, mapper.Finalizadas);
+            Assert.AreEqual(1, mapper.Insertadas);
+            Assert.AreEqual(1, finalizaciones);
+        }
+
+        [TestMethod]
+        public void PartidaCompleta_FallaLaBitacoraDelFin_IgualQuedaGuardada()
+        {
+            partida.Iniciar(ana, beto);
+            for (int ronda = 0; ronda < GENERALA.CATEGORIAS.Length - 1; ronda++)
+            {
+                JugarTurno(false);
+                JugarTurno(false);
+            }
+            JugarTurno(false);
+
+            log.LanzarAlInsertar = true;
+            partida.Tirar(new bool[5]);
+            string ultima = partida.CategoriasDisponibles()[0];
+
+            Assert.ThrowsException<Exception>(() => partida.Anotar(ultima));
+            Assert.IsFalse(partida.EnCurso);
+            Assert.AreEqual(1, mapper.Insertadas);
+            Assert.AreEqual(1, xml.Contar("Fin"));
             Assert.AreEqual(1, finalizaciones);
         }
 
@@ -450,7 +510,7 @@ namespace Tests.Unitarios
 
             Assert.IsFalse(partida.EnCurso);
             Assert.AreEqual(beto.ID, mapper.UltimoGanador);
-            Assert.AreEqual("Partida abandonada por ana", mapper.UltimaDescripcion);
+            Assert.AreEqual("Partida abandonada por ana", UltimaDescripcionEnBitacora());
             Assert.AreEqual(1, xml.Contar("Fin"));
             Assert.IsTrue(xml.Elementos[xml.Elementos.Count - 1].EndsWith("|beto|ana"));
             Assert.AreEqual(1, finalizaciones);
@@ -462,7 +522,7 @@ namespace Tests.Unitarios
         public void Abandonar_LaBaseNoGuarda_SigueEnCurso()
         {
             partida.Iniciar(ana, beto);
-            mapper.ResultadoFinalizar = false;
+            mapper.IdAInsertar = -1;
 
             Assert.ThrowsException<Exception>(() => partida.Abandonar(beto));
             Assert.IsTrue(partida.EnCurso);
@@ -487,7 +547,7 @@ namespace Tests.Unitarios
         {
             partida.Abandonar(ana);
 
-            Assert.AreEqual(0, mapper.IntentosFinalizar);
+            Assert.AreEqual(0, mapper.IntentosInsertar);
             Assert.AreEqual(0, finalizaciones);
         }
 

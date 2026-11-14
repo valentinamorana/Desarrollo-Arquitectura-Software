@@ -11,7 +11,7 @@ namespace Tests.Unitarios
             BLL.USUARIO usuario = new BLL.USUARIO();
             BE.USUARIO nuevo = new BE.USUARIO();
             nuevo.Nombre = "juan";
-            nuevo.Contraseña = "clave1";
+            nuevo.Contrasena = "clave1";
             Assert.AreEqual("", usuario.ValidarRegistro(nuevo));
         }
 
@@ -21,40 +21,40 @@ namespace Tests.Unitarios
             BLL.USUARIO usuario = new BLL.USUARIO();
             BE.USUARIO nuevo = new BE.USUARIO();
             nuevo.Nombre = "juan perez";
-            nuevo.Contraseña = "clave1";
+            nuevo.Contrasena = "clave1";
             Assert.AreNotEqual("", usuario.ValidarRegistro(nuevo));
         }
 
         [TestMethod]
-        public void Contraseña_SinNumero_DaError()
+        public void Contrasena_SinNumero_DaError()
         {
             BLL.USUARIO usuario = new BLL.USUARIO();
             BE.USUARIO nuevo = new BE.USUARIO();
             nuevo.Nombre = "juan";
-            nuevo.Contraseña = "clavesinnumero";
+            nuevo.Contrasena = "clavesinnumero";
             Assert.AreNotEqual("", usuario.ValidarRegistro(nuevo));
         }
 
         [TestMethod]
-        public void Contraseña_MuyCorta_DaError()
+        public void Contrasena_MuyCorta_DaError()
         {
             BLL.USUARIO usuario = new BLL.USUARIO();
             BE.USUARIO nuevo = new BE.USUARIO();
             nuevo.Nombre = "juan";
-            nuevo.Contraseña = "a1";
+            nuevo.Contrasena = "a1";
             Assert.AreNotEqual("", usuario.ValidarRegistro(nuevo));
         }
 
-        private BE.USUARIO CrearUsuario(string nombre, string contraseña)
+        private BE.USUARIO CrearUsuario(string nombre, string contrasena)
         {
             BE.USUARIO nuevo = new BE.USUARIO();
             nuevo.Nombre = nombre;
-            nuevo.Contraseña = contraseña;
+            nuevo.Contrasena = contrasena;
             return nuevo;
         }
 
         [TestMethod]
-        public void Login_Correcto_RegistraElInicioDeSesionYBorraLaContraseña()
+        public void Login_Correcto_RegistraElInicioDeSesionYBorraLaContrasena()
         {
             FakeMapperUsuario mapper = new FakeMapperUsuario();
             mapper.IdDelLogin = 5;
@@ -64,7 +64,7 @@ namespace Tests.Unitarios
 
             Assert.IsTrue(usuarioBLL.Login(usuario));
             Assert.AreEqual(5, usuario.ID);
-            Assert.AreEqual("", usuario.Contraseña);
+            Assert.AreEqual("", usuario.Contrasena);
             Assert.AreEqual(1, log.Insertados.Count);
             Assert.AreEqual(BE.LOG.INICIO_SESION, log.Insertados[0].IdTipo);
             Assert.AreEqual(5, log.Insertados[0].IdUsuario);

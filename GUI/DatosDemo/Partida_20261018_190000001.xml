@@ -1,0 +1,63 @@
+<Partida fecha="18/10/2026 19:00:00" jugador1="valentina" jugador2="jugador2">
+  <Tirada turno="1" jugador="valentina" numero="1" dados="2,1,4,5,1" guardados="" fecha="18/10/2026 19:00:43" />
+  <Movimiento turno="1" jugador="valentina" dados="2,1,4,5,1" categoria="Cincos" puntaje="5" fecha="18/10/2026 19:00:57" />
+  <Tirada turno="2" jugador="jugador2" numero="1" dados="2,6,5,2,3" guardados="" fecha="18/10/2026 19:01:22" />
+  <Tirada turno="2" jugador="jugador2" numero="2" dados="3,3,1,2,3" guardados="4" fecha="18/10/2026 19:01:43" />
+  <Movimiento turno="2" jugador="jugador2" dados="3,3,1,2,3" categoria="Doses" puntaje="2" fecha="18/10/2026 19:02:02" />
+  <Tirada turno="3" jugador="valentina" numero="1" dados="4,5,4,3,3" guardados="" fecha="18/10/2026 19:02:27" />
+  <Tirada turno="3" jugador="valentina" numero="2" dados="4,5,4,3,5" guardados="2,3,4" fecha="18/10/2026 19:02:53" />
+  <Tirada turno="3" jugador="valentina" numero="3" dados="1,3,6,4,4" guardados="" fecha="18/10/2026 19:03:27" />
+  <Movimiento turno="3" jugador="valentina" dados="1,3,6,4,4" categoria="Cuatros" puntaje="8" fecha="18/10/2026 19:04:05" />
+  <Tirada turno="4" jugador="jugador2" numero="1" dados="3,2,3,4,6" guardados="" fecha="18/10/2026 19:04:29" />
+  <Tirada turno="4" jugador="jugador2" numero="2" dados="5,4,3,1,5" guardados="3" fecha="18/10/2026 19:04:53" />
+  <Movimiento turno="4" jugador="jugador2" dados="5,4,3,1,5" categoria="Cuatros" puntaje="4" fecha="18/10/2026 19:05:34" />
+  <Tirada turno="5" jugador="valentina" numero="1" dados="2,1,5,1,4" guardados="" fecha="18/10/2026 19:06:06" />
+  <Tirada turno="5" jugador="valentina" numero="2" dados="2,5,5,1,1" guardados="1,3" fecha="18/10/2026 19:06:30" />
+  <Movimiento turno="5" jugador="valentina" dados="2,5,5,1,1" categoria="Unos" puntaje="2" fecha="18/10/2026 19:07:07" />
+  <Tirada turno="6" jugador="jugador2" numero="1" dados="2,3,6,5,4" guardados="" fecha="18/10/2026 19:07:50" />
+  <Tirada turno="6" jugador="jugador2" numero="2" dados="6,3,6,5,6" guardados="2,3,4" fecha="18/10/2026 19:08:15" />
+  <Tirada turno="6" jugador="jugador2" numero="3" dados="6,3,2,5,6" guardados="1,2,4,5" fecha="18/10/2026 19:08:36" />
+  <Movimiento turno="6" jugador="jugador2" dados="6,3,2,5,6" categoria="Seises" puntaje="12" fecha="18/10/2026 19:09:06" />
+  <Tirada turno="7" jugador="valentina" numero="1" dados="4,5,3,6,4" guardados="" fecha="18/10/2026 19:09:20" />
+  <Tirada turno="7" jugador="valentina" numero="2" dados="3,5,3,2,1" guardados="3" fecha="18/10/2026 19:10:03" />
+  <Tirada turno="7" jugador="valentina" numero="3" dados="3,5,3,5,2" guardados="2,3" fecha="18/10/2026 19:10:20" />
+  <Movimiento turno="7" jugador="valentina" dados="3,5,3,5,2" categoria="Seises" puntaje="0" fecha="18/10/2026 19:10:42" />
+  <Tirada turno="8" jugador="jugador2" numero="1" dados="2,1,5,5,5" guardados="" fecha="18/10/2026 19:11:05" />
+  <Tirada turno="8" jugador="jugador2" numero="2" dados="2,6,5,5,1" guardados="3,4" fecha="18/10/2026 19:11:43" />
+  <Tirada turno="8" jugador="jugador2" numero="3" dados="1,6,5,3,1" guardados="2,3,5" fecha="18/10/2026 19:11:59" />
+  <Movimiento turno="8" jugador="jugador2" dados="1,6,5,3,1" categoria="Unos" puntaje="2" fecha="18/10/2026 19:12:35" />
+  <Tirada turno="9" jugador="valentina" numero="1" dados="1,6,4,1,6" guardados="" fecha="18/10/2026 19:13:17" />
+  <Movimiento turno="9" jugador="valentina" dados="1,6,4,1,6" categoria="Generala" puntaje="0" fecha="18/10/2026 19:13:39" />
+  <Tirada turno="10" jugador="jugador2" numero="1" dados="4,5,4,4,6" guardados="" fecha="18/10/2026 19:13:52" />
+  <Tirada turno="10" jugador="jugador2" numero="2" dados="6,1,2,4,6" guardados="5" fecha="18/10/2026 19:14:15" />
+  <Movimiento turno="10" jugador="jugador2" dados="6,1,2,4,6" categoria="Escalera" puntaje="0" fecha="18/10/2026 19:14:39" />
+  <Tirada turno="11" jugador="valentina" numero="1" dados="6,3,4,2,6" guardados="" fecha="18/10/2026 19:14:57" />
+  <Movimiento turno="11" jugador="valentina" dados="6,3,4,2,6" categoria="Treses" puntaje="3" fecha="18/10/2026 19:15:28" />
+  <Tirada turno="12" jugador="jugador2" numero="1" dados="5,5,3,3,5" guardados="" fecha="18/10/2026 19:16:10" />
+  <Movimiento turno="12" jugador="jugador2" dados="5,5,3,3,5" categoria="Full" puntaje="60" fecha="18/10/2026 19:16:22" />
+  <Tirada turno="13" jugador="valentina" numero="1" dados="6,3,3,3,1" guardados="" fecha="18/10/2026 19:16:44" />
+  <Movimiento turno="13" jugador="valentina" dados="6,3,3,3,1" categoria="Doses" puntaje="0" fecha="18/10/2026 19:17:13" />
+  <Tirada turno="14" jugador="jugador2" numero="1" dados="3,4,2,4,4" guardados="" fecha="18/10/2026 19:17:25" />
+  <Tirada turno="14" jugador="jugador2" numero="2" dados="3,4,1,4,4" guardados="4" fecha="18/10/2026 19:18:00" />
+  <Movimiento turno="14" jugador="jugador2" dados="3,4,1,4,4" categoria="Generala" puntaje="0" fecha="18/10/2026 19:18:13" />
+  <Tirada turno="15" jugador="valentina" numero="1" dados="3,4,2,2,3" guardados="" fecha="18/10/2026 19:18:48" />
+  <Movimiento turno="15" jugador="valentina" dados="3,4,2,2,3" categoria="Full" puntaje="0" fecha="18/10/2026 19:19:16" />
+  <Tirada turno="16" jugador="jugador2" numero="1" dados="6,1,4,5,2" guardados="" fecha="18/10/2026 19:19:46" />
+  <Tirada turno="16" jugador="jugador2" numero="2" dados="4,1,3,3,2" guardados="2,5" fecha="18/10/2026 19:20:25" />
+  <Movimiento turno="16" jugador="jugador2" dados="4,1,3,3,2" categoria="Generala Doble" puntaje="0" fecha="18/10/2026 19:20:57" />
+  <Tirada turno="17" jugador="valentina" numero="1" dados="1,6,3,5,1" guardados="" fecha="18/10/2026 19:21:19" />
+  <Movimiento turno="17" jugador="valentina" dados="1,6,3,5,1" categoria="Escalera" puntaje="0" fecha="18/10/2026 19:21:54" />
+  <Tirada turno="18" jugador="jugador2" numero="1" dados="1,4,5,3,1" guardados="" fecha="18/10/2026 19:22:13" />
+  <Movimiento turno="18" jugador="jugador2" dados="1,4,5,3,1" categoria="Cincos" puntaje="5" fecha="18/10/2026 19:22:33" />
+  <Tirada turno="19" jugador="valentina" numero="1" dados="6,5,1,6,5" guardados="" fecha="18/10/2026 19:22:49" />
+  <Tirada turno="19" jugador="valentina" numero="2" dados="6,5,4,5,5" guardados="1,2,5" fecha="18/10/2026 19:23:21" />
+  <Tirada turno="19" jugador="valentina" numero="3" dados="2,5,4,5,3" guardados="2,3,4" fecha="18/10/2026 19:23:42" />
+  <Movimiento turno="19" jugador="valentina" dados="2,5,4,5,3" categoria="Generala Doble" puntaje="0" fecha="18/10/2026 19:24:21" />
+  <Tirada turno="20" jugador="jugador2" numero="1" dados="5,5,3,5,4" guardados="" fecha="18/10/2026 19:24:33" />
+  <Movimiento turno="20" jugador="jugador2" dados="5,5,3,5,4" categoria="Treses" puntaje="3" fecha="18/10/2026 19:25:10" />
+  <Tirada turno="21" jugador="valentina" numero="1" dados="1,3,4,3,5" guardados="" fecha="18/10/2026 19:25:46" />
+  <Movimiento turno="21" jugador="valentina" dados="1,3,4,3,5" categoria="Poker" puntaje="0" fecha="18/10/2026 19:26:00" />
+  <Tirada turno="22" jugador="jugador2" numero="1" dados="2,5,5,3,4" guardados="" fecha="18/10/2026 19:26:27" />
+  <Movimiento turno="22" jugador="jugador2" dados="2,5,5,3,4" categoria="Poker" puntaje="0" fecha="18/10/2026 19:26:41" />
+  <Fin turnos="22" jugador1="valentina" puntajeJugador1="18" jugador2="jugador2" puntajeJugador2="88" ganador="jugador2" abandonada="no" abandono="" fecha="18/10/2026 19:27:14" />
+</Partida>

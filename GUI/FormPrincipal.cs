@@ -13,12 +13,7 @@ namespace GUI
 
         private ucDado[] ucDados;
 
-        private bool volverAlLogin = false;
-
-        public bool VolverAlLogin
-        {
-            get { return volverAlLogin; }
-        }
+        private bool huboErrorAlAbandonar = false;
 
         public USUARIO Jugador2
         {
@@ -197,9 +192,6 @@ namespace GUI
                 btnLoginJugador2.Text = "Cambiar Jugador 2";
             }
             btnAbandonar.Visible = enCurso;
-
-            btnBackup.Enabled = !enCurso;
-            btnRestore.Enabled = !enCurso;
         }
 
         private void ActualizarComboCategorias(bool turnoNuevo)
@@ -305,7 +297,7 @@ namespace GUI
                 nuevoJugador2 = formLogin.UsuarioLogueado;
             }
 
-            if (jugador2 != null)
+            if (jugador2 != null && jugador2.ID != nuevoJugador2.ID)
             {
                 try
                 {
@@ -461,6 +453,7 @@ namespace GUI
 
         private bool PreguntarYAbandonar(string mensaje)
         {
+            huboErrorAlAbandonar = false;
             USUARIO quienAbandona;
             using (FormAbandonar formAbandonar = new FormAbandonar(jugador1, jugador2, mensaje))
             {
@@ -471,7 +464,6 @@ namespace GUI
                 quienAbandona = formAbandonar.UsuarioQueAbandona;
             }
 
-            bool abandonoOk = true;
             try
             {
                 partidaBLL.Abandonar(quienAbandona);
@@ -479,10 +471,10 @@ namespace GUI
             catch (Exception ex)
             {
                 MostrarError(ex);
-                abandonoOk = false;
+                huboErrorAlAbandonar = partidaBLL.EnCurso;
             }
             ActualizarPantalla();
-            return abandonoOk;
+            return !partidaBLL.EnCurso;
         }
 
         private void btnAbandonar_Click(object sender, EventArgs e)
@@ -497,103 +489,29 @@ namespace GUI
 
         private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (volverAlLogin)
+            if (!partidaBLL.EnCurso)
             {
                 return;
             }
 
-            if (partidaBLL.EnCurso)
+            bool termino = PreguntarYAbandonar(
+                "Hay una partida en curso. Para volver al menú, uno de los 2 jugadores tiene que abandonarla: la gana el otro.");
+            if (termino)
             {
-                bool abandono = PreguntarYAbandonar(
-                    "Hay una partida en curso. Para volver al menú, uno de los 2 jugadores tiene que abandonarla: la gana el otro.");
-                if (!abandono)
+                return;
+            }
+
+            if (huboErrorAlAbandonar)
+            {
+                DialogResult salir = Mensaje.Show(
+                    "No se pudo guardar el abandono en la base de datos.\n\n¿Querés salir igual? La partida no va a quedar registrada.",
+                    "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                if (salir == DialogResult.Yes)
                 {
-                    e.Cancel = true;
                     return;
                 }
             }
-        }
-
-        private void btnBackup_Click(object sender, EventArgs e)
-        {
-            BLL.BACKUPRESTORE backupRestore = new BLL.BACKUPRESTORE();
-            sfdBackup.FileName = "GENERALA_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".bak";
-            sfdBackup.InitialDirectory = backupRestore.CarpetaBackupPorDefecto();
-
-            if (sfdBackup.ShowDialog() == DialogResult.OK)
-            {
-                string error;
-                try
-                {
-                    error = backupRestore.HacerBackup(sfdBackup.FileName, jugador1);
-                }
-                catch (Exception ex)
-                {
-                    Mensaje.Show(
-                        "El backup se realizó en:\n" + sfdBackup.FileName +
-                        "\n\nPero no se pudo registrar en la bitácora: " + ex.Message +
-                        "\n\nSi la base es de una versión anterior, volvé a correr BD/Script.sql.",
-                        "Backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (error == "")
-                {
-                    Mensaje.Show("Backup realizado correctamente en:\n" + sfdBackup.FileName);
-                }
-                else
-                {
-                    Mensaje.Show(
-                        "Ocurrió un error al hacer el backup:\n" + error +
-                        "\n\nSi es un problema de permisos, probá guardarlo en la carpeta de backups de SQL Server.",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void btnRestore_Click(object sender, EventArgs e)
-        {
-            BLL.BACKUPRESTORE backupRestore = new BLL.BACKUPRESTORE();
-            ofdRestore.InitialDirectory = backupRestore.CarpetaBackupPorDefecto();
-
-            if (ofdRestore.ShowDialog() == DialogResult.OK)
-            {
-                DialogResult confirmar = Mensaje.Show(
-                    "Esto va a reemplazar los datos actuales de la base por los del backup. ¿Confirmás?",
-                    "Restaurar backup", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                if (confirmar == DialogResult.Yes)
-                {
-                    bool restaurada;
-                    string error = backupRestore.HacerRestore(ofdRestore.FileName, jugador1, out restaurada);
-                    if (restaurada)
-                    {
-                        if (error == "")
-                        {
-                            Mensaje.Show(
-                                "Restore realizado correctamente.\n\nComo los datos de la base cambiaron, " +
-                                "hay que volver a iniciar sesión.",
-                                "Restaurar backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            Mensaje.Show(
-                                "Los datos del backup se restauraron, pero después ocurrió un error:\n" + error +
-                                "\n\nHay que volver a iniciar sesión. Si la aplicación no puede conectarse, " +
-                                "ejecutá en SSMS: ALTER DATABASE GENERALA SET MULTI_USER",
-                                "Restaurar backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                        volverAlLogin = true;
-                        this.Close();
-                    }
-                    else
-                    {
-                        Mensaje.Show(
-                            "Ocurrió un error al restaurar el backup:\n" + error,
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
+            e.Cancel = true;
         }
 
         private void btnReglas_Click(object sender, EventArgs e)

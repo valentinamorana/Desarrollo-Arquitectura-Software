@@ -32,8 +32,6 @@ namespace GUI
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlEncabezado = new System.Windows.Forms.Panel();
-            this.btnRestore = new System.Windows.Forms.Button();
-            this.btnBackup = new System.Windows.Forms.Button();
             this.btnReglas = new System.Windows.Forms.Button();
             this.btnVolverMenu = new System.Windows.Forms.Button();
             this.lblTitulo = new System.Windows.Forms.Label();
@@ -63,8 +61,6 @@ namespace GUI
             this.lblTotalJugador2 = new System.Windows.Forms.Label();
             this.lblTotalJugador1 = new System.Windows.Forms.Label();
             this.dgvPuntajes = new System.Windows.Forms.DataGridView();
-            this.sfdBackup = new System.Windows.Forms.SaveFileDialog();
-            this.ofdRestore = new System.Windows.Forms.OpenFileDialog();
             this.pnlEncabezado.SuspendLayout();
             this.pnlJugadores.SuspendLayout();
             this.pnlJuego.SuspendLayout();
@@ -76,8 +72,6 @@ namespace GUI
             // pnlEncabezado
             // 
             this.pnlEncabezado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
-            this.pnlEncabezado.Controls.Add(this.btnRestore);
-            this.pnlEncabezado.Controls.Add(this.btnBackup);
             this.pnlEncabezado.Controls.Add(this.btnReglas);
             this.pnlEncabezado.Controls.Add(this.btnVolverMenu);
             this.pnlEncabezado.Controls.Add(this.lblTitulo);
@@ -86,36 +80,6 @@ namespace GUI
             this.pnlEncabezado.Name = "pnlEncabezado";
             this.pnlEncabezado.Size = new System.Drawing.Size(1000, 70);
             this.pnlEncabezado.TabIndex = 0;
-            // 
-            // btnRestore
-            // 
-            this.btnRestore.BackColor = System.Drawing.Color.White;
-            this.btnRestore.FlatAppearance.BorderSize = 0;
-            this.btnRestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRestore.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnRestore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
-            this.btnRestore.Location = new System.Drawing.Point(790, 15);
-            this.btnRestore.Name = "btnRestore";
-            this.btnRestore.Size = new System.Drawing.Size(90, 40);
-            this.btnRestore.TabIndex = 3;
-            this.btnRestore.Text = "Restore";
-            this.btnRestore.UseVisualStyleBackColor = false;
-            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
-            // 
-            // btnBackup
-            // 
-            this.btnBackup.BackColor = System.Drawing.Color.White;
-            this.btnBackup.FlatAppearance.BorderSize = 0;
-            this.btnBackup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBackup.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnBackup.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(20)))), ((int)(((byte)(87)))));
-            this.btnBackup.Location = new System.Drawing.Point(690, 15);
-            this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(90, 40);
-            this.btnBackup.TabIndex = 2;
-            this.btnBackup.Text = "Backup";
-            this.btnBackup.UseVisualStyleBackColor = false;
-            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
             // 
             // btnReglas
             // 
@@ -527,16 +491,6 @@ namespace GUI
             this.dgvPuntajes.TabIndex = 0;
             this.dgvPuntajes.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPuntajes_CellFormatting);
             // 
-            // sfdBackup
-            // 
-            this.sfdBackup.Filter = "Backup de SQL Server (*.bak)|*.bak";
-            this.sfdBackup.Title = "Guardar backup";
-            // 
-            // ofdRestore
-            // 
-            this.ofdRestore.Filter = "Backup de SQL Server (*.bak)|*.bak";
-            this.ofdRestore.Title = "Restaurar backup";
-            // 
             // FormPrincipal
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -576,8 +530,6 @@ namespace GUI
         private System.Windows.Forms.Button btnVolverMenu;
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Button btnReglas;
-        private System.Windows.Forms.Button btnBackup;
-        private System.Windows.Forms.Button btnRestore;
         private System.Windows.Forms.Panel pnlJugadores;
         private System.Windows.Forms.Label lblJugador1;
         private System.Windows.Forms.Label lblJugador2;
@@ -604,7 +556,5 @@ namespace GUI
         private System.Windows.Forms.Label lblTotalJugador2;
         private System.Windows.Forms.Label lblVaGanando;
         private System.Windows.Forms.PictureBox picDecoracion;
-        private System.Windows.Forms.SaveFileDialog sfdBackup;
-        private System.Windows.Forms.OpenFileDialog ofdRestore;
     }
 }

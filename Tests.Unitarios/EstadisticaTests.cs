@@ -66,7 +66,7 @@ namespace Tests.Unitarios
         [TestMethod]
         public void Calcular_CuentaGanadasPerdidasYEmpatadas()
         {
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas(), new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas());
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
 
@@ -78,7 +78,7 @@ namespace Tests.Unitarios
         [TestMethod]
         public void Calcular_PromedioVictorias_EsPorcentaje()
         {
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas(), new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas());
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
 
@@ -92,7 +92,7 @@ namespace Tests.Unitarios
             mapper.PartidasParaListar.Add(CrearPartida(1, "juan", 10, 2, "ana", 5, 1, new DateTime(2026, 5, 1), 10, ""));
             mapper.PartidasParaListar.Add(CrearPartida(1, "juan", 5, 2, "ana", 10, 2, new DateTime(2026, 5, 2), 10, ""));
             mapper.PartidasParaListar.Add(CrearPartida(1, "juan", 5, 2, "ana", 5, 0, new DateTime(2026, 5, 3), 10, ""));
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(mapper, new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(mapper);
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
 
@@ -102,7 +102,7 @@ namespace Tests.Unitarios
         [TestMethod]
         public void Calcular_SinPartidas_TodoEnCero()
         {
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(new FakeMapperPartida(), new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(new FakeMapperPartida());
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
 
@@ -118,7 +118,7 @@ namespace Tests.Unitarios
         [TestMethod]
         public void Calcular_TiempoTotal_SumaLasDuraciones()
         {
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas(), new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas());
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
 
@@ -128,7 +128,7 @@ namespace Tests.Unitarios
         [TestMethod]
         public void Calcular_UsuarioJugador1_RivalYPuntajesDelJugador2()
         {
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas(), new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas());
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
             BE.FILAHISTORIAL fila = resultado.Historial[0];
@@ -144,7 +144,7 @@ namespace Tests.Unitarios
         [TestMethod]
         public void Calcular_UsuarioJugador2_RivalYPuntajesInvertidos()
         {
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas(), new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas());
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
             BE.FILAHISTORIAL fila = resultado.Historial[1];
@@ -159,7 +159,7 @@ namespace Tests.Unitarios
         [TestMethod]
         public void Calcular_Historial_ResultadosEnOrden()
         {
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas(), new FakeMapperUsuario());
+            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas());
 
             BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
 
@@ -171,46 +171,6 @@ namespace Tests.Unitarios
             Assert.AreEqual("Ganada", resultado.Historial[3].Resultado);
             Assert.AreEqual(160, resultado.Historial[3].PuntajePropio);
             Assert.AreEqual(90, resultado.Historial[3].PuntajeRival);
-        }
-
-        [TestMethod]
-        public void Calcular_RivalSinNombre_MuestraGuion()
-        {
-            FakeMapperPartida mapper = new FakeMapperPartida();
-            mapper.PartidasParaListar.Add(CrearPartida(1, "juan", 10, 0, "", 5, 1, new DateTime(2026, 5, 1), 10, ""));
-            mapper.PartidasParaListar.Add(CrearPartida(0, null, 10, 1, "juan", 5, 0, new DateTime(2026, 5, 2), 10, ""));
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(mapper, new FakeMapperUsuario());
-
-            BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
-
-            Assert.AreEqual("-", resultado.Historial[0].Rival);
-            Assert.AreEqual("-", resultado.Historial[1].Rival);
-        }
-
-        [TestMethod]
-        public void Calcular_SinNombreEnLaConsulta_BuscaAlRivalPorId()
-        {
-            FakeMapperPartida mapper = new FakeMapperPartida();
-            mapper.PartidasParaListar.Add(CrearPartida(1, "", 10, 2, "", 5, 1, new DateTime(2026, 5, 1), 10, ""));
-            FakeMapperUsuario mapperUsuario = new FakeMapperUsuario();
-            mapperUsuario.Usuarios.Add(CrearUsuario(2, "pedro"));
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(mapper, mapperUsuario);
-
-            BE.ESTADISTICA resultado = estadistica.Calcular(CrearUsuario(1, "juan"));
-
-            Assert.AreEqual("pedro", resultado.Historial[0].Rival);
-            Assert.AreEqual(1, mapperUsuario.BusquedasPorId);
-        }
-
-        [TestMethod]
-        public void Calcular_ConNombreEnLaConsulta_NoBuscaAlRival()
-        {
-            FakeMapperUsuario mapperUsuario = new FakeMapperUsuario();
-            BLL.ESTADISTICA estadistica = new BLL.ESTADISTICA(CrearMapperConPartidas(), mapperUsuario);
-
-            estadistica.Calcular(CrearUsuario(1, "juan"));
-
-            Assert.AreEqual(0, mapperUsuario.BusquedasPorId);
         }
 
         [TestMethod]

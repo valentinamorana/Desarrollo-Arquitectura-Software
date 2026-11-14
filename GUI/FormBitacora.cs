@@ -51,6 +51,8 @@ namespace GUI
         {
             cmbUsuario.SelectedIndex = 0;
             cmbEvento.SelectedIndex = 0;
+            dtpDesde.MaxDate = DateTimePicker.MaximumDateTime;
+            dtpHasta.MinDate = DateTimePicker.MinimumDateTime;
             dtpDesde.Value = DateTime.Today;
             dtpDesde.Checked = false;
             dtpHasta.Value = DateTime.Today;
@@ -60,6 +62,40 @@ namespace GUI
         private void Filtro_Changed(object sender, EventArgs e)
         {
             AplicarFiltro();
+        }
+
+        private void Fecha_Changed(object sender, EventArgs e)
+        {
+            if (cargandoFiltros)
+            {
+                return;
+            }
+
+            cargandoFiltros = true;
+            LimitarFechas();
+            cargandoFiltros = false;
+            AplicarFiltro();
+        }
+
+        private void LimitarFechas()
+        {
+            if (dtpDesde.Checked)
+            {
+                dtpHasta.MinDate = dtpDesde.Value.Date;
+            }
+            else
+            {
+                dtpHasta.MinDate = DateTimePicker.MinimumDateTime;
+            }
+
+            if (dtpHasta.Checked)
+            {
+                dtpDesde.MaxDate = dtpHasta.Value.Date.AddDays(1).AddTicks(-1);
+            }
+            else
+            {
+                dtpDesde.MaxDate = DateTimePicker.MaximumDateTime;
+            }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)

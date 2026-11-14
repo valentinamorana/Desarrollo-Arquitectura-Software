@@ -4,20 +4,13 @@ namespace BLL
 {
     public static class GENERALA
     {
-        private static IDADO dadoAlAzar = new DADO();
-
         public const string GENERALA_DOBLE = "Generala Doble";
 
         public static readonly string[] CATEGORIAS = new string[]
         {
             "Unos", "Doses", "Treses", "Cuatros", "Cincos", "Seises",
-            "Escalera", "Full", "Poker", "Generala", GENERALA_DOBLE
+            "Escalera", "Full", "Póker", "Generala", GENERALA_DOBLE
         };
-
-        public static int[] Tirar(int[] dadosActuales, bool[] guardar)
-        {
-            return Tirar(dadosActuales, guardar, dadoAlAzar);
-        }
 
         public static int[] Tirar(int[] dadosActuales, bool[] guardar, IDADO dado)
         {
@@ -70,7 +63,7 @@ namespace BLL
             {
                 return AplicarServido(Full(dados), servido);
             }
-            if (categoria == "Poker")
+            if (categoria == "Póker")
             {
                 return AplicarServido(Poker(dados), servido);
             }
@@ -100,7 +93,7 @@ namespace BLL
 
         public static bool EsCombinacion(string categoria)
         {
-            if (categoria == "Escalera" || categoria == "Full" || categoria == "Poker" || categoria == "Generala")
+            if (categoria == "Escalera" || categoria == "Full" || categoria == "Póker" || categoria == "Generala")
             {
                 return true;
             }

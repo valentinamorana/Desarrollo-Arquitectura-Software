@@ -170,6 +170,40 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DatosDemo\Partida_20261018_190000001.xml">
+      <Link>Partidas\Partida_20261018_190000001.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatosDemo\Partida_20261022_201000002.xml">
+      <Link>Partidas\Partida_20261022_201000002.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatosDemo\Partida_20261025_183000003.xml">
+      <Link>Partidas\Partida_20261025_183000003.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatosDemo\Partida_20261029_210000004.xml">
+      <Link>Partidas\Partida_20261029_210000004.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatosDemo\Partida_20261102_194500005.xml">
+      <Link>Partidas\Partida_20261102_194500005.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatosDemo\Partida_20261103_200000006.xml">
+      <Link>Partidas\Partida_20261103_200000006.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatosDemo\Partida_20261105_181500007.xml">
+      <Link>Partidas\Partida_20261105_181500007.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatosDemo\Partida_20261107_213000008.xml">
+      <Link>Partidas\Partida_20261107_213000008.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">
       <Project>{1B6E6B0B-6F9A-4D3D-9D3A-2E5B7F8C1B01}</Project>
       <Name>BE</Name>

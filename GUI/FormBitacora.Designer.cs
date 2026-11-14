@@ -143,7 +143,7 @@ namespace GUI
             this.dtpDesde.ShowCheckBox = true;
             this.dtpDesde.Size = new System.Drawing.Size(130, 24);
             this.dtpDesde.TabIndex = 5;
-            this.dtpDesde.ValueChanged += new System.EventHandler(this.Filtro_Changed);
+            this.dtpDesde.ValueChanged += new System.EventHandler(this.Fecha_Changed);
             //
             // lblHasta
             //
@@ -166,7 +166,7 @@ namespace GUI
             this.dtpHasta.ShowCheckBox = true;
             this.dtpHasta.Size = new System.Drawing.Size(130, 24);
             this.dtpHasta.TabIndex = 7;
-            this.dtpHasta.ValueChanged += new System.EventHandler(this.Filtro_Changed);
+            this.dtpHasta.ValueChanged += new System.EventHandler(this.Fecha_Changed);
             //
             // btnLimpiar
             //

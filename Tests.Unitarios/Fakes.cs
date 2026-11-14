@@ -7,13 +7,9 @@ namespace Tests.Unitarios
     {
         public int IdAInsertar = 1;
         public bool LanzarAlInsertar = false;
-        public bool ResultadoFinalizar = true;
-        public bool LanzarAlFinalizar = false;
 
         public int Insertadas = 0;
-        public int Finalizadas = 0;
-        public int IntentosFinalizar = 0;
-        public string UltimaDescripcion = "";
+        public int IntentosInsertar = 0;
         public int UltimoGanador = -1;
         public int UltimoPuntaje1 = -1;
         public int UltimoPuntaje2 = -1;
@@ -22,31 +18,20 @@ namespace Tests.Unitarios
 
         public int Insertar(BE.PARTIDA partida)
         {
+            IntentosInsertar++;
             if (LanzarAlInsertar)
             {
                 throw new Exception("Falla simulada de la base al insertar");
             }
+            if (IdAInsertar == -1)
+            {
+                return -1;
+            }
             Insertadas++;
-            return IdAInsertar;
-        }
-
-        public bool Finalizar(BE.PARTIDA partida, string descripcion)
-        {
-            IntentosFinalizar++;
-            if (LanzarAlFinalizar)
-            {
-                throw new Exception("Falla simulada de la base al finalizar");
-            }
-            if (!ResultadoFinalizar)
-            {
-                return false;
-            }
-            Finalizadas++;
-            UltimaDescripcion = descripcion;
             UltimoGanador = partida.IdGanador;
             UltimoPuntaje1 = partida.PuntajeJugador1;
             UltimoPuntaje2 = partida.PuntajeJugador2;
-            return true;
+            return IdAInsertar;
         }
 
         public List<BE.PARTIDA> ListarPorUsuario(int idUsuario)
@@ -61,8 +46,6 @@ namespace Tests.Unitarios
         public bool LoginCorrecto = true;
         public int IdDelLogin = 1;
         public int Insertados = 0;
-        public int BusquedasPorId = 0;
-        public List<BE.USUARIO> Usuarios = new List<BE.USUARIO>();
 
         public int Insertar(BE.USUARIO usuario)
         {
@@ -78,19 +61,6 @@ namespace Tests.Unitarios
             }
             usuario.ID = IdDelLogin;
             return true;
-        }
-
-        public BE.USUARIO BuscarPorId(int id)
-        {
-            BusquedasPorId++;
-            foreach (BE.USUARIO usuario in Usuarios)
-            {
-                if (usuario.ID == id)
-                {
-                    return usuario;
-                }
-            }
-            return null;
         }
     }
 
@@ -216,11 +186,16 @@ namespace Tests.Unitarios
     public class FakeMapperLog : DAL.IMP_LOG
     {
         public int ResultadoInsertar = 1;
+        public bool LanzarAlInsertar = false;
         public List<BE.LOG> Insertados = new List<BE.LOG>();
         public List<BE.LOG> RegistrosParaListar = new List<BE.LOG>();
 
         public int Insertar(BE.LOG log)
         {
+            if (LanzarAlInsertar)
+            {
+                throw new Exception("Falla simulada de la base al registrar en la bitácora");
+            }
             if (ResultadoInsertar != -1)
             {
                 Insertados.Add(log);

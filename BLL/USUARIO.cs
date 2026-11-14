@@ -6,8 +6,8 @@ namespace BLL
     {
         public const int MIN_NOMBRE = 3;
         public const int MAX_NOMBRE = 20;
-        public const int MIN_CONTRASEÑA = 4;
-        public const int MAX_CONTRASEÑA = 20;
+        public const int MIN_CONTRASENA = 4;
+        public const int MAX_CONTRASENA = 20;
 
         private DAL.IMP_USUARIO mapper;
         private BITACORA bitacora;
@@ -32,11 +32,11 @@ namespace BLL
             {
                 return "El nombre de usuario tiene que tener entre " + MIN_NOMBRE + " y " + MAX_NOMBRE + " caracteres";
             }
-            if (usuario.Contraseña.Length < MIN_CONTRASEÑA || usuario.Contraseña.Length > MAX_CONTRASEÑA)
+            if (usuario.Contrasena.Length < MIN_CONTRASENA || usuario.Contrasena.Length > MAX_CONTRASENA)
             {
-                return "La contraseña tiene que tener entre " + MIN_CONTRASEÑA + " y " + MAX_CONTRASEÑA + " caracteres";
+                return "La contraseña tiene que tener entre " + MIN_CONTRASENA + " y " + MAX_CONTRASENA + " caracteres";
             }
-            if (!TieneNumero(usuario.Contraseña))
+            if (!TieneNumero(usuario.Contrasena))
             {
                 return "La contraseña tiene que tener al menos un número";
             }
@@ -60,7 +60,7 @@ namespace BLL
             bool ok = mapper.Login(usuario);
             if (ok)
             {
-                usuario.Contraseña = "";
+                usuario.Contrasena = "";
                 bitacora.Registrar(usuario.ID, BE.LOG.INICIO_SESION, "Inicio de sesión de " + usuario.Nombre);
             }
             return ok;
@@ -90,11 +90,6 @@ namespace BLL
             }
             usuario.ID = id;
             return true;
-        }
-
-        public BE.USUARIO BuscarPorId(int id)
-        {
-            return mapper.BuscarPorId(id);
         }
     }
 }

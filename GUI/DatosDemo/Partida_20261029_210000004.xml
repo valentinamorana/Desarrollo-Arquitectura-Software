@@ -1,0 +1,42 @@
+<Partida fecha="29/10/2026 21:00:00" jugador1="valentina" jugador2="jugador2">
+  <Tirada turno="1" jugador="valentina" numero="1" dados="2,4,1,3,2" guardados="" fecha="29/10/2026 21:00:43" />
+  <Movimiento turno="1" jugador="valentina" dados="2,4,1,3,2" categoria="Doses" puntaje="4" fecha="29/10/2026 21:01:16" />
+  <Tirada turno="2" jugador="jugador2" numero="1" dados="6,4,5,1,1" guardados="" fecha="29/10/2026 21:01:28" />
+  <Movimiento turno="2" jugador="jugador2" dados="6,4,5,1,1" categoria="Seises" puntaje="6" fecha="29/10/2026 21:02:12" />
+  <Tirada turno="3" jugador="valentina" numero="1" dados="6,1,5,3,3" guardados="" fecha="29/10/2026 21:02:35" />
+  <Tirada turno="3" jugador="valentina" numero="2" dados="1,3,1,3,3" guardados="4,5" fecha="29/10/2026 21:03:00" />
+  <Tirada turno="3" jugador="valentina" numero="3" dados="4,3,1,3,3" guardados="3,4,5" fecha="29/10/2026 21:03:17" />
+  <Movimiento turno="3" jugador="valentina" dados="4,3,1,3,3" categoria="Full" puntaje="0" fecha="29/10/2026 21:03:41" />
+  <Tirada turno="4" jugador="jugador2" numero="1" dados="6,4,1,3,4" guardados="" fecha="29/10/2026 21:04:10" />
+  <Movimiento turno="4" jugador="jugador2" dados="6,4,1,3,4" categoria="Cuatros" puntaje="8" fecha="29/10/2026 21:04:32" />
+  <Tirada turno="5" jugador="valentina" numero="1" dados="3,6,2,3,6" guardados="" fecha="29/10/2026 21:04:49" />
+  <Movimiento turno="5" jugador="valentina" dados="3,6,2,3,6" categoria="Seises" puntaje="12" fecha="29/10/2026 21:05:19" />
+  <Tirada turno="6" jugador="jugador2" numero="1" dados="5,3,3,1,1" guardados="" fecha="29/10/2026 21:06:01" />
+  <Tirada turno="6" jugador="jugador2" numero="2" dados="6,2,1,1,1" guardados="4,5" fecha="29/10/2026 21:06:17" />
+  <Tirada turno="6" jugador="jugador2" numero="3" dados="5,4,1,1,1" guardados="4,5" fecha="29/10/2026 21:06:44" />
+  <Movimiento turno="6" jugador="jugador2" dados="5,4,1,1,1" categoria="Cincos" puntaje="5" fecha="29/10/2026 21:07:05" />
+  <Tirada turno="7" jugador="valentina" numero="1" dados="5,6,1,4,2" guardados="" fecha="29/10/2026 21:07:18" />
+  <Tirada turno="7" jugador="valentina" numero="2" dados="5,6,6,5,2" guardados="1,2,5" fecha="29/10/2026 21:07:33" />
+  <Tirada turno="7" jugador="valentina" numero="3" dados="5,1,6,5,2" guardados="1,3,4,5" fecha="29/10/2026 21:08:04" />
+  <Movimiento turno="7" jugador="valentina" dados="5,1,6,5,2" categoria="Cincos" puntaje="10" fecha="29/10/2026 21:08:17" />
+  <Tirada turno="8" jugador="jugador2" numero="1" dados="2,4,4,4,2" guardados="" fecha="29/10/2026 21:08:52" />
+  <Tirada turno="8" jugador="jugador2" numero="2" dados="5,2,4,4,5" guardados="3,4" fecha="29/10/2026 21:09:17" />
+  <Tirada turno="8" jugador="jugador2" numero="3" dados="5,4,4,4,2" guardados="1,3,4" fecha="29/10/2026 21:09:31" />
+  <Movimiento turno="8" jugador="jugador2" dados="5,4,4,4,2" categoria="Doses" puntaje="2" fecha="29/10/2026 21:09:46" />
+  <Tirada turno="9" jugador="valentina" numero="1" dados="6,2,3,4,2" guardados="" fecha="29/10/2026 21:10:20" />
+  <Tirada turno="9" jugador="valentina" numero="2" dados="1,5,5,3,2" guardados="5" fecha="29/10/2026 21:10:49" />
+  <Tirada turno="9" jugador="valentina" numero="3" dados="2,4,1,3,6" guardados="4" fecha="29/10/2026 21:11:06" />
+  <Movimiento turno="9" jugador="valentina" dados="2,4,1,3,6" categoria="Cuatros" puntaje="4" fecha="29/10/2026 21:11:40" />
+  <Tirada turno="10" jugador="jugador2" numero="1" dados="1,2,3,1,1" guardados="" fecha="29/10/2026 21:12:24" />
+  <Tirada turno="10" jugador="jugador2" numero="2" dados="1,2,3,1,1" guardados="1,2,3,4,5" fecha="29/10/2026 21:12:50" />
+  <Tirada turno="10" jugador="jugador2" numero="3" dados="2,2,3,1,1" guardados="3,5" fecha="29/10/2026 21:13:12" />
+  <Movimiento turno="10" jugador="jugador2" dados="2,2,3,1,1" categoria="Generala" puntaje="0" fecha="29/10/2026 21:13:44" />
+  <Tirada turno="11" jugador="valentina" numero="1" dados="6,4,6,4,3" guardados="" fecha="29/10/2026 21:14:23" />
+  <Tirada turno="11" jugador="valentina" numero="2" dados="4,4,2,2,3" guardados="2,5" fecha="29/10/2026 21:14:47" />
+  <Tirada turno="11" jugador="valentina" numero="3" dados="4,4,2,2,3" guardados="1,2,3,4,5" fecha="29/10/2026 21:15:21" />
+  <Movimiento turno="11" jugador="valentina" dados="4,4,2,2,3" categoria="Treses" puntaje="3" fecha="29/10/2026 21:15:59" />
+  <Tirada turno="12" jugador="jugador2" numero="1" dados="5,5,2,4,5" guardados="" fecha="29/10/2026 21:16:19" />
+  <Tirada turno="12" jugador="jugador2" numero="2" dados="2,4,4,2,5" guardados="5" fecha="29/10/2026 21:16:36" />
+  <Movimiento turno="12" jugador="jugador2" dados="2,4,4,2,5" categoria="Full" puntaje="0" fecha="29/10/2026 21:16:48" />
+  <Fin turnos="12" jugador1="valentina" puntajeJugador1="33" jugador2="jugador2" puntajeJugador2="21" ganador="valentina" abandonada="si" abandono="jugador2" fecha="29/10/2026 21:17:24" />
+</Partida>

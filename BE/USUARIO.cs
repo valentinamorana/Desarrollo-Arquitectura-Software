@@ -18,12 +18,12 @@ namespace BE
             set { nombre = value; }
         }
 
-        private string contraseña;
+        private string contrasena;
 
-        public string Contraseña
+        public string Contrasena
         {
-            get { return contraseña; }
-            set { contraseña = value; }
+            get { return contrasena; }
+            set { contrasena = value; }
         }
     }
 }

@@ -6,8 +6,6 @@ namespace DAL
     {
         int Insertar(BE.PARTIDA partida);
 
-        bool Finalizar(BE.PARTIDA partida, string descripcion);
-
         List<BE.PARTIDA> ListarPorUsuario(int idUsuario);
     }
 }

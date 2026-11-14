@@ -54,17 +54,6 @@ namespace Tests.Unitarios
         }
 
         [TestMethod]
-        public void Filtrar_FechasInvertidas_LasDaVuelta()
-        {
-            List<BE.LOG> registros = CrearRegistros();
-
-            List<BE.LOG> resultado = BLL.BITACORA.Filtrar(registros, "", "",
-                new DateTime(2026, 3, 3), new DateTime(2026, 3, 2));
-
-            Assert.AreEqual(2, resultado.Count);
-        }
-
-        [TestMethod]
         public void Registrar_DescripcionLarga_LaTrunca()
         {
             FakeMapperLog mapper = new FakeMapperLog();

@@ -10,7 +10,6 @@ namespace DAL
     internal class ACCESO
     {
         private SqlConnection conexion;
-        private SqlTransaction transaccion;
 
         private static readonly string[] servidoresAlternativos = { @".\SQLEXPRESS", "." };
 
@@ -39,14 +38,11 @@ namespace DAL
             string configurado = cadena.DataSource;
 
             List<string> candidatos = new List<string>();
+            candidatos.Add(configurado);
             string recordado = LeerServidorRecordado();
-            if (recordado != null)
+            if (recordado != null && !candidatos.Contains(recordado))
             {
                 candidatos.Add(recordado);
-            }
-            if (!candidatos.Contains(configurado))
-            {
-                candidatos.Add(configurado);
             }
             foreach (string servidor in servidoresAlternativos)
             {
@@ -123,27 +119,6 @@ namespace DAL
         {
             conexion.Close();
             conexion = null;
-            transaccion = null;
-        }
-
-        public void IniciarTx()
-        {
-            transaccion = conexion.BeginTransaction();
-        }
-
-        public void AceptarTx()
-        {
-            transaccion.Commit();
-            transaccion = null;
-        }
-
-        public void CancelarTx()
-        {
-            if (transaccion.Connection != null)
-            {
-                transaccion.Rollback();
-            }
-            transaccion = null;
         }
 
         private SqlCommand CrearComando(string sql, List<SqlParameter> parametros = null)
@@ -152,10 +127,6 @@ namespace DAL
             cmd.CommandText = sql;
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection = conexion;
-            if (transaccion != null)
-            {
-                cmd.Transaction = transaccion;
-            }
             if (parametros != null)
             {
                 cmd.Parameters.AddRange(parametros.ToArray());
@@ -223,12 +194,12 @@ namespace DAL
             return parametro;
         }
 
-        public SqlParameter CrearParametroNulo(string nombre)
+        public SqlParameter CrearParametro(string nombre, DateTime valor)
         {
             SqlParameter parametro = new SqlParameter();
             parametro.ParameterName = nombre;
-            parametro.Value = DBNull.Value;
-            parametro.DbType = DbType.Int32;
+            parametro.Value = valor;
+            parametro.DbType = DbType.DateTime;
             return parametro;
         }
     }

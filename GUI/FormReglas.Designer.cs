@@ -76,13 +76,15 @@ namespace GUI
     "a podés marcar \"Guardar\" en los dados que querés conservar antes de volver a t" +
     "irar.\r\n\r\nCATEGORÍAS\r\n• Unos a Seises: suma los dados que coinciden con ese núm" +
     "ero.\r\n• Escalera (20 pts): 1-2-3-4-5 o 2-3-4-5-6.\r\n• Full (30 pts): tres dados" +
-    " iguales + dos iguales entre sí.\r\n• Poker (40 pts): cuatro o más dados iguales" +
+    " iguales + dos iguales entre sí.\r\n• Póker (40 pts): cuatro o más dados iguales" +
     ".\r\n• Generala (50 pts): los cinco dados iguales.\r\n• Generala Doble (100 pts): " +
     "otra Generala, después de haber anotado la primera.\r\n\r\nSERVIDO\r\nSi lográs Esca" +
-    "lera, Full, Poker o Generala en tu PRIMERA tirada (sin repetir ningún dado), e" +
-    "l puntaje de esa categoría se duplica.\r\n\r\nCATEGORÍA TACHADA\r\nSi tus dados no a" +
-    "lcanzan para ninguna categoría libre, tenés que elegir una igual: queda anota" +
-    "da en 0 y no se puede volver a usar.\r\n\r\nFIN DE LA PARTIDA\r\nTermina cuando ambo" +
+    "lera, Full, Póker o Generala en tu PRIMERA tirada (sin repetir ningún dado), e" +
+    "l puntaje de esa categoría se duplica.\r\n\r\nCATEGORÍA TACHADA\r\nDespués de tirar, " +
+    "con el botón \"Tachar\" podés anotar 0 en cualquier categoría libre. Si anotás " +
+    "una categoría y los dados no alcanzan, también queda en 0. Una categoría tachada " +
+    "no se puede volver a usar. Si tachás la Generala, la Generala Doble solo se pued" +
+    "e tachar.\r\n\r\nFIN DE LA PARTIDA\r\nTermina cuando ambo" +
     "s jugadores completaron las 11 categorías. También se puede abandonar antes co" +
     "n el botón \"Abandonar Partida\": se elige qué jugador abandona, se registra con" +
     " el puntaje parcial de ese momento y la gana el otro jugador.";

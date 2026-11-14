@@ -48,13 +48,6 @@ namespace BLL
         public static List<BE.LOG> Filtrar(List<BE.LOG> registros, string nombreUsuario, string nombreTipo,
             DateTime? desde, DateTime? hasta)
         {
-            if (desde.HasValue && hasta.HasValue && desde.Value.Date > hasta.Value.Date)
-            {
-                DateTime auxiliar = desde.Value;
-                desde = hasta;
-                hasta = auxiliar;
-            }
-
             List<BE.LOG> resultado = new List<BE.LOG>();
             foreach (BE.LOG registro in registros)
             {

@@ -45,7 +45,7 @@ namespace GUI
             {
                 return pnlLineaUsuario;
             }
-            return pnlLineaContraseña;
+            return pnlLineaContrasena;
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
@@ -53,7 +53,7 @@ namespace GUI
             lblMensaje.Text = "";
             lblMensaje.ForeColor = System.Drawing.Color.Crimson;
 
-            if (txtUsuario.Text == "" || txtContraseña.Text == "")
+            if (txtUsuario.Text == "" || txtContrasena.Text == "")
             {
                 lblMensaje.Text = "Completá usuario y contraseña";
                 return;
@@ -67,7 +67,7 @@ namespace GUI
 
             USUARIO usuario = new USUARIO();
             usuario.Nombre = txtUsuario.Text;
-            usuario.Contraseña = txtContraseña.Text;
+            usuario.Contrasena = txtContrasena.Text;
 
             BLL.USUARIO usuarioBLL = new BLL.USUARIO();
             bool ok;
@@ -102,7 +102,7 @@ namespace GUI
                     txtUsuario.Text = formRegistro.NombreRegistrado;
                     lblMensaje.ForeColor = System.Drawing.Color.SeaGreen;
                     lblMensaje.Text = "Usuario creado. Ya podés ingresar.";
-                    txtContraseña.Focus();
+                    txtContrasena.Focus();
                 }
             }
         }
