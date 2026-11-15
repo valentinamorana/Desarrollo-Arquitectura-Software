@@ -174,7 +174,7 @@ namespace BLL
 
         public bool PuedeGuardarDados()
         {
-            return enCurso && YaTiro() && tirosRestantes > 0;
+            return enCurso && YaTiro();
         }
 
         public void Tirar(bool[] guardar)

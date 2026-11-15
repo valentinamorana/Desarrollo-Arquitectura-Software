@@ -235,7 +235,7 @@ namespace Tests.Unitarios
         }
 
         [TestMethod]
-        public void PuedeGuardarDados_SoloEntreLaPrimeraYLaUltimaTirada()
+        public void PuedeGuardarDados_DespuesDeCadaTirada()
         {
             partida.Iniciar(ana, beto);
             Assert.IsFalse(partida.PuedeGuardarDados());
@@ -245,7 +245,7 @@ namespace Tests.Unitarios
 
             partida.Tirar(new bool[5]);
             partida.Tirar(new bool[5]);
-            Assert.IsFalse(partida.PuedeGuardarDados());
+            Assert.IsTrue(partida.PuedeGuardarDados());
             Assert.IsTrue(partida.PuedeAnotar());
         }
 

@@ -138,7 +138,7 @@ namespace GUI
                 Mensaje.Show(
                     "El backup se realizó en:\n" + sfdBackup.FileName +
                     "\n\nPero no se pudo registrar en la bitácora: " + ex.Message +
-                    "\n\nSi la base es de una versión anterior, volvé a correr BD/Script.sql.",
+                    "\n\nSi la base es de una versión anterior, borrá la base GENERALA y ejecutá BD/Script.sql.",
                     "Backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }

@@ -16,7 +16,7 @@ Juego de la Generala para 2 jugadores en la misma PC, desarrollado en C# (Window
 | **Estadísticas** | Ganadas, perdidas, empatadas, promedio de victorias, tiempo total jugado e historial filtrable por resultado |
 | **Movimientos** | Un XML por partida con cada tirada, anotación y cierre. Se consulta desde "Ver movimientos" y se puede descargar con "Descargar XML" |
 | **Bitácora** | Inicios y cierres de sesión, comienzo y fin de partida, backups y restores, en la tabla `LOG`. Se consulta desde el menú, con filtros por usuario, evento y rango de fechas |
-| **Backup / Restore** | De la base `GENERALA` desde el menú principal, en "Administración de la base". Cada backup y cada restore quedan registrados en la bitácora |
+| **Backup / Restore** | De la base `GENERALA` desde el menú principal, en "Administración y sesión". Cada backup y cada restore quedan registrados en la bitácora |
 
 ---
 
@@ -100,7 +100,7 @@ La partida termina cuando los dos completan las 11 categorías. Las reglas compl
 | Bitácora (inicios y cierres de sesión, comienzo y fin de partida) | Menú → Bitácora, con filtros por usuario, evento y fechas. Los datos están en la tabla `LOG` (tipos en `TIPO_LOG`). El inicio de partida se registra al empezar y el fin cuando la partida se guarda en la base. También se registran los backups y restores |
 | Estadísticas, promedio de victorias, tiempo jugado | Menú → Estadísticas |
 | XML de movimientos | Un archivo por partida en `GUI/bin/Debug/Partidas/`, con cada tirada (dados y dados guardados), cada anotación y el cierre. Se consulta desde Estadísticas → elegir partida → "Ver movimientos", y se puede guardar una copia con "Descargar XML" |
-| Backup / Restore | Menú → "Hacer backup" y "Restaurar backup", en la sección "Administración de la base" |
+| Backup / Restore | Menú → "Hacer backup" y "Restaurar backup", en la sección "Administración y sesión" |
 
 **Nota sobre el backup:** `BACKUP DATABASE` lo ejecuta el servicio de SQL Server, no el usuario de Windows, así que en carpetas personales (Escritorio, Documentos) puede fallar por permisos. El diálogo arranca en la carpeta de backups de SQL Server.
 
